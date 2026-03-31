@@ -1,0 +1,29 @@
+# ── Core API ──
+fastapi>=0.115.6
+uvicorn[standard]>=0.32.1
+httpx>=0.28.1
+python-multipart>=0.0.20
+
+# ── PDF parsing ──
+pypdf>=5.1.0
+
+# ── PDF generation (Registro HACCP mensile) ──
+reportlab>=4.2.0
+
+# ── Pydantic ──
+pydantic>=2.11.0
+
+# ── Supabase (cloud DB + auth) ──
+# FIX: supabase >= 2.15 usa storage3 >= 2.x che dipende da pyiceberg,
+#      una libreria con estensioni C non compilabili su Windows + Python 3.13/3.14
+#      senza Microsoft C++ Build Tools. Pinned a <2.15.0 per compatibilità totale.
+supabase>=2.9.0,<2.15.0
+
+# ── Stripe (pagamenti abbonamento) ──
+stripe>=10.12.0
+
+# ── JWT decode (verifica token Supabase lato backend) ──
+python-jose[cryptography]>=3.3.0
+
+# ── Environment variables ──
+python-dotenv>=1.0.0

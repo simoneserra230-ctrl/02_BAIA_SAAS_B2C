@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guida — AI Analisi Bandi SaaS</title>
+<style>
+  :root {
+    --gold: #c69229; --gold-l: #e8b84b; --dark: #0f1117; --surface: #1a1d27;
+    --border: rgba(255,255,255,0.09); --text: #e2e5ef; --muted: #8b90a0;
+    --green: #22c55e; --red: #ef4444; --blue: #3b82f6; --purple: #8b5cf6;
+    --radius: 12px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: var(--dark); color: var(--text);
+    line-height: 1.7; font-size: 15px;
+  }
+  .layout { display: flex; min-height: 100vh; }
+
+  /* ── Sidebar ── */
+  nav {
+    width: 260px; min-width: 260px; background: var(--surface);
+    border-right: 1px solid var(--border); padding: 28px 0;
+    position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  }
+  .nav-brand {
+    padding: 0 22px 24px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+  .nav-brand .logo { font-size: 22px; font-weight: 800; color: var(--gold); }
+  .nav-brand .sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  nav a {
+    display: block; padding: 9px 22px; color: var(--muted);
+    text-decoration: none; font-size: 13px; font-weight: 500;
+    border-left: 3px solid transparent; transition: all .15s;
+  }
+  nav a:hover { color: var(--text); background: rgba(255,255,255,.04); }
+  nav a.active { color: var(--gold); border-left-color: var(--gold); background: rgba(198,146,41,.07); }
+  .nav-section {
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .08em; color: var(--muted); padding: 18px 22px 6px;
+  }
+
+  /* ── Content ── */
+  main { flex: 1; padding: 48px 56px; max-width: 880px; }
+  h1 { font-size: 32px; font-weight: 800; color: white; margin-bottom: 8px; }
+  h2 {
+    font-size: 22px; font-weight: 700; color: white;
+    margin: 48px 0 16px; padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  h3 { font-size: 16px; font-weight: 700; color: var(--gold-l); margin: 24px 0 10px; }
+  p { color: var(--text); margin-bottom: 14px; }
+  a { color: var(--gold); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* ── Hero ── */
+  .hero {
+    background: linear-gradient(135deg, rgba(198,146,41,.15), rgba(139,92,246,.1));
+    border: 1px solid rgba(198,146,41,.3); border-radius: var(--radius);
+    padding: 28px 32px; margin-bottom: 40px;
+  }
+  .hero p { color: var(--muted); margin: 0; font-size: 14px; }
+
+  /* ── Badge / Status ── */
+  .badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 600;
+  }
+  .badge.green { background: rgba(34,197,94,.15); color: var(--green); border: 1px solid rgba(34,197,94,.3); }
+  .badge.red   { background: rgba(239,68,68,.15);  color: var(--red);   border: 1px solid rgba(239,68,68,.3); }
+  .badge.blue  { background: rgba(59,130,246,.15); color: var(--blue);  border: 1px solid rgba(59,130,246,.3); }
+  .badge.gold  { background: rgba(198,146,41,.15); color: var(--gold-l);border: 1px solid rgba(198,146,41,.3); }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 20px 24px; margin-bottom: 16px;
+  }
+  .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+  .card-grid .card { margin: 0; }
+  .card h4 { font-size: 13px; font-weight: 700; color: var(--gold-l); margin-bottom: 6px; }
+  .card p  { font-size: 13px; color: var(--muted); margin: 0; }
+
+  /* ── Steps ── */
+  .steps { list-style: none; }
+  .steps li {
+    display: flex; gap: 16px; margin-bottom: 20px;
+    padding: 18px 20px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: var(--radius);
+  }
+  .step-num {
+    width: 32px; height: 32px; min-width: 32px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), var(--gold-l));
+    color: #000; font-weight: 800; font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .step-body h4 { font-size: 14px; font-weight: 700; color: white; margin-bottom: 6px; }
+  .step-body p  { font-size: 13px; color: var(--muted); margin: 0; }
+
+  /* ── Code blocks ── */
+  pre, code {
+    font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+    font-size: 13px;
+  }
+  pre {
+    background: #0d0f16; border: 1px solid var(--border); border-radius: 8px;
+    padding: 16px 20px; overflow-x: auto; margin: 12px 0;
+    line-height: 1.6;
+  }
+  code {
+    background: rgba(255,255,255,.07); padding: 2px 7px;
+    border-radius: 4px; font-size: 12.5px; color: var(--gold-l);
+  }
+  pre code { background: none; padding: 0; font-size: 13px; color: #a8c4e0; }
+  .comment { color: #5a6a7a; }
+  .cmd     { color: #7dd3fc; }
+  .val     { color: #86efac; }
+  .key     { color: var(--gold-l); }
+
+  /* ── Callout / Alert ── */
+  .callout {
+    display: flex; gap: 14px; padding: 16px 18px;
+    border-radius: var(--radius); margin: 18px 0; align-items: flex-start;
+  }
+  .callout.warn { background: rgba(245,158,11,.1); border: 1px solid rgba(245,158,11,.3); }
+  .callout.info { background: rgba(59,130,246,.1);  border: 1px solid rgba(59,130,246,.3); }
+  .callout.ok   { background: rgba(34,197,94,.1);   border: 1px solid rgba(34,197,94,.3); }
+  .callout.err  { background: rgba(239,68,68,.1);   border: 1px solid rgba(239,68,68,.3); }
+  .callout-icon { font-size: 18px; margin-top: 1px; }
+  .callout-body { font-size: 13.5px; line-height: 1.6; }
+  .callout-body strong { color: white; }
+  .callout.warn .callout-body { color: #fde68a; }
+  .callout.info .callout-body { color: #bfdbfe; }
+  .callout.ok   .callout-body { color: #bbf7d0; }
+  .callout.err  .callout-body { color: #fecaca; }
+
+  /* ── Table ── */
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+  th { background: rgba(255,255,255,.05); color: var(--muted); font-size: 11px;
+       text-transform: uppercase; letter-spacing: .05em; padding: 10px 14px;
+       text-align: left; border-bottom: 1px solid var(--border); }
+  td { padding: 11px 14px; border-bottom: 1px solid rgba(255,255,255,.04); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,.02); }
+
+  /* ── Error table ── */
+  .fix-table td:first-child { color: var(--red); font-weight: 600; width: 38%; }
+  .fix-table td:nth-child(2) { color: var(--green); font-weight: 600; }
+
+  /* ── Version chip ── */
+  .version-chip {
+    display: inline-block; padding: 2px 10px;
+    background: rgba(198,146,41,.2); color: var(--gold-l);
+    border: 1px solid rgba(198,146,41,.4); border-radius: 20px;
+    font-size: 11px; font-weight: 700; margin-left: 10px; vertical-align: middle;
+  }
+
+  /* ── Breadcrumb / section header ── */
+  .section-tag {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .08em; color: var(--muted); margin-bottom: 4px;
+  }
+
+  /* ── Footer ── */
+  footer {
+    margin-top: 64px; padding-top: 24px;
+    border-top: 1px solid var(--border);
+    color: var(--muted); font-size: 12px; text-align: center;
+  }
+
+  @media (max-width: 860px) {
+    nav { display: none; }
+    main { padding: 28px 20px; }
+    .card-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+
+<!-- ═══ SIDEBAR ═══ -->
+<nav>
+  <div class="nav-brand">
+    <div class="logo">📊 BAIA</div>
+    <div class="sub">AI Analisi Bandi — Guida v2.1</div>
+  </div>
+
+  <div class="nav-section">Installazione</div>
+  <a href="#requisiti">Requisiti di sistema</a>
+  <a href="#installazione">Installazione</a>
+  <a href="#configurazione">Configurazione .env</a>
+  <a href="#groq">Chiave API Groq</a>
+
+  <div class="nav-section">Primo Avvio</div>
+  <a href="#avvio">Avviare il backend</a>
+  <a href="#frontend">Aprire il frontend</a>
+  <a href="#verifica">Verifica connessione</a>
+
+  <div class="nav-section">Utilizzo</div>
+  <a href="#analisi">Analizzare un bando</a>
+  <a href="#modalita">Modalità di analisi</a>
+  <a href="#risultati">Leggere i risultati</a>
+  <a href="#aziende">Profili aziendali</a>
+  <a href="#matching">Matching bando/azienda</a>
+  <a href="#export">Esportare i dati</a>
+
+  <div class="nav-section">Avanzato</div>
+  <a href="#saas">Modalità SaaS (Supabase)</a>
+  <a href="#modelli">Scelta del modello AI</a>
+  <a href="#troubleshooting">Risoluzione problemi</a>
+  <a href="#fix-v21">Modifiche v2.1</a>
+</nav>
+
+<!-- ═══ MAIN ═══ -->
+<main>
+
+  <!-- Hero -->
+  <div class="section-tag">Documentazione Tecnica</div>
+  <h1>AI Analisi Bandi <span class="version-chip">v2.1</span></h1>
+  <div class="hero">
+    <p>Piattaforma SaaS per l'analisi automatica di bandi di finanziamento italiani ed europei tramite AI (Groq + llama-3.3-70b-versatile). Supporta PDF fino a ~350 pagine, analisi strutturata in 18 sezioni, matching aziende/bandi e generazione schede complete.</p>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <h4>🧠 Motore AI</h4>
+      <p>Groq · llama-3.3-70b-versatile<br>128k token · alta precisione</p>
+    </div>
+    <div class="card">
+      <h4>🔌 Backend</h4>
+      <p>FastAPI + Python 3.10+<br>Porta 8000 (locale)</p>
+    </div>
+    <div class="card">
+      <h4>🖥 Frontend</h4>
+      <p>HTML singolo file · nessun build<br>Aprire direttamente nel browser</p>
+    </div>
+    <div class="card">
+      <h4>☁️ Cloud (opzionale)</h4>
+      <p>Supabase (DB + Auth) · Stripe (pagamenti)<br>Non richiesti per uso locale</p>
+    </div>
+  </div>
+
+  <!-- ═══ REQUISITI ═══ -->
+  <h2 id="requisiti">Requisiti di sistema</h2>
+
+  <table>
+    <tr><th>Componente</th><th>Versione minima</th><th>Note</th></tr>
+    <tr><td>Python</td><td>3.10+</td><td>Verificare con <code>python --version</code></td></tr>
+    <tr><td>pip</td><td>22+</td><td>Incluso con Python</td></tr>
+    <tr><td>RAM</td><td>4 GB</td><td>8 GB consigliati per bandi grandi</td></tr>
+    <tr><td>Browser</td><td>Chrome 110+ / Firefox 110+ / Edge 110+</td><td>Safari supportato ma non ottimizzato</td></tr>
+    <tr><td>Connessione internet</td><td>Necessaria</td><td>Per le chiamate API a Groq</td></tr>
+    <tr><td>Chiave API Groq</td><td>—</td><td>Gratuita su <a href="https://console.groq.com/keys" target="_blank">console.groq.com</a></td></tr>
+  </table>
+
+  <div class="callout info">
+    <div class="callout-icon">ℹ️</div>
+    <div class="callout-body"><strong>Supabase e Stripe non sono richiesti</strong> per l'uso locale. L'app funziona in <em>LOCAL_MODE</em> con sola chiave Groq.</div>
+  </div>
+
+  <!-- ═══ INSTALLAZIONE ═══ -->
+  <h2 id="installazione">Installazione</h2>
+
+  <h3>1 · Estrarre i file</h3>
+  <p>Estrarre il contenuto dello ZIP in una cartella a scelta, ad esempio <code>C:\BAIA\</code> oppure <code>~/baia/</code>. La struttura risultante deve essere:</p>
+  <pre><code>02_BAIA_SAAS_B2C/
+├── main.py                    <span class="comment"># ← backend FastAPI</span>
+├── AI_Analisi_Bandi_SaaS.html <span class="comment"># ← frontend (aprire nel browser)</span>
+├── requirements.txt
+├── .env.example
+├── avvia.bat                  <span class="comment"># ← Windows: doppio clic per avviare</span>
+└── venv/                      <span class="comment"># ← ambiente virtuale Python</span></code></pre>
+
+  <h3>2 · Creare l'ambiente virtuale (consigliato)</h3>
+  <p>Aprire un terminale nella cartella del progetto ed eseguire:</p>
+  <pre><code><span class="comment"># Windows</span>
+<span class="cmd">python -m venv venv</span>
+<span class="cmd">venv\Scripts\activate</span>
+
+<span class="comment"># macOS / Linux</span>
+<span class="cmd">python3 -m venv venv</span>
+<span class="cmd">source venv/bin/activate</span></code></pre>
+
+  <h3>3 · Installare le dipendenze</h3>
+  <pre><code><span class="cmd">pip install -r requirements.txt</span></code></pre>
+
+  <div class="callout ok">
+    <div class="callout-icon">✅</div>
+    <div class="callout-body">Se usi <strong>avvia.bat</strong> su Windows, le dipendenze vengono installate automaticamente ad ogni avvio.</div>
+  </div>
+
+  <!-- ═══ CONFIGURAZIONE ═══ -->
+  <h2 id="configurazione">Configurazione .env</h2>
+
+  <h3>Creare il file .env</h3>
+  <pre><code><span class="comment"># Windows (terminale o Esplora file)</span>
+<span class="cmd">copy .env.example .env</span>
+
+<span class="comment"># macOS / Linux</span>
+<span class="cmd">cp .env.example .env</span></code></pre>
+
+  <p>Aprire il file <code>.env</code> con un editor di testo (Notepad, VS Code, ecc.) e compilare i valori:</p>
+
+  <pre><code><span class="comment"># OBBLIGATORIO: inserire la propria chiave Groq</span>
+<span class="key">GROQ_API_KEY</span>=<span class="val">gsk_xxxxxxxxxxxxxxxxxxxxxxxxxxxx</span>
+
+<span class="comment"># Modello AI — lasciare invariato per risultati ottimali</span>
+<span class="key">GROQ_MODEL</span>=<span class="val">llama-3.3-70b-versatile</span>
+
+<span class="comment"># Supabase e Stripe: lasciare i valori placeholder</span>
+<span class="comment"># se non si usa la modalità SaaS cloud</span></code></pre>
+
+  <div class="callout warn">
+    <div class="callout-icon">⚠️</div>
+    <div class="callout-body"><strong>Non condividere mai il file .env.</strong> Non caricarlo su GitHub o servizi cloud. Contiene credenziali private.</div>
+  </div>
+
+  <!-- ═══ CHIAVE GROQ ═══ -->
+  <h2 id="groq">Ottenere la chiave API Groq</h2>
+
+  <ul class="steps">
+    <li>
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h4>Aprire la console Groq</h4>
+        <p>Visitare <a href="https://console.groq.com/keys" target="_blank">console.groq.com/keys</a> e creare un account gratuito (accesso con Google o email).</p>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h4>Creare una nuova API Key</h4>
+        <p>Cliccare su <strong>Create API Key</strong>, dare un nome (es. <em>baia-locale</em>) e copiare la chiave generata. Inizia sempre con <code>gsk_</code>.</p>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h4>Incollare nel file .env</h4>
+        <p>Aprire <code>.env</code> e sostituire <code>gsk_LA_TUA_CHIAVE_GROQ</code> con la chiave copiata. Salvare il file.</p>
+      </div>
+    </li>
+  </ul>
+
+  <div class="callout info">
+    <div class="callout-icon">ℹ️</div>
+    <div class="callout-body"><strong>Piano gratuito Groq:</strong> include generosi limiti mensili (decine di migliaia di token al giorno). Sufficiente per un utilizzo professionale normale. I limiti vengono gestiti automaticamente dal backend con retry.</div>
+  </div>
+
+  <!-- ═══ AVVIO ═══ -->
+  <h2 id="avvio">Avviare il backend</h2>
+
+  <h3>Windows — metodo rapido</h3>
+  <p>Fare doppio clic su <code>avvia.bat</code>. Il file verifica automaticamente la configurazione, installa le dipendenze e avvia il server.</p>
+
+  <h3>Terminale (Windows / macOS / Linux)</h3>
+  <pre><code><span class="comment"># Dalla cartella del progetto, con venv attivo</span>
+<span class="cmd">uvicorn main:app --host 0.0.0.0 --port 8000 --reload</span></code></pre>
+
+  <p>Output atteso all'avvio corretto:</p>
+  <pre><code><span class="val">[STARTUP] .env caricato correttamente</span>
+<span class="val">[STARTUP] Groq configurato ✓  modello=llama-3.3-70b-versatile</span>
+<span class="val">[STARTUP] Modalità: locale (no Supabase)</span>
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Application startup complete.</span></code></pre>
+
+  <div class="callout err">
+    <div class="callout-icon">🔴</div>
+    <div class="callout-body"><strong>Se vedi <code>[WARNING] GROQ_API_KEY non impostata</code>:</strong> il file <code>.env</code> non esiste, non è nella cartella giusta, oppure la chiave non è stata inserita correttamente.</div>
+  </div>
+
+  <!-- ═══ FRONTEND ═══ -->
+  <h2 id="frontend">Aprire il frontend</h2>
+
+  <p>Con il backend in esecuzione, aprire il file <code>AI_Analisi_Bandi_SaaS.html</code> direttamente nel browser (doppio clic o drag &amp; drop nella barra indirizzi). Non è necessario un server web per il frontend.</p>
+
+  <div class="callout info">
+    <div class="callout-icon">ℹ️</div>
+    <div class="callout-body"><strong>All'apertura appare una schermata di login.</strong> Per uso locale, cliccare <em>"🎭 Prova la Demo senza registrarti"</em> per entrare direttamente. Nessun account necessario in LOCAL_MODE.</div>
+  </div>
+
+  <!-- ═══ VERIFICA ═══ -->
+  <h2 id="verifica">Verifica connessione frontend ↔ backend</h2>
+
+  <p>Dopo aver aperto il frontend, verificare che sia collegato al backend:</p>
+
+  <ul class="steps">
+    <li>
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h4>Indicatore modello AI</h4>
+        <p>In alto a destra nella piattaforma compare il nome del modello attivo (es. <code>llama-3.3-70b-versatile</code>). Se mostra <em>"N/D"</em> o <em>"backend non raggiungibile"</em>, il backend non è avviato o è sulla porta sbagliata.</p>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h4>Test API diretto</h4>
+        <p>Aprire nel browser: <a href="http://localhost:8000" target="_blank">http://localhost:8000</a> — deve rispondere con un JSON che include <code>"status": "ok"</code> e il modello configurato.</p>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h4>Documentazione API automatica</h4>
+        <p>Disponibile su <a href="http://localhost:8000/docs" target="_blank">http://localhost:8000/docs</a> — elenco completo di tutti gli endpoint con possibilità di test interattivo.</p>
+      </div>
+    </li>
+  </ul>
+
+  <!-- ═══ ANALISI ═══ -->
+  <h2 id="analisi">Analizzare un bando</h2>
+
+  <ul class="steps">
+    <li>
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h4>Caricare il PDF del bando</h4>
+        <p>Nella sezione <strong>Bandi</strong>, cliccare <em>"+ Carica Bando"</em> e selezionare uno o più file PDF. Sono supportati bandi multi-file (es. bando principale + allegati tecnici).</p>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h4>Selezionare la modalità di analisi</h4>
+        <p>Scegliere tra <strong>Analisi Rapida</strong> (più veloce, ~30 secondi) e <strong>Analisi Accurata</strong> (più completa, analizza ogni documento separatamente e poi fonde i risultati). Per bandi importanti usare sempre la modalità Accurata.</p>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h4>Avviare l'analisi</h4>
+        <p>Cliccare <em>"Analizza"</em>. Il backend estrae il testo dal PDF, lo invia a Groq e riceve la scheda strutturata. Per PDF grandi (&gt;100 pagine) attendere 60–120 secondi.</p>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h4>Revisionare la scheda</h4>
+        <p>Il risultato viene mostrato nella scheda bando con 18 sezioni strutturate. I campi non trovati nel PDF vengono evidenziati e possono essere arricchiti con la funzione <em>"Arricchisci campi"</em>.</p>
+      </div>
+    </li>
+  </ul>
+
+  <!-- ═══ MODALITA ═══ -->
+  <h2 id="modalita">Modalità di analisi</h2>
+
+  <table>
+    <tr><th>Modalità</th><th>Limite testo/file</th><th>Quando usarla</th><th>Tempo stimato</th></tr>
+    <tr>
+      <td><span class="badge blue">⚡ Rapida</span></td>
+      <td>80.000 caratteri (~40 pag.)</td>
+      <td>Bandi brevi, pre-screening veloce</td>
+      <td>15–40 sec</td>
+    </tr>
+    <tr>
+      <td><span class="badge gold">🎯 Accurata</span></td>
+      <td>120.000 caratteri/file (~60 pag.)</td>
+      <td>Bandi complessi, analisi definitiva</td>
+      <td>60–150 sec</td>
+    </tr>
+  </table>
+
+  <div class="callout info">
+    <div class="callout-icon">ℹ️</div>
+    <div class="callout-body"><strong>Bandi molto lunghi (&gt;80 pagine):</strong> il backend divide automaticamente il testo in blocchi da 60.000 caratteri, analizza ogni blocco e unisce i risultati. Questo avviene in modo trasparente.</div>
+  </div>
+
+  <!-- ═══ RISULTATI ═══ -->
+  <h2 id="risultati">Leggere i risultati</h2>
+
+  <p>La scheda bando è divisa in <strong>18 sezioni</strong>:</p>
+
+  <table>
+    <tr><th>#</th><th>Sezione</th><th>Contenuto</th></tr>
+    <tr><td>1–3</td><td>Identificazione</td><td>Titolo, ente, CUP/CIG, normativa di riferimento</td></tr>
+    <tr><td>4–6</td><td>Beneficiari</td><td>Chi può partecipare, forma giuridica, settori ammessi</td></tr>
+    <tr><td>7–9</td><td>Requisiti</td><td>Dimensione aziendale, requisiti finanziari, documentazione</td></tr>
+    <tr><td>10–12</td><td>Finanziamento</td><td>Dotazione totale, importo min/max, percentuale contributo</td></tr>
+    <tr><td>13–15</td><td>Progetto</td><td>Spese ammissibili, durata, criteri di valutazione</td></tr>
+    <tr><td>16</td><td>Iter procedurale</td><td>Modalità presentazione, scadenze, sportello/graduatoria</td></tr>
+    <tr><td>17</td><td>Indicatori sintetici</td><td>Score accessibilità, rischio, competitività, tempi</td></tr>
+    <tr><td>18</td><td>Checklist</td><td>Lista requisiti con stato ✅/❓/❌ per verifica rapida</td></tr>
+  </table>
+
+  <!-- ═══ AZIENDE ═══ -->
+  <h2 id="aziende">Profili aziendali</h2>
+
+  <p>Nella sezione <strong>Aziende</strong> è possibile creare e gestire profili aziendali dettagliati. Ogni profilo include: settore ATECO, dimensione, fatturato, regione, forma giuridica, anni di attività e altri parametri rilevanti per il matching con i bandi.</p>
+
+  <h3>Creare un profilo aziendale</h3>
+  <ul class="steps">
+    <li>
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h4>Cliccare "+ Nuova Azienda"</h4>
+        <p>Compilare i campi del form. I campi obbligatori sono: nome, settore, dimensione (micro/piccola/media/grande), regione.</p>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h4>Inserire i dati finanziari</h4>
+        <p>Fatturato, numero dipendenti e totale attivo permettono un matching più preciso con i requisiti economici dei bandi.</p>
+      </div>
+    </li>
+  </ul>
+
+  <!-- ═══ MATCHING ═══ -->
+  <h2 id="matching">Matching bando / azienda</h2>
+
+  <p>Il sistema calcola automaticamente la compatibilità tra ogni bando analizzato e i profili aziendali salvati. Il punteggio di matching considera: settore, dimensione, regione, requisiti finanziari e forma giuridica.</p>
+
+  <p>Per avviare il matching: aprire la scheda di un bando e cliccare <strong>"Verifica Compatibilità"</strong>. Il risultato mostra un punteggio (0–100) e i criteri soddisfatti/non soddisfatti per ogni azienda.</p>
+
+  <!-- ═══ EXPORT ═══ -->
+  <h2 id="export">Esportare i dati</h2>
+
+  <table>
+    <tr><th>Formato</th><th>Contenuto</th><th>Come esportare</th></tr>
+    <tr><td>PDF</td><td>Scheda bando completa con logo e formattazione professionale</td><td>Pulsante "Esporta PDF" nella scheda bando</td></tr>
+    <tr><td>Excel (.xlsx)</td><td>Tabella comparativa di tutti i bandi con tutti i campi</td><td>Sezione Bandi → "Esporta Excel"</td></tr>
+    <tr><td>JSON</td><td>Dati strutturati completi per integrazione con altri sistemi</td><td>Sezione Bandi → "Esporta JSON"</td></tr>
+    <tr><td>CSV</td><td>Lista bandi in formato tabulare</td><td>Sezione Bandi → "Esporta CSV"</td></tr>
+  </table>
+
+  <!-- ═══ SAAS ═══ -->
+  <h2 id="saas">Modalità SaaS (Supabase + Stripe)</h2>
+
+  <p>Per attivare la sincronizzazione cloud e la gestione abbonamenti, configurare le variabili aggiuntive nel file <code>.env</code> e cambiare la modalità nel frontend:</p>
+
+  <pre><code><span class="comment"># In AI_Analisi_Bandi_SaaS.html, circa riga 2275</span>
+const SAAS_CONFIG = {
+  <span class="key">supabaseUrl</span>:     '<span class="val">https://TUA_URL.supabase.co</span>',
+  <span class="key">supabaseAnonKey</span>: '<span class="val">eyJ...</span>',
+  <span class="key">backendUrl</span>:      '<span class="val">http://localhost:8000</span>',
+  <span class="key">mode</span>:            '<span class="val">saas</span>',  <span class="comment">// ← cambia da 'local' a 'saas'</span>
+};</code></pre>
+
+  <div class="callout warn">
+    <div class="callout-icon">⚠️</div>
+    <div class="callout-body"><strong>In modalità LOCAL (default)</strong> tutti i dati sono salvati solo nel browser (localStorage). Non c'è sincronizzazione tra dispositivi e i dati si perdono pulendo il browser. La modalità SaaS richiede un account Supabase.</div>
+  </div>
+
+  <!-- ═══ MODELLI ═══ -->
+  <h2 id="modelli">Scelta del modello AI</h2>
+
+  <table>
+    <tr><th>Modello</th><th>Contesto</th><th>Velocità</th><th>Precisione</th><th>Uso consigliato</th></tr>
+    <tr>
+      <td><code>llama-3.3-70b-versatile</code> <span class="badge green">★ Default</span></td>
+      <td>128k token</td><td>Media</td><td>★★★★★</td>
+      <td>Analisi complete, massima precisione</td>
+    </tr>
+    <tr>
+      <td><code>llama-3.1-8b-instant</code></td>
+      <td>128k token</td><td>Alta</td><td>★★★☆☆</td>
+      <td>Pre-screening veloce, alto volume</td>
+    </tr>
+    <tr>
+      <td><code>llama-3.1-70b-specdec</code></td>
+      <td>8k token</td><td>Alta</td><td>★★★★☆</td>
+      <td>Non adatto a bandi lunghi</td>
+    </tr>
+  </table>
+
+  <p>Per cambiare modello, modificare il valore in <code>.env</code>:</p>
+  <pre><code><span class="key">GROQ_MODEL</span>=<span class="val">llama-3.1-8b-instant</span></code></pre>
+
+  <!-- ═══ TROUBLESHOOTING ═══ -->
+  <h2 id="troubleshooting">Risoluzione problemi comuni</h2>
+
+  <h3>Backend non si avvia</h3>
+  <table class="fix-table">
+    <tr><th>Errore</th><th>Soluzione</th></tr>
+    <tr>
+      <td><code>ModuleNotFoundError: fastapi</code></td>
+      <td>Eseguire <code>pip install -r requirements.txt</code> con l'ambiente virtuale attivo</td>
+    </tr>
+    <tr>
+      <td><code>Address already in use :8000</code></td>
+      <td>Un'altra istanza del backend è già in esecuzione. Chiuderla o cambiare porta: <code>--port 8001</code></td>
+    </tr>
+    <tr>
+      <td><code>python: command not found</code></td>
+      <td>Installare Python da <a href="https://python.org" target="_blank">python.org</a> e riavviare il terminale</td>
+    </tr>
+  </table>
+
+  <h3>Frontend non si connette al backend</h3>
+  <table class="fix-table">
+    <tr><th>Sintomo</th><th>Soluzione</th></tr>
+    <tr>
+      <td>Modello AI mostra "N/D"</td>
+      <td>Verificare che il backend sia in esecuzione su <a href="http://localhost:8000" target="_blank">localhost:8000</a></td>
+    </tr>
+    <tr>
+      <td>Errore CORS in console browser</td>
+      <td>Il backend è su una porta diversa da 8000? Modificare <code>backendUrl</code> in SAAS_CONFIG nel HTML</td>
+    </tr>
+    <tr>
+      <td>Analisi non parte, nessun errore</td>
+      <td>Aprire DevTools (F12) → Console e verificare il messaggio di errore esatto</td>
+    </tr>
+  </table>
+
+  <h3>Errori durante l'analisi AI</h3>
+  <table class="fix-table">
+    <tr><th>Errore</th><th>Soluzione</th></tr>
+    <tr>
+      <td><code>401 Unauthorized</code> da Groq</td>
+      <td>La GROQ_API_KEY è errata o scaduta. Verificare su <a href="https://console.groq.com/keys" target="_blank">console.groq.com</a></td>
+    </tr>
+    <tr>
+      <td><code>model not found</code></td>
+      <td>Il modello in GROQ_MODEL non esiste. Usare <code>llama-3.3-70b-versatile</code></td>
+    </tr>
+    <tr>
+      <td>Rate limit frequenti</td>
+      <td>Il backend gestisce automaticamente i retry. Per uso intensivo considerare il piano a pagamento Groq</td>
+    </tr>
+    <tr>
+      <td>Analisi tronca / JSON incompleto</td>
+      <td>Il PDF ha testo non estrabile (scansione immagini). Usare un PDF con testo selezionabile</td>
+    </tr>
+    <tr>
+      <td><code>Solo file PDF supportati</code></td>
+      <td>Il file caricato non è un PDF. Convertire con Word, LibreOffice o un tool online</td>
+    </tr>
+  </table>
+
+  <!-- ═══ FIX v2.1 ═══ -->
+  <h2 id="fix-v21">Modifiche apportate nella versione 2.1</h2>
+
+  <div class="callout ok">
+    <div class="callout-icon">✅</div>
+    <div class="callout-body"><strong>Tutti i bug critici che impedivano il funzionamento sono stati risolti.</strong></div>
+  </div>
+
+  <table class="fix-table">
+    <tr><th>Problema (v2.0)</th><th>Fix applicato (v2.1)</th></tr>
+    <tr>
+      <td>File <code>.env</code> non veniva mai caricato → GROQ_API_KEY sempre vuota → tutte le analisi fallivano con errore 401</td>
+      <td>Aggiunto <code>load_dotenv(override=True)</code> all'inizio di <code>main.py</code>, prima di qualsiasi <code>os.environ.get()</code></td>
+    </tr>
+    <tr>
+      <td>Modello <code>meta-llama/llama-4-scout-17b-16e-instruct</code> non esiste su Groq → errore "model not found" ad ogni richiesta</td>
+      <td>Sostituito con <code>llama-3.3-70b-versatile</code> (modello stabile, 128k token, massima precisione)</td>
+    </tr>
+    <tr>
+      <td>Limite testo frontend 14.000–28.000 caratteri → i bandi venivano troncati all'~8% del contenuto reale</td>
+      <td>Nuovi limiti: 80.000 (rapida) e 120.000 (accurata) caratteri per file. Bandi fino a ~60 pagine analizzati integralmente</td>
+    </tr>
+    <tr>
+      <td><code>max_tokens: 4096</code> in Groq → risposte JSON troncate su bandi complessi → parse falliva</td>
+      <td>Portato a <code>max_tokens: 8192</code> per garantire JSON completo anche per schede con tutte le 18 sezioni</td>
+    </tr>
+    <tr>
+      <td><code>CHUNK_SIZE = 30_000</code> e <code>SIMPLE_LIMIT = 80_000</code> inadeguati per PDF lunghi</td>
+      <td>Nuovi valori: <code>CHUNK_SIZE = 60_000</code>, <code>SIMPLE_LIMIT = 320_000</code> (~80k token, nel limite 128k del modello)</td>
+    </tr>
+    <tr>
+      <td><code>avvia.bat</code> non verificava la presenza del <code>.env</code> né della chiave Groq</td>
+      <td>Nuovo <code>avvia.bat</code> con controlli espliciti: verifica .env, chiave Groq, Python, dipendenze</td>
+    </tr>
+  </table>
+
+  <footer>
+    AI Analisi Bandi SaaS — v2.1 · Guida aggiornata marzo 2026 ·
+    Backend: FastAPI + Groq llama-3.3-70b-versatile
+  </footer>
+</main>
+
+</div>
+</body>
+</html>
