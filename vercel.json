@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "AI_Analisi_Bandi_SaaS_FIXED.html", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "/AI_Analisi_Bandi_SaaS_FIXED.html" }
+  ]
+}
