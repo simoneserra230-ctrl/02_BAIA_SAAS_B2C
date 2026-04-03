@@ -5,8 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GrantLens — AI Analisi Bandi Pro</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<!-- Backend URL: sostituisci RENDER_BACKEND_URL con il tuo URL Render (es. https://baia-backend.onrender.com) -->
-<meta name="backend-url" content="https://zero2-baia-saas-b2c-1.onrender.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <!-- Supabase JS v2 — auth + realtime -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
@@ -91,6 +89,23 @@
 
   /* ── Transitions ── */
   --t: all 0.15s cubic-bezier(0.4,0,0.2,1);
+
+  /* ── Modern Gradient Palette ── */
+  --grad-gold:    linear-gradient(135deg, #c69229 0%, #e8b84b 50%, #c69229 100%);
+  --grad-dark:    linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+  --grad-glass:   linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 100%);
+  --grad-card:    linear-gradient(135deg, #ffffff 0%, #fafbff 100%);
+  --grad-sidebar: linear-gradient(180deg, #0f172a 0%, #1a1040 100%);
+
+  /* ── Glassmorphism ── */
+  --glass-bg:     rgba(255,255,255,0.72);
+  --glass-border: rgba(255,255,255,0.5);
+  --glass-blur:   blur(20px);
+
+  /* ── Premium Shadows ── */
+  --shadow-card:  0 0 0 1px rgba(0,0,0,0.04), 0 2px 8px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.04);
+  --shadow-float: 0 4px 20px rgba(0,0,0,0.12), 0 1px 4px rgba(0,0,0,0.08);
+  --shadow-glow-gold: 0 0 40px rgba(198,146,41,0.2), 0 0 0 1px rgba(198,146,41,0.15);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -126,15 +141,27 @@ body {
 /* ══ AUTH OVERLAY ════════════════════════════════════════ */
 #authOverlay {
   position: fixed; inset: 0;
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+  background: linear-gradient(135deg, #0f172a 0%, #1a0a3d 35%, #0d2340 65%, #0f172a 100%);
+  background-size: 400% 400%;
+  animation: authBgShift 8s ease infinite;
   z-index: 9999;
   display: flex; align-items: center; justify-content: center;
   font-family: 'Plus Jakarta Sans', sans-serif;
 }
+@keyframes authBgShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 .auth-box {
   background: white; border-radius: 24px;
   width: min(460px, 95vw); overflow: hidden;
-  box-shadow: 0 40px 80px rgba(0,0,0,0.4);
+  box-shadow: 0 40px 80px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05);
+  animation: authBoxIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes authBoxIn {
+  from { opacity: 0; transform: translateY(24px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 .auth-header {
   background: linear-gradient(135deg, #1a1a2e 0%, #2d1b69 100%);
@@ -188,24 +215,25 @@ body {
 }
 .auth-demo-btn:hover { border-color: #7c3aed; color: #7c3aed; background: #f5f3ff; }
 .auth-google-btn {
-  width: 100%; padding: 11px; border: 1.5px solid #e2e8f0; border-radius: 10px;
-  background: white; color: #374151; font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s;
-  display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px;
+  width:100%;padding:11px;border:1.5px solid #e2e8f0;border-radius:10px;
+  background:white;color:#374151;font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:13px;font-weight:600;cursor:pointer;transition:all 0.15s;
+  display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px;
 }
-.auth-google-btn:hover { border-color: #4285F4; box-shadow: 0 2px 8px rgba(66,133,244,0.2); background: #f8fbff; }
-.auth-google-btn svg { flex-shrink: 0; }
+.auth-google-btn:hover{border-color:#4285F4;box-shadow:0 2px 8px rgba(66,133,244,0.2);background:#f8fbff;}
 .auth-guest-btn {
-  width: 100%; padding: 9px; border: 1.5px solid #e2e8f0; border-radius: 10px;
-  background: #f9fafb; color: #6b7280; font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.15s; margin-bottom: 6px;
+  width:100%;padding:9px;border:1.5px solid #e2e8f0;border-radius:10px;
+  background:#f9fafb;color:#6b7280;font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:12px;font-weight:600;cursor:pointer;transition:all 0.15s;margin-bottom:6px;
 }
-.auth-guest-btn:hover { border-color: #9ca3af; color: #374151; background: #f1f3f7; }
+.auth-guest-btn:hover{border-color:#9ca3af;color:#374151;background:#f1f3f7;}
 .auth-footer-note { font-size: 11px; color: #9ca3af; text-align: center; margin-top: 14px; line-height: 1.5; }
 
 /* ══ SUBSCRIPTION OVERLAY ════════════════════════════════ */
 #subscriptionOverlay {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+  position: fixed; inset: 0;
+  background: rgba(8,12,24,0.85);
+  backdrop-filter: blur(16px) saturate(150%);
   z-index: 9998; display: none; align-items: center; justify-content: center;
 }
 .sub-box {
@@ -284,8 +312,8 @@ body {
 #cloudSyncIndicator.error   { color: var(--red); border-color: var(--red-border); background: var(--red-bg); display: flex; }
 
 header {
-  background: #ffffff;
-  border-bottom: 1px solid var(--border);
+  background: rgba(255,255,255,0.88);
+  border-bottom: 1px solid rgba(232,234,237,0.8);
   height: var(--header-h);
   display: flex;
   align-items: center;
@@ -294,7 +322,9 @@ header {
   position: sticky;
   top: 0;
   z-index: 200;
-  box-shadow: 0 1px 0 var(--border), 0 2px 8px rgba(0,0,0,0.03);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  box-shadow: 0 1px 0 rgba(0,0,0,0.05), 0 4px 16px rgba(0,0,0,0.04);
 }
 
 .header-left  { display: flex; align-items: center; gap: 14px; }
@@ -307,7 +337,7 @@ header {
   font-size: 16px;
   letter-spacing: -0.4px;
   display: flex; align-items: center; gap: 9px;
-  text-decoration: none; color: var(--text);
+  text-decoration: none; color: white;
   flex-shrink: 0;
 }
 .logo-mark {
@@ -405,25 +435,27 @@ nav button.active {
 
 /* ══ SIDEBAR ═════════════════════════════════════════ */
 .sidebar {
-  background: var(--bg-sidebar);
-  border-right: 1px solid var(--border);
+  background: linear-gradient(180deg, #0f172a 0%, #1a1040 60%, #0f172a 100%);
+  border-right: none;
   display: flex; flex-direction: column;
   overflow: hidden;
   height: 100%;
+  box-shadow: 4px 0 20px rgba(0,0,0,0.15);
 }
 
 .sidebar-search {
   padding: 12px 12px 8px;
   flex-shrink: 0;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 .sidebar-search-input {
   width: 100%;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
   border-radius: 9px;
   padding: 7px 12px 7px 34px;
   font-size: 12px; font-family: 'Plus Jakarta Sans', sans-serif;
+  color: rgba(255,255,255,0.9) !important;
   color: var(--text); outline: none;
   transition: var(--t);
 }
@@ -1660,6 +1692,248 @@ textarea.form-control { resize: vertical; min-height: 80px; }
 
 /* ── empty state sub-text ── */
 .empty-sub { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+
+/* ══ PRICING MODAL ══════════════════════════════════════ */
+.pricing-modal {
+  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+  border-radius: 28px; width: min(900px, 96vw);
+  box-shadow: 0 40px 100px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05);
+  overflow: hidden; position: relative;
+}
+.pricing-header {
+  padding: 32px 36px 24px; text-align: center;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  position: relative;
+}
+.pricing-close-btn {
+  position: absolute; top: 16px; right: 16px;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px; color: rgba(255,255,255,0.5);
+  padding: 6px 11px; font-size: 13px; cursor: pointer;
+  transition: all 0.15s;
+}
+.pricing-close-btn:hover { background: rgba(255,255,255,0.15); color: white; }
+.pricing-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px; padding: 24px 28px 28px;
+}
+.pricing-card {
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 18px; padding: 22px 20px;
+  cursor: pointer; transition: all 0.2s ease; position: relative;
+}
+.pricing-card:hover { background: rgba(255,255,255,0.07); transform: translateY(-2px); }
+.pricing-card-featured {
+  background: rgba(198,146,41,0.08) !important;
+  border-color: rgba(198,146,41,0.35) !important;
+  box-shadow: 0 0 0 1px rgba(198,146,41,0.2), 0 8px 32px rgba(198,146,41,0.12);
+}
+.pricing-recommended-badge {
+  position: absolute; top: -11px; left: 50%; transform: translateX(-50%);
+  background: linear-gradient(135deg, #c69229, #e4a820);
+  color: white; font-size: 10px; font-weight: 800; letter-spacing: 0.5px;
+  padding: 3px 14px; border-radius: 20px; white-space: nowrap;
+}
+.pricing-plan-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  border: 1px solid; border-radius: 20px;
+  padding: 3px 10px; font-size: 11px; font-weight: 700;
+  margin-bottom: 12px;
+}
+.pricing-price {
+  font-size: 36px; font-weight: 800; color: white;
+  font-family: 'Plus Jakarta Sans', sans-serif; line-height: 1;
+  margin-bottom: 4px;
+}
+.pricing-price span { font-size: 15px; font-weight: 500; color: rgba(255,255,255,0.5); }
+.pricing-annual { font-size: 11px; color: rgba(255,255,255,0.4); margin-bottom: 16px; }
+.pricing-features {
+  list-style: none; padding: 0; margin: 0 0 18px;
+  display: flex; flex-direction: column; gap: 7px;
+  font-size: 12px; color: rgba(255,255,255,0.75);
+}
+.pricing-cta {
+  width: 100%; padding: 11px; border-radius: 10px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.15s; border: none;
+}
+.pricing-cta-gold {
+  background: linear-gradient(135deg, #c69229, #e4a820);
+  color: white; box-shadow: 0 4px 16px rgba(198,146,41,0.4);
+}
+.pricing-cta-gold:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(198,146,41,0.5); }
+.pricing-cta-outline {
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15) !important;
+  color: rgba(255,255,255,0.8);
+}
+.pricing-cta-outline:hover { background: rgba(255,255,255,0.12); color: white; }
+
+/* ══ WIZARD OVERLAY ════════════════════════════════════ */
+#wizardOverlay {
+  position: fixed; inset: 0; background: rgba(10,14,26,0.85);
+  backdrop-filter: blur(12px); z-index: 9990;
+  display: none; align-items: center; justify-content: center;
+}
+.wizard-box {
+  background: white; border-radius: 24px; width: min(600px, 95vw);
+  box-shadow: 0 40px 80px rgba(0,0,0,0.4), 0 0 0 1px rgba(0,0,0,0.05);
+  overflow: hidden;
+}
+.wizard-header {
+  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+  padding: 24px 28px 20px;
+}
+.wizard-step-bar {
+  display: flex; gap: 6px; margin-bottom: 16px;
+}
+.wizard-step-dot {
+  flex: 1; height: 3px; border-radius: 2px;
+  background: rgba(255,255,255,0.15); transition: all 0.3s;
+}
+.wizard-step-dot.active { background: #c69229; }
+.wizard-step-dot.done { background: rgba(198,146,41,0.5); }
+.wizard-title { color: white; font-size: 19px; font-weight: 800; margin-bottom: 4px; }
+.wizard-subtitle { color: rgba(255,255,255,0.5); font-size: 13px; }
+.wizard-body { padding: 24px 28px; }
+.wizard-field { margin-bottom: 16px; }
+.wizard-label {
+  font-size: 12px; font-weight: 700; color: #374151;
+  text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;
+}
+.wizard-input {
+  width: 100%; padding: 11px 14px; border: 1.5px solid #e8eaed;
+  border-radius: 10px; font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px; outline: none; transition: all 0.15s;
+}
+.wizard-input:focus { border-color: #c69229; box-shadow: 0 0 0 3px rgba(198,146,41,0.15); }
+.wizard-select {
+  width: 100%; padding: 11px 14px; border: 1.5px solid #e8eaed;
+  border-radius: 10px; font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px; outline: none; background: white; cursor: pointer;
+  transition: all 0.15s;
+}
+.wizard-select:focus { border-color: #c69229; box-shadow: 0 0 0 3px rgba(198,146,41,0.15); }
+.wizard-footer {
+  padding: 16px 28px 24px; display: flex; gap: 10px;
+  border-top: 1px solid #f1f3f7; align-items: center;
+}
+.wizard-btn-back {
+  padding: 10px 20px; background: none; border: 1.5px solid #e8eaed;
+  border-radius: 10px; font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13px; font-weight: 600; color: #6b7280; cursor: pointer;
+  transition: all 0.15s;
+}
+.wizard-btn-back:hover { border-color: #c69229; color: #c69229; }
+.wizard-btn-next {
+  flex: 1; padding: 11px;
+  background: linear-gradient(135deg, #c69229, #e4a820);
+  color: white; border: none; border-radius: 10px;
+  font-family: 'Plus Jakarta Sans', sans-serif; font-size: 14px; font-weight: 700;
+  cursor: pointer; transition: all 0.15s;
+}
+.wizard-btn-next:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(198,146,41,0.4); }
+.wizard-step-counter {
+  font-size: 11px; color: #9ca3af; margin-left: auto;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+
+/* ══ MICRO-ANIMATIONS & PREMIUM EFFECTS ═══════════════════════ */
+@keyframes fadeSlideUp {
+  from { opacity:0; transform:translateY(12px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+@keyframes pulseGold {
+  0%,100% { box-shadow: 0 0 0 0 rgba(198,146,41,0); }
+  50%      { box-shadow: 0 0 0 8px rgba(198,146,41,0.12); }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes spinDot {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* Staggered card entrance */
+.card, .kpi-card {
+  animation: fadeSlideUp 0.35s ease both;
+}
+
+/* Loading shimmer for skeleton states */
+.skeleton {
+  background: linear-gradient(90deg, #f1f3f7 25%, #e8eaed 50%, #f1f3f7 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 6px;
+}
+
+/* Score badge pulse on high match */
+.match-score-high {
+  animation: pulseGold 2s ease-in-out infinite;
+}
+
+/* Smooth page transitions */
+.page-content {
+  animation: fadeSlideUp 0.25s ease both;
+}
+
+/* Nav active pill animation */
+nav button.active::after {
+  content: '';
+  position: absolute; bottom: -2px; left: 50%; transform: translateX(-50%);
+  width: 20px; height: 2px; background: var(--gold-solid); border-radius: 1px;
+}
+nav button { position: relative; }
+
+/* Sidebar scroll indicator */
+.sidebar-panel::-webkit-scrollbar { width: 4px; }
+.sidebar-panel::-webkit-scrollbar-track { background: transparent; }
+.sidebar-panel::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.12); border-radius: 2px;
+}
+.sidebar-panel::-webkit-scrollbar-thumb:hover {
+  background: rgba(198,146,41,0.4);
+}
+
+/* Sidebar logo glow */
+.logo-mark {
+  animation: pulseGold 3s ease-in-out infinite;
+}
+
+/* Form focus ring animation */
+input:focus, select:focus, textarea:focus {
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+/* Upload zone pulse */
+.import-zone:hover {
+  animation: pulseGold 1.5s ease infinite;
+  border-color: var(--gold-solid) !important;
+}
+
+/* Badge ping animation for alerts */
+@keyframes ping {
+  75%, 100% { transform: scale(2); opacity: 0; }
+}
+.badge-ping::before {
+  content: '';
+  position: absolute; inset: 0; border-radius: inherit;
+  background: currentColor; opacity: 0.4;
+  animation: ping 1.5s cubic-bezier(0,0,0.2,1) infinite;
+}
+
+/* Top bar gradient accent */
+.app::before {
+  content: '';
+  position: fixed; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, #c69229, #e8b84b, #7c3aed, #c69229);
+  background-size: 300% auto;
+  animation: shimmer 3s linear infinite;
+  z-index: 9999;
+}
+
 </style>
 </head>
 <body>
@@ -1771,7 +2045,7 @@ textarea.form-control { resize: vertical; min-height: 80px; }
       <!-- LOGIN FORM -->
       <div id="loginForm">
         <button class="auth-google-btn" onclick="authGoogle()">
-          <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/><path fill="none" d="M0 0h48v48H0z"/></svg>
+          <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
           Continua con Google
         </button>
         <div class="auth-divider">oppure accedi con email</div>
@@ -1788,7 +2062,7 @@ textarea.form-control { resize: vertical; min-height: 80px; }
       <!-- REGISTER FORM -->
       <div id="registerForm" style="display:none;">
         <button class="auth-google-btn" onclick="authGoogle()">
-          <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/><path fill="none" d="M0 0h48v48H0z"/></svg>
+          <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
           Registrati con Google
         </button>
         <div class="auth-divider">oppure crea account con email</div>
@@ -1797,7 +2071,7 @@ textarea.form-control { resize: vertical; min-height: 80px; }
         <input class="auth-input" type="password" id="regPasswordConfirm" placeholder="Ripeti la password" autocomplete="new-password" onkeydown="if(event.key==='Enter')authRegister()">
         <button class="auth-btn-primary" id="registerBtn" onclick="authRegister()">✓ Crea Account Gratuito</button>
         <div class="auth-divider">oppure</div>
-        <button class="auth-guest-btn" onclick="authGuest()">👤 Continua come Ospite (senza account)</button>
+        <button class="auth-guest-btn" onclick="authGuest()">👤 Continua come Ospite</button>
         <button class="auth-demo-btn" onclick="authSkipToDemo()">🎭 Prova prima la Demo</button>
         <div class="auth-footer-note">
           Registrandoti accetti i <a href="#" style="color:#c69229;text-decoration:none;">Termini di Servizio</a>.<br>
@@ -1815,29 +2089,75 @@ textarea.form-control { resize: vertical; min-height: 80px; }
   </div>
 </div>
 
-<!-- SUBSCRIPTION OVERLAY -->
+<!-- SUBSCRIPTION OVERLAY — 3 TIER PRICING -->
 <div id="subscriptionOverlay">
-  <div class="sub-box">
-    <div class="sub-header">
-      <div style="font-size:36px;margin-bottom:8px;">🚀</div>
-      <h2>Attiva GrantLens Pro</h2>
-      <p>Il tuo trial di 14 giorni è scaduto.<br>Continua ad analizzare bandi senza limiti.</p>
+  <div class="pricing-modal">
+    <div class="pricing-header">
+      <button class="pricing-close-btn" onclick="subscriptionSkip()">✕</button>
+      <div style="font-size:13px;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;">Scegli il tuo piano</div>
+      <h2 style="font-size:28px;font-weight:800;color:white;margin-bottom:6px;">Accedi a BA.IA Pro</h2>
+      <p style="color:rgba(255,255,255,0.55);font-size:14px;">14 giorni gratuiti · Nessuna carta richiesta · Annulla quando vuoi</p>
     </div>
-    <div class="sub-body">
-      <div class="sub-price">
-        <div class="amount">€129</div>
-        <div class="period">/ mese · annullabile in qualsiasi momento</div>
+    <div class="pricing-grid">
+
+      <!-- PIANO BASE -->
+      <div class="pricing-card" onclick="startCheckout('base')">
+        <div class="pricing-plan-badge" style="background:rgba(59,130,246,0.15);color:#60a5fa;border-color:rgba(59,130,246,0.3);">🔵 BASE</div>
+        <div class="pricing-price">€29<span>/mese</span></div>
+        <div class="pricing-annual">o €279/anno (−20%)</div>
+        <ul class="pricing-features">
+          <li>✅ Analisi AI bandi PDF</li>
+          <li>✅ Match Top 3 personalizzato</li>
+          <li>✅ 1 profilo aziendale</li>
+          <li>✅ Storico 30 giorni</li>
+          <li>✅ Alert email bandi</li>
+          <li style="color:#9ca3af;">❌ Vista completa database</li>
+          <li style="color:#9ca3af;">❌ Download PDF report</li>
+          <li style="color:#9ca3af;">❌ API access</li>
+        </ul>
+        <button class="pricing-cta pricing-cta-outline">Inizia gratis 14gg →</button>
       </div>
-      <div class="sub-features">
-        <div class="sub-feature"><span class="sub-feature-icon">🤖</span> Analisi AI illimitata su tutti i bandi</div>
-        <div class="sub-feature"><span class="sub-feature-icon">☁️</span> Salvataggio cloud — accedi da qualsiasi dispositivo</div>
-        <div class="sub-feature"><span class="sub-feature-icon">🏢</span> Profili aziendali illimitati + match score automatico</div>
-        <div class="sub-feature"><span class="sub-feature-icon">📊</span> Report PDF professionali + export CRM (Salesforce, HubSpot)</div>
-        <div class="sub-feature"><span class="sub-feature-icon">📅</span> Calendario scadenze, SAL tracker, Studio KPI</div>
-        <div class="sub-feature"><span class="sub-feature-icon">🔒</span> I tuoi dati restano privati e protetti</div>
+
+      <!-- PIANO PRO (consigliato) -->
+      <div class="pricing-card pricing-card-featured" onclick="startCheckout('pro')">
+        <div class="pricing-recommended-badge">⭐ Consigliato</div>
+        <div class="pricing-plan-badge" style="background:rgba(198,146,41,0.2);color:#e4a820;border-color:rgba(198,146,41,0.4);">🟣 PRO</div>
+        <div class="pricing-price">€79<span>/mese</span></div>
+        <div class="pricing-annual">o €699/anno (−26%)</div>
+        <ul class="pricing-features">
+          <li>✅ Tutto del piano Base</li>
+          <li>✅ 3 profili aziendali</li>
+          <li>✅ Vista completa database bandi</li>
+          <li>✅ Storico illimitato</li>
+          <li>✅ Download PDF report</li>
+          <li>✅ Notifiche real-time</li>
+          <li>✅ API access (integrazioni CRM)</li>
+          <li>✅ Supporto prioritario</li>
+        </ul>
+        <button class="pricing-cta pricing-cta-gold" id="checkoutBtn">💳 Inizia gratis 14gg →</button>
       </div>
-      <button class="sub-checkout-btn" id="checkoutBtn" onclick="startCheckout()">💳 Attiva Piano Pro — €129/mese</button>
-      <button class="sub-skip-btn" onclick="subscriptionSkip()">Continua in modalità limitata</button>
+
+      <!-- PIANO BUSINESS -->
+      <div class="pricing-card" onclick="startCheckout('business')">
+        <div class="pricing-plan-badge" style="background:rgba(139,92,246,0.15);color:#a78bfa;border-color:rgba(139,92,246,0.3);">🏢 BUSINESS</div>
+        <div class="pricing-price">€199<span>/mese</span></div>
+        <div class="pricing-annual">o €1.790/anno (−25%)</div>
+        <ul class="pricing-features">
+          <li>✅ Tutto del piano Pro</li>
+          <li>✅ Profili illimitati (multi-sede)</li>
+          <li>✅ 30 giorni trial</li>
+          <li>✅ Dashboard admin multi-utente</li>
+          <li>✅ White-label reports</li>
+          <li>✅ SLA garantito 99.9%</li>
+          <li>✅ Onboarding dedicato</li>
+          <li>✅ Fatturazione aziendale</li>
+        </ul>
+        <button class="pricing-cta pricing-cta-outline">Contattaci →</button>
+      </div>
+
+    </div>
+    <div style="text-align:center;padding:16px 0 8px;font-size:12px;color:rgba(255,255,255,0.3);">
+      🔒 Pagamenti sicuri via Stripe · GDPR compliant · Dati in EU
     </div>
   </div>
 </div>
@@ -2297,18 +2617,11 @@ const SAAS_CONFIG = {
   // ─── Supabase (obbligatorio per auth + cloud) ───
   supabaseUrl:     'https://gtrjepxrnvptkqpezvba.supabase.co',
   supabaseAnonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd0cmplcHhybnZwdGtxcGV6dmJhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ5NTE3MjcsImV4cCI6MjA5MDUyNzcyN30.9q2BkcZfe_Z9O1eI_HU3n7Y43acQg0KFmrRGxq-6sxk',
-  // ─── Backend Render ───
+  // ─── Backend Railway/locale ───
   backendUrl:      'https://zero2-baia-saas-b2c-1.onrender.com',
-  // ─── Modalità: 'saas' = auth+cloud | 'local' = solo locale | 'auto' = rilevamento automatico ───
+  // ─── Modalità: 'saas' = auth+cloud | 'local' = solo locale ───
   mode:            'auto',  // 'auto' usa saas se Supabase è configurato, local altrimenti
 };
-
-// ── Auto-detect mode ─────────────────────────────────────────────
-if (SAAS_CONFIG.mode === 'auto') {
-  const _hasRealSupabase = SAAS_CONFIG.supabaseUrl !== 'https://LA_TUA_URL.supabase.co' &&
-                           !SAAS_CONFIG.supabaseAnonKey.includes('LA_TUA_ANON_KEY');
-  SAAS_CONFIG.mode = _hasRealSupabase ? 'saas' : 'local';
-}
 
 // ════════════════════════════════════════════════════════════════
 //  AUTH STATE
@@ -2320,6 +2633,13 @@ let _userPlan       = 'free'; // 'free' | 'trial' | 'pro'
 let _cloudSyncActive = false;
 
 // Inizializza Supabase solo se configurato
+// ── Auto-detect mode ─────────────────────────────────────────────
+if (SAAS_CONFIG.mode === 'auto') {
+  const _hasRealSupabase = SAAS_CONFIG.supabaseUrl !== 'https://LA_TUA_URL.supabase.co' &&
+                           !SAAS_CONFIG.supabaseAnonKey.includes('LA_TUA_ANON_KEY');
+  SAAS_CONFIG.mode = _hasRealSupabase ? 'saas' : 'local';
+}
+
 if (SAAS_CONFIG.mode === 'saas' &&
     SAAS_CONFIG.supabaseUrl !== 'https://LA_TUA_URL.supabase.co' &&
     typeof supabase !== 'undefined') {
@@ -2452,14 +2772,12 @@ async function authSignOut() {
 }
 
 function authSkipToDemo() {
-  // Nascondi auth overlay ed entra in modalità demo
   document.getElementById('authOverlay').style.display = 'none';
   loadDemoData();
 }
 
 // ── ACCESSO OSPITE ─────────────────────────────────────────────
 function authGuest() {
-  // Accesso locale senza account — dati solo in localStorage
   _currentUser = { email: 'ospite@locale', id: 'guest-' + Date.now(), isGuest: true };
   _userPlan = 'free';
   document.getElementById('authOverlay').style.display = 'none';
@@ -2467,21 +2785,13 @@ function authGuest() {
   _updatePlanBadge('free');
   loadPersistedState();
   updateSidebars();
-  if (state.activeBandoId) {
-    state.currentPage = 'dashboard';
-    renderActiveView();
-    _setContextBar('dashboard');
-  }
+  if (state.activeBandoId) { state.currentPage = 'dashboard'; renderActiveView(); _setContextBar('dashboard'); }
   notify('👤 Accesso come ospite — dati salvati solo su questo dispositivo', 'info', 4000);
 }
 
 // ── GOOGLE OAUTH ───────────────────────────────────────────────
 async function authGoogle() {
-  if (!_supabaseClient) {
-    // Modalità locale: simula login con Google
-    authGuest();
-    return;
-  }
+  if (!_supabaseClient) { authGuest(); return; }
   const btn = event?.currentTarget;
   if (btn) { btn.disabled = true; btn.style.opacity = '0.7'; }
   try {
@@ -2493,7 +2803,6 @@ async function authGoogle() {
       }
     });
     if (error) throw error;
-    // La pagina verrà reindirizzata — nessuna azione ulteriore necessaria
   } catch (err) {
     if (btn) { btn.disabled = false; btn.style.opacity = '1'; }
     _showAuthError('❌ Errore Google OAuth: ' + (err.message || 'Riprova'));
@@ -2526,17 +2835,12 @@ async function _onAuthSuccess(user, session) {
     }
   }
 
-  // Listener su cambio sessione (token refresh, logout da altra tab)
-  // NOTA: il listener globale è in _bootstrapAuth — qui non serve duplicarlo
-  // mantenuto solo per compatibilità con vecchie sessioni SaaS avviate prima del refactor
+  // Listener gestito in _bootstrapAuth — no duplicati
   if (_supabaseClient && !window._authListenerRegistered) {
     window._authListenerRegistered = true;
     _supabaseClient.auth.onAuthStateChange((event, sess) => {
-      if (event === 'SIGNED_OUT') {
-        authSignOut();
-      } else if (sess) {
-        _authToken = sess.access_token;
-      }
+      if (event === 'SIGNED_OUT') { authSignOut(); }
+      else if (sess) { _authToken = sess.access_token; }
     });
   }
 }
@@ -2613,26 +2917,8 @@ function subscriptionSkip() {
   notify('⚠️ Piano Free attivo — alcune funzionalità sono limitate', 'warn', 5000);
 }
 
-async function startCheckout() {
-  const btn = document.getElementById('checkoutBtn');
-  btn.disabled = true; btn.textContent = '⏳ Reindirizzamento a Stripe…';
-  try {
-    const r = await fetch(`${BACKEND_URL}/checkout`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${_authToken || ''}` },
-      body: JSON.stringify({ email: _currentUser?.email || '' })
-    });
-    const d = await r.json();
-    if (d.url) {
-      window.location.href = d.url;
-    } else {
-      throw new Error(d.error || 'URL checkout non ricevuto');
-    }
-  } catch (err) {
-    notify('❌ Errore checkout: ' + err.message, 'error');
-    btn.disabled = false; btn.textContent = '💳 Attiva Piano Pro — €129/mese';
-  }
-}
+// startCheckout moved to wizard section below
+
 
 // ════════════════════════════════════════════════════════════════
 //  CLOUD SYNC — persist e load tramite backend
@@ -2729,7 +3015,6 @@ async function _loadCloudState() {
 //  BOOTSTRAP: controlla sessione esistente all'avvio
 // ════════════════════════════════════════════════════════════════
 (async function _bootstrapAuth() {
-  // Controlla se c'è un redirect post-checkout da Stripe
   const params = new URLSearchParams(window.location.search);
   if (params.get('checkout') === 'success') {
     notify('🎉 Abbonamento attivato! Bentornato in GrantLens Pro.', 'success', 6000);
@@ -2737,58 +3022,45 @@ async function _loadCloudState() {
   }
 
   if (!_supabaseClient) {
-    // Modalità locale — nascondi auth overlay direttamente
     document.getElementById('authOverlay').style.display = 'none';
     _updatePlanBadge('pro');
     return;
   }
 
-  // ── Gestisci callback OAuth (Google redirect) ─────────────────
-  // Supabase mette access_token nell'hash o in ?code= dopo redirect OAuth
+  // Gestisci callback OAuth Google (hash o code)
   const hash = window.location.hash;
   const hasOAuthCallback = hash.includes('access_token') || hash.includes('error_description') || params.has('code');
   if (hasOAuthCallback) {
-    // Mostra overlay con messaggio di caricamento durante il callback
-    document.getElementById('authOverlay').style.display = 'flex';
     const authBody = document.querySelector('.auth-body');
-    if (authBody) authBody.innerHTML = '<div style="text-align:center;padding:40px 20px;color:#374151;"><div style="font-size:32px;margin-bottom:12px;">⏳</div><div style="font-weight:700;font-size:16px;margin-bottom:8px;">Accesso in corso…</div><div style="font-size:13px;color:#9ca3af;">Stiamo completando il login con Google.</div></div>';
-    // Aspetta che Supabase elabori il callback (exchangeCodeForSession)
+    if (authBody) authBody.innerHTML = '<div style="text-align:center;padding:40px 20px;"><div style="font-size:32px;margin-bottom:12px;">⏳</div><div style="font-weight:700;font-size:16px;margin-bottom:8px;">Accesso in corso…</div><div style="font-size:13px;color:#9ca3af;">Completamento login Google.</div></div>';
     await new Promise(r => setTimeout(r, 1200));
-    // Pulisci hash/code dall'URL
     history.replaceState({}, '', window.location.pathname);
   }
 
-  // Controlla sessione Supabase esistente (include quella appena creata via OAuth)
   try {
-    const { data, error } = await _supabaseClient.auth.getSession();
+    const { data } = await _supabaseClient.auth.getSession();
     if (data?.session?.user) {
       _authToken = data.session.access_token;
       await _onAuthSuccess(data.session.user, data.session);
       return;
     }
-  } catch(e) {
-    console.warn('[Auth] getSession error:', e);
-  }
+  } catch(e) { console.warn('[Auth] getSession error:', e); }
 
-  // Nessuna sessione — overlay rimane visibile
-  // Ripristina il form se era stato sostituito dal messaggio di caricamento
-  if (hasOAuthCallback) {
-    window.location.reload();
-  }
+  if (hasOAuthCallback) { window.location.reload(); return; }
 
-  // Listener globale per aggiornamenti auth (token refresh, multi-tab logout)
-  _supabaseClient.auth.onAuthStateChange(async (event, sess) => {
-    if (event === 'SIGNED_IN' && sess) {
-      _authToken = sess.access_token;
-      if (!_currentUser) {
+  if (!window._authListenerRegistered) {
+    window._authListenerRegistered = true;
+    _supabaseClient.auth.onAuthStateChange(async (event, sess) => {
+      if (event === 'SIGNED_IN' && sess && !_currentUser) {
+        _authToken = sess.access_token;
         await _onAuthSuccess(sess.user, sess);
+      } else if (event === 'SIGNED_OUT') {
+        authSignOut();
+      } else if (event === 'TOKEN_REFRESHED' && sess) {
+        _authToken = sess.access_token;
       }
-    } else if (event === 'SIGNED_OUT') {
-      authSignOut();
-    } else if (event === 'TOKEN_REFRESHED' && sess) {
-      _authToken = sess.access_token;
-    }
-  });
+    });
+  }
 })();
 
 
@@ -3009,68 +3281,15 @@ function _addTokens(promptChars, outputChars) {
   if (row) row.style.display = 'flex';
 }
 
-// ─── FETCH MODELLO AI DAL BACKEND + STATUS CHECK ───────────────────────────
+// ─── FETCH MODELLO AI DAL BACKEND ───
 let _aiModelName = 'N/D';
-let _backendOnline = false;
-
-function _showBackendBanner(online) {
-  let el = document.getElementById('_backendBanner');
-  if (!el) {
-    el = document.createElement('div');
-    el.id = '_backendBanner';
-    el.style.cssText = [
-      'position:fixed','bottom:18px','left:50%','transform:translateX(-50%)',
-      'z-index:99999','padding:10px 22px','border-radius:10px',
-      'font-size:13px','font-weight:700','box-shadow:0 4px 18px rgba(0,0,0,.22)',
-      'display:flex','align-items:center','gap:10px','transition:opacity .4s',
-      'pointer-events:none'
-    ].join(';');
-    document.body.appendChild(el);
-  }
-  if (online) {
-    el.style.background = '#1a2e1a'; el.style.color = '#4ade80'; el.style.border = '1px solid #2d6a2d';
-    el.innerHTML = '✅ Backend connesso — analisi AI pronta';
-    setTimeout(() => { el.style.opacity='0'; setTimeout(()=>el.remove(),500); }, 3000);
-  } else {
-    el.style.background = '#2e1a1a'; el.style.color = '#f87171'; el.style.border = '1px solid #7f1d1d';
-    el.style.pointerEvents = 'auto';
-    el.innerHTML = '⚠️ Backend offline' +
-      ' &nbsp;<button onclick="showErrorModal({title:\'Backend non raggiungibile\',error:\'Il server FastAPI non risponde su http://localhost:8000\',type:\'network\'})" style="background:#7f1d1d;color:#fca5a5;border:none;border-radius:6px;padding:3px 10px;cursor:pointer;font-size:12px;">Cosa fare?</button>' +
-      ' &nbsp;<button onclick="location.reload()" style="background:#991b1b;color:#fca5a5;border:none;border-radius:6px;padding:3px 10px;cursor:pointer;font-size:12px;">↺ Ricarica</button>';
-  }
-}
-
-async function _checkBackend() {
+(async () => {
   try {
     const headers = _authToken ? { 'Authorization': `Bearer ${_authToken}` } : {};
-    const r = await fetch(`${BACKEND_URL}/model`, { signal: AbortSignal.timeout(4000), headers });
-    if (r.ok) {
-      const j = await r.json();
-      _aiModelName = j.model || j.name || 'N/D';
-      _backendOnline = true;
-      _showBackendBanner(true);
-    } else { throw new Error('not ok'); }
-  } catch(e) {
-    _backendOnline = false;
-    _showBackendBanner(false);
-  }
-}
-_checkBackend();
-
-// ── Helper fetch sicuro: mostra errore chiaro se backend offline ──────────
-async function _safeFetch(url, options = {}) {
-  try {
-    const resp = await fetch(url, options);
-    return resp;
-  } catch (e) {
-    showErrorModal({
-      title: 'Backend non raggiungibile',
-      error: e.message,
-      type:  'network',
-    });
-    throw e;
-  }
-}
+    const r = await fetch(`${BACKEND_URL}/model`, { signal: AbortSignal.timeout(3000), headers });
+    if (r.ok) { const j = await r.json(); _aiModelName = j.model || j.name || 'N/D'; }
+  } catch(e) { /* backend non raggiungibile all'avvio */ }
+})();
 const state = {
   bandi: [],
   companies: [],
@@ -3179,21 +3398,11 @@ async function callApi(content, _attempt) {
   const headers = { 'Content-Type': 'application/json' };
   if (_authToken) headers['Authorization'] = `Bearer ${_authToken}`;
 
-  let response;
-  try {
-    response = await fetch(`${BACKEND_URL}/prompt`, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify({ prompt })
-    });
-  } catch(_netErr) {
-    showErrorModal({
-      title: 'Backend non raggiungibile',
-      error: _netErr.message,
-      type:  'network',
-    });
-    throw new Error('Backend non raggiungibile: ' + _netErr.message);
-  }
+  const response = await fetch(`${BACKEND_URL}/prompt`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({ prompt })
+  });
 
   // ── Abbonamento scaduto ──
   if (response.status === 402) {
@@ -3394,11 +3603,8 @@ async function analyzeMultiFiles(files, navigateAfter = true) {
         }
       } else {
         const fd = new FormData(); fd.append('file', file);
-        let er, ed;
-        try {
-          er = await _safeFetch(`${BACKEND_URL}/extract-text`, { method: 'POST', headers: _authToken ? {'Authorization': `Bearer ${_authToken}`} : {}, body: fd });
-          ed = await er.json();
-        } catch(_fe) { notify('⚠️ ' + file.name + ': errore connessione backend', 'warn'); continue; }
+        const er = await fetch(`${BACKEND_URL}/extract-text`, { method: 'POST', headers: _authToken ? {'Authorization': `Bearer ${_authToken}`} : {}, body: fd });
+        const ed = await er.json();
         if (!er.ok || ed.error) { notify('⚠️ ' + file.name + ': ' + (ed.error || 'errore estrazione'), 'warn'); continue; }
         docText = ed.text || '';
         if (docText.trim().length < 50) { notify('⚠️ ' + file.name + ': testo insufficiente — saltato', 'warn'); continue; }
@@ -3535,16 +3741,7 @@ async function analyzeMultiFiles(files, navigateAfter = true) {
       return;
     }
     console.error('[analyzeMultiFiles ERROR]', err);
-    const errType = _detectErrorType(err.message);
-    showErrorModal({
-      title: errType === 'network' ? 'Backend non raggiungibile'
-           : errType === 'ratelimit' ? 'Limite API Groq raggiunto'
-           : errType === 'pdf' ? 'Impossibile elaborare il PDF'
-           : 'Analisi AI non completata',
-      error: err.message,
-      type:  errType,
-      file:  files[0]?.name || null,
-    });
+    exportFallbackPDF(files[0]?.name || 'bando', err.message, '', '');
   }
 }
 
@@ -3950,7 +4147,7 @@ async function analyzePdf(file, navigateAfter = true) {
       // PDF: estrazione server-side tramite FastAPI
       const formData = new FormData();
       formData.append('file', file);
-      const extractResp = await _safeFetch(`${BACKEND_URL}/extract-text`, { method: 'POST', headers: _authToken ? {'Authorization': `Bearer ${_authToken}`} : {}, body: formData });
+      const extractResp = await fetch(`${BACKEND_URL}/extract-text`, { method: 'POST', headers: _authToken ? {'Authorization': `Bearer ${_authToken}`} : {}, body: formData });
       const extractData = await extractResp.json();
       if (!extractResp.ok || extractData.error) throw new Error(extractData.error || 'Errore estrazione testo PDF');
       docText = extractData.text || '';
@@ -4254,6 +4451,33 @@ ${fmtBlock('📋 Risposta AI — Seconda parte (sezioni 10-19)', raw2)}
   <button onclick="window.print()" style="padding:10px 28px;background:#1a1a2e;color:#fff;border:none;border-radius:6px;font-size:14px;cursor:pointer">🖨️ Stampa / Salva come PDF</button>
   <button onclick="window.close()" style="padding:10px 20px;margin-left:12px;background:#eee;border:none;border-radius:6px;font-size:14px;cursor:pointer">✕ Chiudi</button>
 </div>
+
+<!-- ══ WIZARD 7-STEP PROFILO AZIENDA ══════════════════════ -->
+<div id="wizardOverlay">
+  <div class="wizard-box">
+    <div class="wizard-header">
+      <div class="wizard-step-bar">
+        <div class="wizard-step-dot active" id="wdot0"></div>
+        <div class="wizard-step-dot" id="wdot1"></div>
+        <div class="wizard-step-dot" id="wdot2"></div>
+        <div class="wizard-step-dot" id="wdot3"></div>
+        <div class="wizard-step-dot" id="wdot4"></div>
+        <div class="wizard-step-dot" id="wdot5"></div>
+        <div class="wizard-step-dot" id="wdot6"></div>
+      </div>
+      <div class="wizard-title" id="wizardTitle">Benvenuto in BA.IA 🎯</div>
+      <div class="wizard-subtitle" id="wizardSub">Configura il profilo aziendale in 7 step per ricevere i bandi più adatti</div>
+    </div>
+    <div class="wizard-body" id="wizardBody">
+    </div>
+    <div class="wizard-footer">
+      <button class="wizard-btn-back" id="wizardBackBtn" onclick="wizardBack()" style="display:none;">← Indietro</button>
+      <button class="wizard-btn-next" id="wizardNextBtn" onclick="wizardNext()">Inizia →</button>
+      <span class="wizard-step-counter" id="wizardCounter">1 / 7</span>
+    </div>
+  </div>
+</div>
+
 </body></html>`;
 
   const win = window.open('', '_blank', 'width=900,height=700');
@@ -4313,7 +4537,7 @@ function aggiungiDocumento(bandoId) {
           if (!docText || docText.trim().length < 50) { notify('⚠️ ' + file.name + ': testo insufficiente — saltato', 'warn'); continue; }
         } else {
           const fd = new FormData(); fd.append('file', file);
-          const er = await _safeFetch(`${BACKEND_URL}/extract-text`, { method: 'POST', headers: _authToken ? {'Authorization': `Bearer ${_authToken}`} : {}, body: fd });
+          const er = await fetch(`${BACKEND_URL}/extract-text`, { method: 'POST', headers: _authToken ? {'Authorization': `Bearer ${_authToken}`} : {}, body: fd });
           const ed = await er.json();
           if (!er.ok || ed.error) { notify('⚠️ ' + file.name + ': ' + (ed.error || 'errore estrazione'), 'warn'); continue; }
           docText = ed.text || '';
@@ -5422,7 +5646,7 @@ async function enrichBandoFields(bando, container) {
   }
 
   try {
-    const resp = await _safeFetch(`${BACKEND_URL}/enrich`, {
+    const resp = await fetch(`${BACKEND_URL}/enrich`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -7152,7 +7376,7 @@ async function fileToText(file) {
     const formData = new FormData();
     formData.append('file', file);
     try {
-      const resp = await _safeFetch(`${BACKEND_URL}/extract-text`, { method: 'POST', headers: _authToken ? {'Authorization': `Bearer ${_authToken}`} : {}, body: formData });
+      const resp = await fetch(`${BACKEND_URL}/extract-text`, { method: 'POST', headers: _authToken ? {'Authorization': `Bearer ${_authToken}`} : {}, body: formData });
       const data = await resp.json();
       const text = (data.text || '').trim();
       if (text.length < 30) return { type: 'text', text: '' };
@@ -8089,6 +8313,33 @@ ${renderSection('19. Cumulabilità Aiuti', d.sezione19_cumulabilita)}
 ${d.suggerimenti ? renderSection('💡 Suggerimenti Strategici', d.suggerimenti) : ''}
 
 <footer>AI Analisi Bandi · Analisi AI · ${new Date().toISOString().split('T')[0]} · I dati sono estratti automaticamente e richiedono verifica su fonte ufficiale</footer>
+
+<!-- ══ WIZARD 7-STEP PROFILO AZIENDA ══════════════════════ -->
+<div id="wizardOverlay">
+  <div class="wizard-box">
+    <div class="wizard-header">
+      <div class="wizard-step-bar">
+        <div class="wizard-step-dot active" id="wdot0"></div>
+        <div class="wizard-step-dot" id="wdot1"></div>
+        <div class="wizard-step-dot" id="wdot2"></div>
+        <div class="wizard-step-dot" id="wdot3"></div>
+        <div class="wizard-step-dot" id="wdot4"></div>
+        <div class="wizard-step-dot" id="wdot5"></div>
+        <div class="wizard-step-dot" id="wdot6"></div>
+      </div>
+      <div class="wizard-title" id="wizardTitle">Benvenuto in BA.IA 🎯</div>
+      <div class="wizard-subtitle" id="wizardSub">Configura il profilo aziendale in 7 step per ricevere i bandi più adatti</div>
+    </div>
+    <div class="wizard-body" id="wizardBody">
+    </div>
+    <div class="wizard-footer">
+      <button class="wizard-btn-back" id="wizardBackBtn" onclick="wizardBack()" style="display:none;">← Indietro</button>
+      <button class="wizard-btn-next" id="wizardNextBtn" onclick="wizardNext()">Inizia →</button>
+      <span class="wizard-step-counter" id="wizardCounter">1 / 7</span>
+    </div>
+  </div>
+</div>
+
 </body></html>`;
   const filename = 'Analisi_Bando_' + (s1.enteEmanante || 'Bando').replace(/\s+/g,'_').substring(0,30) + '_' + Date.now() + '.doc';
   _triggerExport('\ufeff' + content, 'application/msword', filename, content, '📄 Analisi Bando — ' + (bando.name||'').substring(0,60));
@@ -8227,6 +8478,33 @@ ${blocker ? `<div class="blocker-banner">⛔ REQUISITO BLOCCANTE RILEVATO — ${
 </table>
 
 <footer>AI Analisi Bandi · Analisi AI · ${new Date().toISOString().split('T')[0]} · Report generato automaticamente — verificare i dati su fonte ufficiale prima di presentare domanda</footer>
+
+<!-- ══ WIZARD 7-STEP PROFILO AZIENDA ══════════════════════ -->
+<div id="wizardOverlay">
+  <div class="wizard-box">
+    <div class="wizard-header">
+      <div class="wizard-step-bar">
+        <div class="wizard-step-dot active" id="wdot0"></div>
+        <div class="wizard-step-dot" id="wdot1"></div>
+        <div class="wizard-step-dot" id="wdot2"></div>
+        <div class="wizard-step-dot" id="wdot3"></div>
+        <div class="wizard-step-dot" id="wdot4"></div>
+        <div class="wizard-step-dot" id="wdot5"></div>
+        <div class="wizard-step-dot" id="wdot6"></div>
+      </div>
+      <div class="wizard-title" id="wizardTitle">Benvenuto in BA.IA 🎯</div>
+      <div class="wizard-subtitle" id="wizardSub">Configura il profilo aziendale in 7 step per ricevere i bandi più adatti</div>
+    </div>
+    <div class="wizard-body" id="wizardBody">
+    </div>
+    <div class="wizard-footer">
+      <button class="wizard-btn-back" id="wizardBackBtn" onclick="wizardBack()" style="display:none;">← Indietro</button>
+      <button class="wizard-btn-next" id="wizardNextBtn" onclick="wizardNext()">Inizia →</button>
+      <span class="wizard-step-counter" id="wizardCounter">1 / 7</span>
+    </div>
+  </div>
+</div>
+
 </body></html>`;
   const filename = 'Match_' + company.ragioneSociale.replace(/\s+/g,'_').substring(0,25) + '_' + Date.now() + '.doc';
   _triggerExport('\ufeff' + content, 'application/msword', filename, content, '📊 Match ' + company.ragioneSociale.substring(0,40));
@@ -8363,211 +8641,6 @@ function getNotifyContainer() {
   _notifyContainer.style.cssText = 'position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;flex-direction:column-reverse;gap:8px;pointer-events:none;';
   document.body.appendChild(_notifyContainer);
   return _notifyContainer;
-}
-
-
-// ═══════════════════════════════════════════════════════════════════════════
-//  showErrorModal — Modal errore professionale con modello, causa e fix
-// ═══════════════════════════════════════════════════════════════════════════
-function showErrorModal(opts) {
-  /*
-    opts = {
-      title:    string   — titolo breve (es. "Errore analisi PDF")
-      error:    string   — messaggio tecnico dell'eccezione
-      type:     'network' | 'api' | 'ratelimit' | 'auth' | 'pdf' | 'generic'
-      file:     string?  — nome file coinvolto
-      model:    string?  — override modello (default: _aiModelName)
-    }
-  */
-  const model = opts.model || _aiModelName || 'llama-3.3-70b-versatile';
-  const errText = (opts.error || 'Errore sconosciuto').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  const fileRow = opts.file ? `<div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f8f9fb;border:1px solid #e8eaed;border-radius:8px;font-size:12px;color:#6b7280;margin-bottom:10px;"><span>📄</span><span style="font-weight:600;color:#374151;">${opts.file}</span></div>` : '';
-
-  // Configurazione per tipo di errore
-  const configs = {
-    network: {
-      icon: '📡',
-      color: '#dc2626',
-      bgColor: '#fef2f2',
-      borderColor: '#fecaca',
-      label: 'Errore di Rete',
-      steps: [
-        '1. Assicurati che <strong>avvia.bat sia in esecuzione</strong> (finestra nera aperta)',
-        '2. Verifica che la porta 8000 non sia bloccata dal firewall',
-        '3. Ricarica la pagina premendo <kbd style="background:#e5e7eb;padding:1px 6px;border-radius:4px;font-family:monospace;">F5</kbd>',
-        '4. Se il problema persiste, chiudi tutte le finestre Python e riavvia avvia.bat',
-      ]
-    },
-    api: {
-      icon: '🤖',
-      color: '#d97706',
-      bgColor: '#fffbeb',
-      borderColor: '#fde68a',
-      label: 'Errore API Groq',
-      steps: [
-        '1. Verifica che la <strong>GROQ_API_KEY</strong> nel file <code style="background:#e5e7eb;padding:1px 5px;border-radius:3px;">.env</code> sia corretta',
-        '2. Controlla che la chiave non sia scaduta su <a href="https://console.groq.com/keys" target="_blank" style="color:#2563eb;">console.groq.com/keys</a>',
-        '3. Il modello <strong>' + model + '</strong> è disponibile sul tuo piano Groq?',
-        '4. Riavvia il backend (avvia.bat) dopo aver modificato .env',
-      ]
-    },
-    ratelimit: {
-      icon: '⏱️',
-      color: '#7c3aed',
-      bgColor: '#f5f3ff',
-      borderColor: '#ddd6fe',
-      label: 'Rate Limit Raggiunto',
-      steps: [
-        '1. Hai superato il limite gratuito di Groq — attendi qualche minuto',
-        '2. Il sistema riprova automaticamente; se il retry fallisce, aspetta e rianalizza',
-        '3. Per più capacità: upgrade a <a href="https://console.groq.com" target="_blank" style="color:#2563eb;">Groq Pro</a>',
-        '4. Usa la <strong>modalità Rapida</strong> (meno token) per bandi semplici',
-      ]
-    },
-    auth: {
-      icon: '🔐',
-      color: '#2563eb',
-      bgColor: '#eff6ff',
-      borderColor: '#bfdbfe',
-      label: 'Errore Autenticazione',
-      steps: [
-        '1. Effettua il <strong>login</strong> con le tue credenziali',
-        '2. Se la sessione è scaduta, esci e rientra',
-        '3. Controlla che il piano sia attivo nella sezione Account',
-      ]
-    },
-    pdf: {
-      icon: '📄',
-      color: '#0891b2',
-      bgColor: '#f0f9ff',
-      borderColor: '#bae6fd',
-      label: 'Errore Elaborazione PDF',
-      steps: [
-        '1. Il PDF potrebbe essere <strong>protetto da password</strong> — rimuovila prima',
-        '2. File danneggiato? Prova ad aprirlo in Adobe Reader e risalvalo',
-        '3. Dimensione eccessiva? Il limite è circa 300 pagine per file',
-        '4. PDF scannerizzato senza OCR? L'AI non può leggere immagini di testo',
-      ]
-    },
-    generic: {
-      icon: '⚠️',
-      color: '#dc2626',
-      bgColor: '#fef2f2',
-      borderColor: '#fecaca',
-      label: 'Errore Imprevisto',
-      steps: [
-        '1. Riprova l'operazione — potrebbe essere un problema temporaneo',
-        '2. Riavvia il backend chiudendo e riaprendo avvia.bat',
-        '3. Controlla la console del browser (F12 → Console) per dettagli tecnici',
-        '4. Se si ripete, riavvia il browser e cancella la cache (Ctrl+Shift+R)',
-      ]
-    },
-  };
-
-  const cfg = configs[opts.type] || configs.generic;
-
-  // Rimuovi eventuali modal precedenti
-  const prev = document.getElementById('_errorModal');
-  if (prev) prev.remove();
-
-  const modal = document.createElement('div');
-  modal.id = '_errorModal';
-  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:99999;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(3px);animation:_fadeIn .18s ease;';
-
-  modal.innerHTML = `
-    <style>
-      @keyframes _fadeIn{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
-      @keyframes _slideIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-      #_errorModal kbd{font-family:'JetBrains Mono',monospace}
-      #_errorModal a{text-decoration:none}
-      #_errorModal a:hover{text-decoration:underline}
-    </style>
-    <div style="
-      background:#fff;border-radius:18px;width:min(540px,95vw);max-height:88vh;
-      overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.3);
-      animation:_slideIn .22s cubic-bezier(.34,1.2,.64,1);
-      font-family:'Instrument Sans',system-ui,sans-serif;
-    ">
-      <!-- Header colorato -->
-      <div style="background:${cfg.bgColor};border-bottom:2px solid ${cfg.borderColor};border-radius:18px 18px 0 0;padding:22px 24px 18px;">
-        <div style="display:flex;align-items:center;gap:14px;">
-          <div style="width:48px;height:48px;border-radius:14px;background:${cfg.color}18;border:2px solid ${cfg.borderColor};display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">
-            ${cfg.icon}
-          </div>
-          <div style="flex:1;min-width:0;">
-            <div style="font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:${cfg.color};margin-bottom:3px;">${cfg.label}</div>
-            <div style="font-size:17px;font-weight:800;color:#111827;line-height:1.3;">${opts.title || 'Si è verificato un errore'}</div>
-          </div>
-          <button onclick="document.getElementById('_errorModal').remove()"
-            style="background:none;border:1px solid #e8eaed;border-radius:8px;padding:5px 10px;cursor:pointer;color:#9ca3af;font-size:15px;flex-shrink:0;transition:all .15s;"
-            onmouseover="this.style.background='#f3f4f6';this.style.color='#374151'"
-            onmouseout="this.style.background='none';this.style.color='#9ca3af'">✕</button>
-        </div>
-      </div>
-
-      <div style="padding:20px 24px;">
-        ${fileRow}
-
-        <!-- Modello usato -->
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
-          <span style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#9ca3af;">Modello AI</span>
-          <div style="display:flex;align-items:center;gap:6px;background:#f8f9fb;border:1px solid #e8eaed;border-radius:20px;padding:3px 10px 3px 7px;">
-            <span style="width:7px;height:7px;border-radius:50%;background:#16a34a;flex-shrink:0;"></span>
-            <span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;font-weight:600;color:#374151;">${model}</span>
-          </div>
-          <span style="font-size:10px;color:#9ca3af;">via Groq</span>
-        </div>
-
-        <!-- Errore tecnico -->
-        <div style="margin-bottom:18px;">
-          <div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#9ca3af;margin-bottom:6px;">Dettaglio errore</div>
-          <div style="background:#0a0d14;border-radius:10px;padding:12px 15px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#f87171;line-height:1.6;word-break:break-word;max-height:100px;overflow-y:auto;">
-            ${errText}
-          </div>
-        </div>
-
-        <!-- Steps risoluzione -->
-        <div style="margin-bottom:20px;">
-          <div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#9ca3af;margin-bottom:10px;">Come risolvere</div>
-          <div style="display:flex;flex-direction:column;gap:7px;">
-            ${cfg.steps.map((s,i) => `
-            <div style="display:flex;gap:10px;padding:9px 12px;background:#f8f9fb;border:1px solid #e8eaed;border-radius:9px;font-size:13px;color:#374151;line-height:1.5;">
-              ${s}
-            </div>`).join('')}
-          </div>
-        </div>
-
-        <!-- Azioni -->
-        <div style="display:flex;gap:10px;justify-content:flex-end;padding-top:4px;border-top:1px solid #f3f4f6;">
-          <button onclick="document.getElementById('_errorModal').remove()"
-            style="padding:9px 20px;border:1px solid #e8eaed;border-radius:9px;background:#fff;color:#374151;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;"
-            onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='#fff'">
-            Chiudi
-          </button>
-          <button onclick="location.reload()"
-            style="padding:9px 20px;border:none;border-radius:9px;background:#111827;color:#fff;font-size:13px;font-weight:700;cursor:pointer;transition:all .15s;"
-            onmouseover="this.style.background='#1f2937'" onmouseout="this.style.background='#111827'">
-            ↺ Ricarica pagina
-          </button>
-        </div>
-      </div>
-    </div>`;
-
-  // Chiudi cliccando fuori
-  modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
-  document.body.appendChild(modal);
-}
-
-// ── Detect automatico tipo errore dal messaggio ──────────────────────────
-function _detectErrorType(msg) {
-  if (!msg) return 'generic';
-  const m = msg.toLowerCase();
-  if (m.includes('fetch') || m.includes('network') || m.includes('backend') || m.includes('connessione') || m.includes('failed to fetch')) return 'network';
-  if (m.includes('rate limit') || m.includes('429') || m.includes('too many') || m.includes('waitsecs') || m.includes('limite api')) return 'ratelimit';
-  if (m.includes('401') || m.includes('403') || m.includes('token') || m.includes('auth') || m.includes('abbonamento')) return 'auth';
-  if (m.includes('pdf') || m.includes('extract') || m.includes('estrazione') || m.includes('pypdf')) return 'pdf';
-  if (m.includes('groq') || m.includes('api key') || m.includes('model') || m.includes('500') || m.includes('502')) return 'api';
-  return 'generic';
 }
 
 function notify(msg, type='info', duration=3800) {
@@ -9392,7 +9465,7 @@ function openSettings() {
   const planEl  = document.getElementById('settingsUserPlan');
   if (emailEl) emailEl.textContent = _currentUser?.email || 'Modalità locale';
   if (planEl) {
-    const labels = { pro: '✅ Piano Pro attivo', trial: '🔵 Trial gratuito (14 giorni)', free: '🔒 Piano Free — funzionalità limitate' };
+    const labels = { pro: '✅ Piano Pro attivo', trial: '🔵 Trial gratuito (14 giorni)', free: '🔒 Piano Base — funzionalità limitate', business: '🏢 Piano Business attivo' };
     planEl.textContent = labels[_userPlan] || 'Piano: ' + _userPlan;
   }
 
@@ -9425,7 +9498,7 @@ async function loadSgiFiles(input) {
         text = await extractDocxStructured(file);
       } else if (file.name.toLowerCase().endsWith('.pdf')) {
         const fd = new FormData(); fd.append('file', file);
-        const r = await _safeFetch(`${BACKEND_URL}/extract-text`, { method: 'POST', headers: _authToken ? {'Authorization': `Bearer ${_authToken}`} : {}, body: fd });
+        const r = await fetch(`${BACKEND_URL}/extract-text`, { method: 'POST', headers: _authToken ? {'Authorization': `Bearer ${_authToken}`} : {}, body: fd });
         const d = await r.json();
         if (!r.ok || d.error) throw new Error(d.error || 'Errore estrazione PDF');
         text = d.text || '';
@@ -10153,7 +10226,34 @@ ${(s18.stepOperativi||[]).map((s,i)=>`<div class="ci"><div class="cd" style="bac
 ${sugg.noteStrategiche?`<h2>💡 Note Strategiche</h2><div style="background:#fffdf7;border:1px solid #b7821f33;border-radius:8px;padding:14px;font-size:12px;line-height:1.7;">${esc(sugg.noteStrategiche)}</div>`:''}
 
 <div class="rf"><div>AI Analisi Bandi · ${today}</div><div>${s.studioName||''}${s.consultantName?' · '+s.consultantName:''}</div><div>Documento riservato</div></div>
-</div></body></html>`;
+</div>
+<!-- ══ WIZARD 7-STEP PROFILO AZIENDA ══════════════════════ -->
+<div id="wizardOverlay">
+  <div class="wizard-box">
+    <div class="wizard-header">
+      <div class="wizard-step-bar">
+        <div class="wizard-step-dot active" id="wdot0"></div>
+        <div class="wizard-step-dot" id="wdot1"></div>
+        <div class="wizard-step-dot" id="wdot2"></div>
+        <div class="wizard-step-dot" id="wdot3"></div>
+        <div class="wizard-step-dot" id="wdot4"></div>
+        <div class="wizard-step-dot" id="wdot5"></div>
+        <div class="wizard-step-dot" id="wdot6"></div>
+      </div>
+      <div class="wizard-title" id="wizardTitle">Benvenuto in BA.IA 🎯</div>
+      <div class="wizard-subtitle" id="wizardSub">Configura il profilo aziendale in 7 step per ricevere i bandi più adatti</div>
+    </div>
+    <div class="wizard-body" id="wizardBody">
+    </div>
+    <div class="wizard-footer">
+      <button class="wizard-btn-back" id="wizardBackBtn" onclick="wizardBack()" style="display:none;">← Indietro</button>
+      <button class="wizard-btn-next" id="wizardNextBtn" onclick="wizardNext()">Inizia →</button>
+      <span class="wizard-step-counter" id="wizardCounter">1 / 7</span>
+    </div>
+  </div>
+</div>
+
+</body></html>`;
 
   const win=window.open('','_blank');
   win.document.write(html); win.document.close();
@@ -10783,6 +10883,240 @@ if (!_supabaseClient) {
   _loadSgiFromStorage();
   updateSidebars();
 }
+
+// ════════════════════════════════════════════════════════════════
+//  WIZARD 7-STEP PROFILO AZIENDA
+// ════════════════════════════════════════════════════════════════
+const WIZARD_STEPS = [
+  {
+    title: 'Benvenuto in BA.IA 🎯',
+    sub: 'Configura il profilo aziendale in 7 step per ricevere i bandi più adatti',
+    fields: [
+      { id:'wiz_ragione', label:'Ragione Sociale / Nome Azienda', type:'text', placeholder:'es. Rossi Srl' },
+      { id:'wiz_piva', label:'Partita IVA (opzionale)', type:'text', placeholder:'IT12345678901' }
+    ]
+  },
+  {
+    title: 'Settore Attività',
+    sub: 'Il codice ATECO determina quali bandi sono disponibili per la tua azienda',
+    fields: [
+      { id:'wiz_ateco', label:'Codice ATECO principale', type:'text', placeholder:'es. 62.01 — Sviluppo software' },
+      { id:'wiz_settore', label:'Descrizione attività', type:'text', placeholder:'es. Produzione macchinari industriali' }
+    ]
+  },
+  {
+    title: 'Localizzazione',
+    sub: 'Regione e provincia per accedere ai bandi territoriali',
+    fields: [
+      { id:'wiz_regione', label:'Regione', type:'select', options:['Abruzzo','Basilicata','Calabria','Campania','Emilia-Romagna','Friuli-Venezia Giulia','Lazio','Liguria','Lombardia','Marche','Molise','Piemonte','Puglia','Sardegna','Sicilia','Toscana','Trentino-Alto Adige','Umbria','Valle d'Aosta','Veneto'] },
+      { id:'wiz_provincia', label:'Provincia', type:'text', placeholder:'es. Cagliari' }
+    ]
+  },
+  {
+    title: 'Dimensione Aziendale',
+    sub: 'Micro, piccola, media o grande impresa — cambia i massimali di contributo',
+    fields: [
+      { id:'wiz_dipendenti', label:'Numero dipendenti', type:'number', placeholder:'es. 12' },
+      { id:'wiz_tipo', label:'Forma giuridica', type:'select', options:['Ditta Individuale','SNC','SAS','SRL','SRLS','SPA','Cooperativa','Associazione','Altro'] }
+    ]
+  },
+  {
+    title: 'Dati Economici',
+    sub: 'Fatturato e patrimonio netto per calcolare i massimali de minimis',
+    fields: [
+      { id:'wiz_fatturato', label:'Fatturato ultimo anno (€)', type:'number', placeholder:'es. 500000' },
+      { id:'wiz_patrimonio', label:'Patrimonio netto (€)', type:'number', placeholder:'es. 150000' }
+    ]
+  },
+  {
+    title: 'Piano di Investimento',
+    sub: 'Qual è l'investimento che vuoi finanziare con i bandi?',
+    fields: [
+      { id:'wiz_investimento', label:'Importo investimento previsto (€)', type:'number', placeholder:'es. 200000' },
+      { id:'wiz_tipo_inv', label:'Tipologia investimento', type:'select', options:['Macchinari / Attrezzature','Digitalizzazione / IT','R&S / Innovazione','Efficienza energetica','Formazione personale','Internazionalizzazione','Immobili / Ristrutturazione','Altro'] }
+    ]
+  },
+  {
+    title: 'Profilo Completato! 🎉',
+    sub: 'Stiamo calcolando i bandi più adatti alla tua azienda…',
+    fields: [
+      { id:'wiz_note', label:'Note aggiuntive (opzionale)', type:'textarea', placeholder:'Eventuali requisiti specifici o informazioni utili per il matching AI…' }
+    ]
+  }
+];
+
+let _wizardStep = 0;
+let _wizardData = {};
+
+function openWizard() {
+  _wizardStep = 0;
+  _wizardData = {};
+  document.getElementById('wizardOverlay').style.display = 'flex';
+  _renderWizardStep();
+}
+
+function closeWizard() {
+  document.getElementById('wizardOverlay').style.display = 'none';
+}
+
+function _renderWizardStep() {
+  const step = WIZARD_STEPS[_wizardStep];
+  const total = WIZARD_STEPS.length;
+
+  // Update header
+  document.getElementById('wizardTitle').textContent = step.title;
+  document.getElementById('wizardSub').textContent = step.sub;
+  document.getElementById('wizardCounter').textContent = (_wizardStep + 1) + ' / ' + total;
+
+  // Update step dots
+  for (let i = 0; i < total; i++) {
+    const dot = document.getElementById('wdot' + i);
+    if (!dot) continue;
+    dot.className = 'wizard-step-dot';
+    if (i < _wizardStep) dot.classList.add('done');
+    else if (i === _wizardStep) dot.classList.add('active');
+  }
+
+  // Back button
+  const backBtn = document.getElementById('wizardBackBtn');
+  backBtn.style.display = _wizardStep > 0 ? 'block' : 'none';
+
+  // Next button text
+  const nextBtn = document.getElementById('wizardNextBtn');
+  nextBtn.textContent = _wizardStep === total - 1 ? '🚀 Avvia Matching AI →' : 'Continua →';
+
+  // Render fields
+  let fieldsHtml = '';
+  for (const f of step.fields) {
+    const saved = _wizardData[f.id] || '';
+    fieldsHtml += `<div class="wizard-field">
+      <div class="wizard-label">${f.label}</div>`;
+    if (f.type === 'select') {
+      fieldsHtml += `<select class="wizard-select" id="${f.id}">
+        <option value="">— Seleziona —</option>
+        ${f.options.map(o => `<option value="${o}" ${saved===o?'selected':''}>${o}</option>`).join('')}
+      </select>`;
+    } else if (f.type === 'textarea') {
+      fieldsHtml += `<textarea class="wizard-input" id="${f.id}" placeholder="${f.placeholder}" rows="3" style="resize:none;height:80px;">${saved}</textarea>`;
+    } else {
+      fieldsHtml += `<input class="wizard-input" type="${f.type}" id="${f.id}" placeholder="${f.placeholder}" value="${saved}">`;
+    }
+    fieldsHtml += '</div>';
+  }
+  document.getElementById('wizardBody').innerHTML = fieldsHtml;
+
+  // Focus first field
+  const firstInput = document.querySelector('#wizardBody input, #wizardBody select, #wizardBody textarea');
+  if (firstInput) setTimeout(() => firstInput.focus(), 100);
+}
+
+function wizardNext() {
+  // Save current step data
+  const step = WIZARD_STEPS[_wizardStep];
+  for (const f of step.fields) {
+    const el = document.getElementById(f.id);
+    if (el) _wizardData[f.id] = el.value;
+  }
+
+  if (_wizardStep < WIZARD_STEPS.length - 1) {
+    _wizardStep++;
+    _renderWizardStep();
+  } else {
+    // Complete wizard — save profile
+    _saveWizardProfile();
+  }
+}
+
+function wizardBack() {
+  if (_wizardStep > 0) {
+    // Save current before going back
+    const step = WIZARD_STEPS[_wizardStep];
+    for (const f of step.fields) {
+      const el = document.getElementById(f.id);
+      if (el) _wizardData[f.id] = el.value;
+    }
+    _wizardStep--;
+    _renderWizardStep();
+  }
+}
+
+function _saveWizardProfile() {
+  // Build company profile from wizard data
+  const profile = {
+    id: Date.now(),
+    name: _wizardData.wiz_ragione || 'La mia Azienda',
+    piva: _wizardData.wiz_piva || '',
+    ateco: _wizardData.wiz_ateco || '',
+    settore: _wizardData.wiz_settore || '',
+    regione: _wizardData.wiz_regione || '',
+    provincia: _wizardData.wiz_provincia || '',
+    dipendenti: parseInt(_wizardData.wiz_dipendenti) || 0,
+    forma: _wizardData.wiz_tipo || '',
+    fatturato: parseInt(_wizardData.wiz_fatturato) || 0,
+    patrimonio: parseInt(_wizardData.wiz_patrimonio) || 0,
+    investimento: parseInt(_wizardData.wiz_investimento) || 0,
+    tipoInvestimento: _wizardData.wiz_tipo_inv || '',
+    noteTecniche: _wizardData.wiz_note || '',
+    dataCreazione: new Date().toISOString()
+  };
+
+  state.companies.push(profile);
+  state.activeCompanyId = profile.id;
+  schedulePersist();
+  updateSidebars();
+  closeWizard();
+  notify('✅ Profilo aziendale creato! Analizza un bando per vedere il tuo matching score.', 'success', 5000);
+}
+
+// ── Update startCheckout to handle plan tiers ─────────────────
+async function startCheckout(plan) {
+  const planMap = { base: 'base', pro: 'pro', business: 'business' };
+  const selectedPlan = planMap[plan] || 'pro';
+  const btn = document.getElementById('checkoutBtn');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Reindirizzamento…'; }
+  try {
+    const r = await fetch(BACKEND_URL + '/checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...((_authToken) ? { 'Authorization': 'Bearer ' + _authToken } : {}) },
+      body: JSON.stringify({ plan: selectedPlan, user_email: _currentUser?.email || '' })
+    });
+    const d = await r.json();
+    if (d.url) { window.location.href = d.url; }
+    else if (d.error) { throw new Error(d.error); }
+    else { throw new Error('URL checkout non ricevuto'); }
+  } catch(err) {
+    notify('❌ Errore checkout: ' + err.message, 'error');
+    if (btn) { btn.disabled = false; btn.textContent = '💳 Inizia gratis 14gg →'; }
+  }
+}
+
 </script>
+
+<!-- ══ WIZARD 7-STEP PROFILO AZIENDA ══════════════════════ -->
+<div id="wizardOverlay">
+  <div class="wizard-box">
+    <div class="wizard-header">
+      <div class="wizard-step-bar">
+        <div class="wizard-step-dot active" id="wdot0"></div>
+        <div class="wizard-step-dot" id="wdot1"></div>
+        <div class="wizard-step-dot" id="wdot2"></div>
+        <div class="wizard-step-dot" id="wdot3"></div>
+        <div class="wizard-step-dot" id="wdot4"></div>
+        <div class="wizard-step-dot" id="wdot5"></div>
+        <div class="wizard-step-dot" id="wdot6"></div>
+      </div>
+      <div class="wizard-title" id="wizardTitle">Benvenuto in BA.IA 🎯</div>
+      <div class="wizard-subtitle" id="wizardSub">Configura il profilo aziendale in 7 step per ricevere i bandi più adatti</div>
+    </div>
+    <div class="wizard-body" id="wizardBody">
+    </div>
+    <div class="wizard-footer">
+      <button class="wizard-btn-back" id="wizardBackBtn" onclick="wizardBack()" style="display:none;">← Indietro</button>
+      <button class="wizard-btn-next" id="wizardNextBtn" onclick="wizardNext()">Inizia →</button>
+      <span class="wizard-step-counter" id="wizardCounter">1 / 7</span>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
