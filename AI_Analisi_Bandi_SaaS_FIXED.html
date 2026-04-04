@@ -1934,6 +1934,87 @@ input:focus, select:focus, textarea:focus {
   z-index: 9999;
 }
 
+
+/* ══ PROVIDER SELECTOR ════════════════════════════════════════ */
+.provider-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0;
+}
+.provider-card {
+  border: 1.5px solid var(--border); border-radius: 10px;
+  padding: 10px 12px; cursor: pointer; transition: all 0.15s;
+  background: var(--bg-card); position: relative;
+}
+.provider-card:hover { border-color: var(--gold-solid); background: var(--gold-bg); }
+.provider-card.selected {
+  border-color: var(--gold-solid);
+  background: var(--gold-bg);
+  box-shadow: 0 0 0 3px rgba(198,146,41,0.15);
+}
+.provider-card .pname { font-size: 13px; font-weight: 700; color: var(--text); }
+.provider-card .pmodel { font-size: 10px; color: var(--text-subtle); font-family: 'JetBrains Mono', monospace; }
+.provider-card .pcost { font-size: 10px; color: var(--green-text); font-weight: 600; }
+.provider-card .pstatus {
+  position: absolute; top: 8px; right: 8px;
+  width: 7px; height: 7px; border-radius: 50%;
+}
+.provider-card .pstatus.ok { background: var(--green); }
+.provider-card .pstatus.missing { background: var(--red); }
+
+/* ══ ALERT PANEL ═════════════════════════════════════════════ */
+.alert-panel {
+  background: linear-gradient(135deg, #fffdf5, #fff9ec);
+  border: 1.5px solid rgba(198,146,41,0.25);
+  border-radius: 14px; padding: 16px; margin: 12px 0;
+}
+.alert-panel h4 { font-size: 13px; font-weight: 700; color: var(--gold-text); margin: 0 0 10px; }
+.alert-toggle {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 10px;
+}
+.toggle-switch {
+  width: 44px; height: 24px; background: var(--border-2); border-radius: 12px;
+  cursor: pointer; transition: background 0.2s; position: relative; border: none;
+}
+.toggle-switch.on { background: var(--gold-solid); }
+.toggle-switch::after {
+  content: ''; position: absolute; top: 3px; left: 3px;
+  width: 18px; height: 18px; border-radius: 9px; background: white;
+  transition: transform 0.2s; box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+}
+.toggle-switch.on::after { transform: translateX(20px); }
+
+/* ══ MATCH TOP3 CARD ══════════════════════════════════════════ */
+.match-result-card {
+  background: white; border: 1px solid var(--border); border-radius: var(--r-xl);
+  padding: 16px 18px; margin-bottom: 10px; transition: all 0.2s;
+  position: relative; overflow: hidden;
+}
+.match-result-card::before {
+  content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 4px;
+  background: var(--gold-solid);
+}
+.match-result-card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+.match-rank {
+  position: absolute; top: 12px; right: 14px;
+  font-size: 11px; font-weight: 800; color: var(--text-subtle);
+  font-family: 'JetBrains Mono', monospace;
+}
+.match-score-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: var(--gold-bg); border: 1px solid var(--border-gold);
+  border-radius: 20px; padding: 3px 10px;
+  font-size: 12px; font-weight: 700; color: var(--gold-text);
+  margin-bottom: 8px;
+}
+.match-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.match-ente { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
+.match-motivazione { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+.match-meta { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+.match-chip {
+  font-size: 11px; color: var(--text-subtle); background: var(--bg-elevated);
+  border-radius: 5px; padding: 2px 8px; font-family: 'JetBrains Mono', monospace;
+}
+
 </style>
 </head>
 <body>
@@ -2270,7 +2351,78 @@ input:focus, select:focus, textarea:focus {
           <h1 class="home-title">Analizza bandi.<br><span>Trova le aziende giuste.</span> Vinci le pratiche.</h1>
           <p class="home-sub">Carica un PDF di un bando pubblico: Claude AI estrae le 18 sezioni critiche in secondi, calcola l'eligibilità per ogni tuo cliente e genera report pronti per la presentazione.</p>
           <div class="home-kpi-row" id="homeKpiRow">
-            <div class="home-kpi"><div class="home-kpi-val" id="hkBandi">0</div><div class="home-kpi-label">Bandi analizzati</div></div>
+            <div class="home-kpi"><div class="home-kpi-val" id="hkBandi">0</div>
+
+        <!-- ══ MATCH TOP 3 + ALERT SECTION ══════════════════════ -->
+        <div style="display:grid;grid-template-columns:1fr 320px;gap:16px;margin-top:16px;" id="matchAlertsRow">
+
+          <!-- Match Top 3 -->
+          <div class="card" style="padding:20px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+              <div>
+                <div style="font-size:15px;font-weight:800;color:var(--text);">🎯 Match Top 3 Bandi</div>
+                <div style="font-size:12px;color:var(--text-muted);">AI semantico · pgvector · 20+ fonti istituzionali</div>
+              </div>
+              <button id="matchTop3Btn" class="btn btn-gold btn-sm" onclick="runMatchTop3(null)" style="gap:6px;">
+                🎯 Calcola Match Top 3
+              </button>
+            </div>
+            <div id="matchResultsContainer" style="display:none;">
+              <!-- Results injected by JS -->
+            </div>
+            <div id="matchPlaceholder" style="text-align:center;padding:24px 16px;color:var(--text-muted);">
+              <div style="font-size:32px;margin-bottom:10px;opacity:0.4;">🎯</div>
+              <div style="font-size:13px;font-weight:600;margin-bottom:6px;">Nessun match calcolato</div>
+              <div style="font-size:12px;max-width:300px;margin:0 auto;line-height:1.6;">
+                Clicca "Calcola Match Top 3" per trovare i bandi più adatti alla tua azienda tramite AI semantica.
+              </div>
+            </div>
+          </div>
+
+          <!-- Email Alerts + Scraper -->
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div class="alert-panel">
+              <h4>🔔 Alert Email Automatici</h4>
+              <div class="alert-toggle">
+                <div>
+                  <div style="font-size:13px;font-weight:600;color:var(--text);">Notifiche nuovi bandi</div>
+                  <div style="font-size:11px;color:var(--text-muted);" id="alertStatusText">⭕ Disattivi</div>
+                </div>
+                <button class="toggle-switch" id="alertToggle" onclick="toggleAlerts()"></button>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <div>
+                  <div style="font-size:10px;font-weight:700;color:var(--text-muted);margin-bottom:3px;">MATCH MINIMO</div>
+                  <select id="alertMinScore" class="form-control" style="font-size:12px;padding:6px 10px;">
+                    <option value="0.60">60% e oltre</option>
+                    <option value="0.70" selected>70% e oltre</option>
+                    <option value="0.80">80% e oltre</option>
+                    <option value="0.90">90% e oltre</option>
+                  </select>
+                </div>
+                <div>
+                  <div style="font-size:10px;font-weight:700;color:var(--text-muted);margin-bottom:3px;">REGIONE</div>
+                  <select id="alertRegione" class="form-control" style="font-size:12px;padding:6px 10px;">
+                    <option value="">Tutte le regioni</option>
+                    <option>Sardegna</option><option>Lombardia</option><option>Lazio</option>
+                    <option>Sicilia</option><option>Campania</option><option>Puglia</option>
+                    <option>Veneto</option><option>Toscana</option><option>Emilia-Romagna</option>
+                    <option>Piemonte</option><option>Calabria</option><option>Liguria</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="card" style="padding:14px;">
+              <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:6px;">🔍 Database Bandi Pubblici</div>
+              <div style="font-size:11px;color:var(--text-muted);margin-bottom:10px;">Aggiornato ogni 24h da 20 fonti istituzionali</div>
+              <button id="scraperRunBtn" class="btn btn-outline btn-sm" onclick="runScraperNow()" style="width:100%;justify-content:center;font-size:12px;">
+                🔍 Avvia Scraper Ora
+              </button>
+            </div>
+          </div>
+
+        </div><div class="home-kpi-label">Bandi analizzati</div></div>
             <div class="home-kpi"><div class="home-kpi-val" id="hkAziende">0</div><div class="home-kpi-label">Profili aziendali</div></div>
             <div class="home-kpi"><div class="home-kpi-val" id="hkMatch">0</div><div class="home-kpi-label">Match effettuati</div></div>
             <div class="home-kpi"><div class="home-kpi-val" id="hkScadenze">0</div><div class="home-kpi-label">Scadenze attive</div></div>
@@ -2481,10 +2633,18 @@ input:focus, select:focus, textarea:focus {
           </div>
           <button class="btn btn-outline btn-sm" onclick="closeSettings();openSubscriptionOverlay()">💳 Gestisci piano</button>
         </div>
-        <div style="background:var(--green-bg);border:1px solid var(--green-border);border-radius:var(--r);padding:10px 14px;font-size:11px;color:var(--green-text);line-height:1.6;">
-          <strong>🤖 AI inclusa nel piano:</strong> L'analisi AI è gestita dal nostro backend sicuro tramite Groq.<br>
-          Non è necessaria nessuna chiave API personale — tutto incluso nell'abbonamento mensile.
-        </div>
+                  <div style="font-size:12px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">🤖 Provider AI</div>
+          <div id="providerGrid" class="provider-grid" style="margin-bottom:12px;">
+            <div style="grid-column:1/-1;font-size:12px;color:var(--text-muted);padding:8px 0;">Caricamento provider...</div>
+          </div>
+          <div style="margin-bottom:10px;">
+            <label style="font-size:11px;font-weight:700;color:var(--text-muted);display:block;margin-bottom:4px;">Chiave API personale (opzionale)</label>
+            <div style="display:flex;gap:8px;">
+              <input id="providerApiKey" type="password" class="form-control" placeholder="sk-... o gsk-..." style="flex:1;font-size:12px;" value="">
+              <button id="testProviderBtn" class="btn btn-outline btn-sm" onclick="testProvider()">🧪 Testa</button>
+            </div>
+            <div style="font-size:10px;color:var(--text-subtle);margin-top:4px;">Lascia vuoto per usare la chiave di sistema (Groq incluso nel piano)</div>
+          </div>
       </div>
 
       <!-- CONSULTANT NAME -->
@@ -11089,6 +11249,283 @@ async function startCheckout(plan) {
     if (btn) { btn.disabled = false; btn.textContent = '💳 Inizia gratis 14gg →'; }
   }
 }
+
+
+// ════════════════════════════════════════════════════════════════
+//  MULTI-PROVIDER AI — settings & test
+// ════════════════════════════════════════════════════════════════
+let _aiProvider = localStorage.getItem('aiProvider') || 'auto';
+let _aiApiKey   = localStorage.getItem('aiApiKey') || '';
+let _aiModel    = localStorage.getItem('aiModel') || '';
+let _providersList = [];
+
+async function loadProviders() {
+  try {
+    const r = await fetch(BACKEND_URL + '/providers', {
+      headers: _authToken ? { 'Authorization': 'Bearer ' + _authToken } : {}
+    });
+    const d = await r.json();
+    _providersList = d.providers || [];
+    _renderProviderGrid();
+  } catch(e) {
+    console.warn('[PROVIDERS] Load failed:', e);
+  }
+}
+
+function _renderProviderGrid() {
+  const el = document.getElementById('providerGrid');
+  if (!el || !_providersList.length) return;
+  el.innerHTML = _providersList.map(p => `
+    <div class="provider-card ${_aiProvider === p.id ? 'selected' : ''}" onclick="selectProvider('${p.id}')">
+      <span class="pstatus ${p.configured ? 'ok' : 'missing'}"></span>
+      <div class="pname">${p.name}</div>
+      <div class="pmodel">${p.model}</div>
+      <div class="pcost">${p.cost}</div>
+    </div>
+  `).join('') + `
+    <div class="provider-card ${_aiProvider === 'auto' ? 'selected' : ''}" onclick="selectProvider('auto')" style="grid-column:1/-1;">
+      <div class="pname">🤖 Auto (consigliato)</div>
+      <div class="pmodel">Usa il primo provider disponibile</div>
+    </div>
+  `;
+}
+
+function selectProvider(id) {
+  _aiProvider = id;
+  localStorage.setItem('aiProvider', id);
+  _renderProviderGrid();
+  notify('✓ Provider AI: ' + (id === 'auto' ? 'Auto' : id), 'success', 2000);
+}
+
+async function testProvider() {
+  const key = document.getElementById('providerApiKey')?.value || _aiApiKey;
+  const provider = _aiProvider === 'auto' ? 'groq' : _aiProvider;
+  if (!key && provider !== 'auto') {
+    notify('Inserisci prima la chiave API', 'warn'); return;
+  }
+  const btn = document.getElementById('testProviderBtn');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Test...'; }
+  try {
+    const r = await fetch(BACKEND_URL + '/provider/test', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...(_authToken ? {'Authorization':'Bearer '+_authToken} : {}) },
+      body: JSON.stringify({ provider, api_key: key })
+    });
+    const d = await r.json();
+    if (d.ok) {
+      notify(`✅ ${provider} funziona! Risposta: "${d.response}"`, 'success', 4000);
+      if (key) { _aiApiKey = key; localStorage.setItem('aiApiKey', key); }
+    } else {
+      notify('❌ ' + (d.error || 'Test fallito'), 'error');
+    }
+  } catch(e) {
+    notify('❌ Errore connessione: ' + e.message, 'error');
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = '🧪 Testa Connessione'; }
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+//  MATCH TOP 3 — pgvector + AI
+// ════════════════════════════════════════════════════════════════
+let _lastMatchResults = null;
+
+async function runMatchTop3(azienda) {
+  if (!azienda) {
+    if (!state.companies.length) {
+      notify('Prima crea un profilo aziendale dal wizard', 'warn', 4000);
+      openWizard();
+      return;
+    }
+    const activeId = state.activeCompanyId;
+    azienda = state.companies.find(c => c.id === activeId) || state.companies[0];
+  }
+
+  const btn = document.getElementById('matchTop3Btn');
+  if (btn) { btn.disabled = true; btn.innerHTML = '<span style="display:inline-flex;align-items:center;gap:6px;">⏳ Calcolo matching…</span>'; }
+
+  notify('🔍 Calcolo Top 3 bandi in corso…', 'info', 3000);
+
+  try {
+    const r = await fetch(BACKEND_URL + '/match/top3', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(_authToken ? {'Authorization': 'Bearer ' + _authToken} : {})
+      },
+      body: JSON.stringify({
+        azienda: azienda,
+        top_k: 10,
+        provider: _aiProvider
+      })
+    });
+    const d = await r.json();
+    if (d.error) throw new Error(d.error);
+
+    _lastMatchResults = d;
+    _renderMatchResults(d, azienda);
+    notify(`✅ Match completato — ${d.top3?.length || 0} bandi trovati su ${d.total_candidates} candidati`, 'success', 5000);
+  } catch(e) {
+    notify('❌ Errore matching: ' + e.message, 'error');
+  } finally {
+    if (btn) { btn.disabled = false; btn.innerHTML = '🎯 Calcola Match Top 3'; }
+  }
+}
+
+function _renderMatchResults(data, azienda) {
+  const container = document.getElementById('matchResultsContainer');
+  if (!container) return;
+
+  const top3 = data.top3 || [];
+  if (!top3.length) {
+    container.innerHTML = '<div style="text-align:center;padding:24px;color:var(--text-muted);">Nessun bando trovato per questo profilo. Prova ad aggiornare i dati aziendali.</div>';
+    return;
+  }
+
+  container.innerHTML = `
+    <div style="margin-bottom:14px;">
+      <div style="font-size:12px;color:var(--text-muted);">Match per <strong>${azienda.name || 'azienda'}</strong> · ${top3.length} bandi · ${data.total_candidates || 0} candidati analizzati</div>
+    </div>
+    ${top3.map((t, i) => `
+      <div class="match-result-card">
+        <div class="match-rank">#${i+1}</div>
+        <div class="match-score-badge">🎯 ${t.score_pct}% match</div>
+        <div class="match-title">${t.titolo}</div>
+        <div class="match-ente">${t.ente || ''}</div>
+        <div class="match-motivazione">${t.motivazione}</div>
+        <div class="match-meta">
+          ${t.importo_max ? `<span class="match-chip">💶 max €${Number(t.importo_max).toLocaleString('it')}</span>` : ''}
+          ${t.scadenza ? `<span class="match-chip">📅 ${t.scadenza}</span>` : ''}
+          ${t.fonte_url ? `<a href="${t.fonte_url}" target="_blank" class="match-chip" style="color:var(--blue-text);text-decoration:none;">🔗 Fonte ufficiale</a>` : ''}
+        </div>
+      </div>
+    `).join('')}
+    <div style="text-align:center;margin-top:8px;">
+      <button class="btn btn-outline btn-sm" onclick="runMatchTop3(null)" style="font-size:11px;">
+        🔄 Ricalcola
+      </button>
+    </div>
+  `;
+
+  // Show match container
+  container.style.display = 'block';
+  const ph = document.getElementById('matchPlaceholder');
+  if (ph) ph.style.display = 'none';
+}
+
+// ════════════════════════════════════════════════════════════════
+//  EMAIL ALERTS
+// ════════════════════════════════════════════════════════════════
+let _alertsActive = false;
+
+async function loadAlertStatus() {
+  try {
+    const r = await fetch(BACKEND_URL + '/alerts/status', {
+      headers: _authToken ? { 'Authorization': 'Bearer ' + _authToken } : {}
+    });
+    const d = await r.json();
+    _alertsActive = d.active || false;
+    _updateAlertToggle();
+  } catch(e) {}
+}
+
+function _updateAlertToggle() {
+  const toggle = document.getElementById('alertToggle');
+  const statusText = document.getElementById('alertStatusText');
+  if (toggle) toggle.className = 'toggle-switch' + (_alertsActive ? ' on' : '');
+  if (statusText) statusText.textContent = _alertsActive ? '✅ Attivi' : '⭕ Disattivi';
+}
+
+async function toggleAlerts() {
+  const email = _currentUser?.email || document.getElementById('alertEmail')?.value;
+  if (!email) { notify('Effettua il login per attivare gli alert', 'warn'); return; }
+
+  if (_alertsActive) {
+    // Unsubscribe
+    try {
+      await fetch(BACKEND_URL + '/alerts/unsubscribe', {
+        method: 'POST',
+        headers: _authToken ? { 'Authorization': 'Bearer ' + _authToken } : {}
+      });
+      _alertsActive = false;
+      _updateAlertToggle();
+      notify('🔕 Alert email disattivati', 'info');
+    } catch(e) { notify('Errore: ' + e.message, 'error'); }
+  } else {
+    // Subscribe
+    const minScore = parseFloat(document.getElementById('alertMinScore')?.value || '0.70');
+    const regione = document.getElementById('alertRegione')?.value || '';
+    try {
+      const r = await fetch(BACKEND_URL + '/alerts/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(_authToken ? {'Authorization': 'Bearer ' + _authToken} : {})
+        },
+        body: JSON.stringify({ email, min_score: minScore, regione: regione || null })
+      });
+      const d = await r.json();
+      if (d.ok) {
+        _alertsActive = true;
+        _updateAlertToggle();
+        notify(`🔔 Alert attivati! Riceverai email per bandi con match ≥${Math.round(minScore*100)}%`, 'success', 5000);
+      } else {
+        notify('Errore: ' + (d.error || 'Riprova'), 'error');
+      }
+    } catch(e) { notify('Errore: ' + e.message, 'error'); }
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+//  SCRAPER MANUAL TRIGGER
+// ════════════════════════════════════════════════════════════════
+async function runScraperNow() {
+  const btn = document.getElementById('scraperRunBtn');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Scraper in esecuzione…'; }
+  try {
+    const r = await fetch(BACKEND_URL + '/scraper/run', {
+      method: 'POST',
+      headers: _authToken ? { 'Authorization': 'Bearer ' + _authToken } : {}
+    });
+    const d = await r.json();
+    if (d.ok) {
+      notify(`🔍 Scraper avviato su ${d.sources} fonti istituzionali — controlla tra qualche minuto`, 'success', 6000);
+    } else {
+      notify(d.message || 'Già in esecuzione', 'warn');
+    }
+  } catch(e) {
+    notify('Errore scraper: ' + e.message, 'error');
+  } finally {
+    setTimeout(() => {
+      if (btn) { btn.disabled = false; btn.textContent = '🔍 Avvia Scraper Ora'; }
+    }, 5000);
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+//  EXTEND SETTINGS MODAL — provider + alerts tab
+// ════════════════════════════════════════════════════════════════
+function openSettingsWithTab(tab) {
+  openSettings();
+  setTimeout(() => {
+    const tabs = document.querySelectorAll('.settings-tab');
+    tabs.forEach((t, i) => {
+      t.classList.toggle('active', i === tab);
+    });
+    loadProviders();
+    loadAlertStatus();
+  }, 100);
+}
+
+// Load on auth success
+const _origOnAuthSuccess = typeof _onAuthSuccess !== 'undefined' ? _onAuthSuccess : null;
+document.addEventListener('DOMContentLoaded', () => {
+  // Auto-load providers and alerts after 2s (after auth resolves)
+  setTimeout(() => {
+    loadProviders();
+    loadAlertStatus();
+  }, 2000);
+});
 
 </script>
 
