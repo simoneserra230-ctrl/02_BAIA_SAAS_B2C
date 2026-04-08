@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GrantLens — AI Analisi Bandi Pro</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&family=JetBrains+Mono:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <!-- Supabase JS v2 — auth + realtime -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <style>
@@ -138,96 +138,163 @@ body {
 }
 #demoBadge:hover { background: rgba(124,58,237,0.17); }
 
-/* ══ AUTH OVERLAY ════════════════════════════════════════ */
+/* ══ AUTH OVERLAY — Landing style ═══════════════════════ */
 #authOverlay {
   position: fixed; inset: 0;
-  background: linear-gradient(135deg, #0f172a 0%, #1a0a3d 35%, #0d2340 65%, #0f172a 100%);
-  background-size: 400% 400%;
-  animation: authBgShift 8s ease infinite;
+  background: #04080F;
   z-index: 9999;
   display: flex; align-items: center; justify-content: center;
   font-family: 'Plus Jakarta Sans', sans-serif;
+  overflow: hidden;
 }
-@keyframes authBgShift {
-  0%   { background-position: 0% 50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+/* Orbs di sfondo come landing */
+#authOverlay::before {
+  content: '';
+  position: absolute; top: -100px; left: -100px;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(74,142,255,0.12) 0%, transparent 70%);
+  border-radius: 50%; pointer-events: none; animation: authOrb1 8s ease-in-out infinite;
+}
+#authOverlay::after {
+  content: '';
+  position: absolute; bottom: -80px; right: -80px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(123,92,240,0.1) 0%, transparent 70%);
+  border-radius: 50%; pointer-events: none; animation: authOrb1 8s 3s ease-in-out infinite;
+}
+@keyframes authOrb1 {
+  0%,100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-30px) scale(1.05); }
+}
+/* Dots grid come landing */
+.auth-dots-bg {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, black 0%, transparent 80%);
 }
 .auth-box {
-  background: white; border-radius: 24px;
-  width: min(460px, 95vw); overflow: hidden;
-  box-shadow: 0 40px 80px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05);
-  animation: authBoxIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  background: rgba(10,20,40,0.85);
+  backdrop-filter: blur(32px); -webkit-backdrop-filter: blur(32px);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 24px;
+  width: min(480px, 95vw); overflow: hidden;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(74,142,255,0.1);
+  animation: authBoxIn 0.5s cubic-bezier(0.34,1.56,0.64,1);
+  position: relative; z-index: 1;
 }
 @keyframes authBoxIn {
-  from { opacity: 0; transform: translateY(24px) scale(0.96); }
+  from { opacity: 0; transform: translateY(28px) scale(0.95); }
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 .auth-header {
-  background: linear-gradient(135deg, #1a1a2e 0%, #2d1b69 100%);
-  padding: 28px 32px 24px; text-align: center;
+  padding: 32px 32px 28px; text-align: center;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  position: relative;
 }
-.auth-logo-mark {
-  width: 52px; height: 52px;
-  background: linear-gradient(135deg, #c69229 0%, #e4a820 100%);
-  border-radius: 14px; display: inline-flex; align-items: center; justify-content: center;
-  font-size: 24px; margin-bottom: 12px;
-  box-shadow: 0 4px 20px rgba(198,146,41,0.5);
+/* Logo SVG identico alla landing */
+.auth-logo-wrap {
+  display: inline-flex; align-items: center; gap: 10px; margin-bottom: 20px;
 }
-.auth-header h1 { color: white; font-size: 20px; font-weight: 800; margin-bottom: 4px; }
-.auth-header p  { color: rgba(255,255,255,0.55); font-size: 12px; }
+.auth-logo-mark { width: 36px; height: 36px; }
+.auth-logo-wordmark {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: 26px; font-weight: 400; letter-spacing: -0.01em; color: #EEF2FF;
+}
+.auth-logo-wordmark span { color: #4A8EFF; }
+.auth-header h1 {
+  font-family: 'Instrument Serif', Georgia, serif;
+  color: #EEF2FF; font-size: 22px; font-weight: 400; margin-bottom: 6px;
+  letter-spacing: -0.02em;
+}
+.auth-header p  { color: rgba(139,158,199,0.8); font-size: 13px; }
 .auth-body { padding: 28px 32px; }
-.auth-tabs { display: flex; gap: 4px; margin-bottom: 22px; background: #f1f3f7; border-radius: 10px; padding: 4px; }
+.auth-tabs {
+  display: flex; gap: 4px; margin-bottom: 24px;
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 10px; padding: 4px;
+}
 .auth-tab {
-  flex: 1; padding: 8px; text-align: center; border: none; background: none;
+  flex: 1; padding: 9px; text-align: center; border: none; background: none;
   border-radius: 7px; font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 13px; font-weight: 600; cursor: pointer; color: #6b7280; transition: all 0.15s;
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  color: rgba(139,158,199,0.7); transition: all 0.2s;
 }
-.auth-tab.active { background: white; color: #111827; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+.auth-tab.active {
+  background: rgba(74,142,255,0.15); color: #4A8EFF;
+  box-shadow: 0 0 0 1px rgba(74,142,255,0.25);
+}
 .auth-input {
-  width: 100%; padding: 11px 14px; border: 1.5px solid #e8eaed; border-radius: 10px;
+  width: 100%; padding: 11px 14px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.04);
+  border-radius: 10px; color: #EEF2FF;
   font-family: 'Plus Jakarta Sans', sans-serif; font-size: 14px; outline: none;
-  transition: all 0.15s; margin-bottom: 10px; box-sizing: border-box;
+  transition: all 0.2s; margin-bottom: 10px; box-sizing: border-box;
 }
-.auth-input:focus { border-color: #c69229; box-shadow: 0 0 0 3px rgba(198,146,41,0.15); }
+.auth-input::placeholder { color: rgba(139,158,199,0.5); }
+.auth-input:focus {
+  border-color: rgba(74,142,255,0.5);
+  box-shadow: 0 0 0 3px rgba(74,142,255,0.12);
+  background: rgba(74,142,255,0.04);
+}
 .auth-btn-primary {
   width: 100%; padding: 13px;
-  background: linear-gradient(135deg, #c69229 0%, #e4a820 100%);
-  color: white; border: none; border-radius: 10px;
+  background: #4A8EFF;
+  color: #04080F; border: none; border-radius: 10px;
   font-family: 'Plus Jakarta Sans', sans-serif; font-size: 14px; font-weight: 700;
-  cursor: pointer; transition: all 0.15s; margin-top: 6px;
+  cursor: pointer; transition: all 0.2s; margin-top: 6px;
+  position: relative; overflow: hidden;
 }
-.auth-btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(198,146,41,0.4); }
-.auth-btn-primary:disabled { opacity: 0.6; cursor: default; transform: none; }
+.auth-btn-primary::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, #00D4FF, #4A8EFF); opacity: 0; transition: opacity 0.3s;
+}
+.auth-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(74,142,255,0.45); }
+.auth-btn-primary:hover::before { opacity: 1; }
+.auth-btn-primary span { position: relative; z-index: 1; }
+.auth-btn-primary:disabled { opacity: 0.5; cursor: default; transform: none; }
 .auth-error {
-  background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px;
-  padding: 9px 13px; font-size: 12px; color: #dc2626; margin-bottom: 12px; display: none;
+  background: rgba(220,38,38,0.1); border: 1px solid rgba(220,38,38,0.3);
+  border-radius: 8px; padding: 9px 13px; font-size: 12px; color: #fca5a5;
+  margin-bottom: 12px; display: none;
 }
 .auth-success-msg {
-  background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px;
-  padding: 9px 13px; font-size: 12px; color: #15803d; margin-bottom: 12px; display: none;
+  background: rgba(0,229,160,0.08); border: 1px solid rgba(0,229,160,0.25);
+  border-radius: 8px; padding: 9px 13px; font-size: 12px; color: #6ee7b7;
+  margin-bottom: 12px; display: none;
 }
-.auth-divider { text-align: center; color: #9ca3af; font-size: 11px; margin: 14px 0; }
+.auth-divider {
+  text-align: center; color: rgba(90,107,138,0.8);
+  font-size: 11px; margin: 14px 0; font-family: 'Space Mono', monospace;
+  letter-spacing: 0.06em; text-transform: uppercase;
+}
 .auth-demo-btn {
-  width: 100%; padding: 10px; border: 1.5px dashed #d0d4db; border-radius: 10px;
-  background: none; color: #6b7280; font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s;
+  width: 100%; padding: 11px;
+  border: 1px dashed rgba(123,92,240,0.35); border-radius: 10px;
+  background: rgba(123,92,240,0.05); color: rgba(167,139,250,0.9);
+  font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: all 0.2s;
 }
-.auth-demo-btn:hover { border-color: #7c3aed; color: #7c3aed; background: #f5f3ff; }
+.auth-demo-btn:hover {
+  border-color: rgba(123,92,240,0.6); color: #a78bfa;
+  background: rgba(123,92,240,0.1); transform: translateY(-1px);
+}
 .auth-google-btn {
-  width:100%;padding:11px;border:1.5px solid #e2e8f0;border-radius:10px;
-  background:white;color:#374151;font-family:'Plus Jakarta Sans',sans-serif;
-  font-size:13px;font-weight:600;cursor:pointer;transition:all 0.15s;
+  width:100%;padding:11px;border:1px solid rgba(255,255,255,0.1);border-radius:10px;
+  background:rgba(255,255,255,0.04);color:#EEF2FF;font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;
   display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px;
 }
-.auth-google-btn:hover{border-color:#4285F4;box-shadow:0 2px 8px rgba(66,133,244,0.2);background:#f8fbff;}
-.auth-guest-btn {
-  width:100%;padding:9px;border:1.5px solid #e2e8f0;border-radius:10px;
-  background:#f9fafb;color:#6b7280;font-family:'Plus Jakarta Sans',sans-serif;
-  font-size:12px;font-weight:600;cursor:pointer;transition:all 0.15s;margin-bottom:6px;
+.auth-google-btn:hover{
+  border-color:rgba(74,142,255,0.4);background:rgba(74,142,255,0.06);
+  box-shadow:0 4px 16px rgba(74,142,255,0.15);
 }
-.auth-guest-btn:hover{border-color:#9ca3af;color:#374151;background:#f1f3f7;}
-.auth-footer-note { font-size: 11px; color: #9ca3af; text-align: center; margin-top: 14px; line-height: 1.5; }
+.auth-footer-note {
+  font-size: 11px; color: rgba(90,107,138,0.8);
+  text-align: center; margin-top: 14px; line-height: 1.6;
+  font-family: 'Space Mono', monospace; letter-spacing: 0.03em;
+}
 
 /* ══ SUBSCRIPTION OVERLAY ════════════════════════════════ */
 #subscriptionOverlay {
@@ -2015,6 +2082,15 @@ input:focus, select:focus, textarea:focus {
   border-radius: 5px; padding: 2px 8px; font-family: 'JetBrains Mono', monospace;
 }
 
+
+/* Fix autofill background on dark theme */
+.auth-input:-webkit-autofill,
+.auth-input:-webkit-autofill:hover,
+.auth-input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px #0A1428 inset !important;
+  -webkit-text-fill-color: #EEF2FF !important;
+  border-color: rgba(74,142,255,0.4) !important;
+}
 </style>
 </head>
 <body>
@@ -2110,14 +2186,30 @@ input:focus, select:focus, textarea:focus {
 
 <!-- AUTH OVERLAY -->
 <div id="authOverlay">
+  <div class="auth-dots-bg"></div>
   <div class="auth-box">
     <div class="auth-header">
-      <a href="/" style="position:absolute;top:12px;left:16px;color:rgba(255,255,255,0.4);font-size:11px;text-decoration:none;display:flex;align-items:center;gap:4px;">
-        ← Home
+      <a href="/" style="position:absolute;top:14px;left:16px;color:rgba(139,158,199,0.5);font-size:11px;text-decoration:none;display:flex;align-items:center;gap:4px;font-family:'Space Mono',monospace;letter-spacing:0.06em;transition:color 0.2s;" onmouseover="this.style.color='#4A8EFF'" onmouseout="this.style.color='rgba(139,158,199,0.5)'">
+        ← HOME
       </a>
-      <div class="auth-logo-mark">📊</div>
-      <h1>BA.IA</h1>
-      <p>Analisi AI per finanza agevolata italiana</p>
+      <div class="auth-logo-wrap">
+        <svg class="auth-logo-mark" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="36" height="36" rx="10" fill="#0A1428"/>
+        <rect x="0.5" y="0.5" width="35" height="35" rx="9.5" stroke="rgba(74,142,255,0.3)"/>
+        <path d="M10 9h8.5c2.8 0 4.5 1.5 4.5 3.8 0 1.4-.7 2.5-1.8 3.2 1.6.6 2.8 1.9 2.8 3.8 0 2.7-2 4.2-5.2 4.2H10V9z" fill="#4A8EFF" opacity="0.9"/>
+        <path d="M13 12h5c1 0 1.8.7 1.8 1.8s-.8 1.8-1.8 1.8h-5v-3.6z" fill="#04080F"/>
+        <path d="M13 17h5.5c1.2 0 2 .8 2 2s-.8 2-2 2H13v-4z" fill="#04080F"/>
+        <circle cx="27" cy="13" r="1.5" fill="#00D4FF" opacity="0.9"/>
+        <circle cx="27" cy="19" r="1.5" fill="#7B5CF0" opacity="0.7"/>
+        <circle cx="27" cy="25" r="1.5" fill="#4A8EFF" opacity="0.5"/>
+        <line x1="26" y1="13" x2="22" y2="14" stroke="rgba(0,212,255,0.3)" stroke-width="0.8"/>
+        <line x1="26" y1="19" x2="22" y2="18" stroke="rgba(123,92,240,0.3)" stroke-width="0.8"/>
+        <line x1="26" y1="25" x2="22" y2="23" stroke="rgba(74,142,255,0.3)" stroke-width="0.8"/>
+      </svg>
+        <span class="auth-logo-wordmark">BA<span>.</span>IA</span>
+      </div>
+      <h1>Analisi AI per la<br><em>finanza agevolata</em></h1>
+      <p>50 miliardi di fondi · Match semantico · 30 secondi</p>
     </div>
     <div class="auth-body">
       <div class="auth-tabs">
@@ -2126,6 +2218,7 @@ input:focus, select:focus, textarea:focus {
       </div>
       <div id="authError" class="auth-error"></div>
       <div id="authSuccess" class="auth-success-msg"></div>
+
       <!-- LOGIN FORM -->
       <div id="loginForm">
         <button class="auth-google-btn" onclick="authGoogle()">
@@ -2135,16 +2228,16 @@ input:focus, select:focus, textarea:focus {
         <div class="auth-divider">oppure accedi con email</div>
         <input class="auth-input" type="email" id="loginEmail" placeholder="La tua email" autocomplete="email">
         <input class="auth-input" type="password" id="loginPassword" placeholder="Password" autocomplete="current-password" onkeydown="if(event.key==='Enter')authLogin()">
-        <button class="auth-btn-primary" id="loginBtn" onclick="authLogin()">→ Accedi</button>
+        <button class="auth-btn-primary" id="loginBtn" onclick="authLogin()"><span>→ Accedi</span></button>
         <div class="auth-divider">oppure</div>
-        <button class="auth-guest-btn" onclick="authGuest()">👤 Continua come Ospite (senza account)</button>
         <button class="auth-demo-btn" onclick="authSkipToDemo()">🎭 Prova la Demo con dati di esempio</button>
         <div class="auth-footer-note">
-          <a href="#" onclick="showForgotPassword()" style="color:#c69229;text-decoration:none;">Password dimenticata?</a>
+          <a href="#" onclick="showForgotPassword()" style="color:#4A8EFF;text-decoration:none;">Password dimenticata?</a>
           &nbsp;·&nbsp;
-          <a href="/" style="color:#9ca3af;text-decoration:none;">← Home</a>
+          <a href="/" style="color:rgba(90,107,138,0.7);text-decoration:none;">← Torna alla home</a>
         </div>
       </div>
+
       <!-- REGISTER FORM -->
       <div id="registerForm" style="display:none;">
         <button class="auth-google-btn" onclick="authGoogle()">
@@ -2155,22 +2248,22 @@ input:focus, select:focus, textarea:focus {
         <input class="auth-input" type="email" id="regEmail" placeholder="La tua email" autocomplete="email">
         <input class="auth-input" type="password" id="regPassword" placeholder="Scegli una password (min. 8 caratteri)" autocomplete="new-password">
         <input class="auth-input" type="password" id="regPasswordConfirm" placeholder="Ripeti la password" autocomplete="new-password" onkeydown="if(event.key==='Enter')authRegister()">
-        <button class="auth-btn-primary" id="registerBtn" onclick="authRegister()">✓ Crea Account Gratuito</button>
+        <button class="auth-btn-primary" id="registerBtn" onclick="authRegister()"><span>✓ Crea Account Gratuito</span></button>
         <div class="auth-divider">oppure</div>
-        <button class="auth-guest-btn" onclick="authGuest()">👤 Continua come Ospite</button>
         <button class="auth-demo-btn" onclick="authSkipToDemo()">🎭 Prova prima la Demo</button>
         <div class="auth-footer-note">
-          Registrandoti accetti i <a href="#" style="color:#c69229;text-decoration:none;">Termini di Servizio</a>.<br>
-          14 giorni di trial gratuito. Nessuna carta richiesta.<br>
-          <a href="/" style="color:#9ca3af;text-decoration:none;font-size:11px;">← Torna alla home</a>
+          Registrandoti accetti i <a href="#" style="color:#4A8EFF;text-decoration:none;">Termini di Servizio</a>.<br>
+          14 giorni di trial gratuito · Nessuna carta richiesta<br>
+          <a href="/" style="color:rgba(90,107,138,0.7);text-decoration:none;">← Torna alla home</a>
         </div>
       </div>
+
       <!-- FORGOT PASSWORD -->
       <div id="forgotForm" style="display:none;">
-        <div style="font-size:13px;color:var(--text-muted);margin-bottom:12px;">Inserisci la tua email e ti invieremo un link per reimpostare la password.</div>
+        <div style="font-size:13px;color:rgba(139,158,199,0.8);margin-bottom:14px;line-height:1.6;">Inserisci la tua email e ti invieremo un link per reimpostare la password.</div>
         <input class="auth-input" type="email" id="forgotEmail" placeholder="La tua email">
-        <button class="auth-btn-primary" onclick="authResetPassword()">📧 Invia link di reset</button>
-        <button style="width:100%;margin-top:8px;background:none;border:none;color:#9ca3af;font-size:12px;cursor:pointer;" onclick="switchAuthTab('login')">← Torna al login</button>
+        <button class="auth-btn-primary" onclick="authResetPassword()"><span>📧 Invia link di reset</span></button>
+        <button style="width:100%;margin-top:10px;background:none;border:none;color:rgba(139,158,199,0.6);font-size:12px;cursor:pointer;font-family:'Space Mono',monospace;letter-spacing:0.04em;" onclick="switchAuthTab('login')">← TORNA AL LOGIN</button>
       </div>
     </div>
   </div>
@@ -3185,15 +3278,22 @@ async function _loadCloudState() {
 
   // ── Handle landing page redirects ──────────────────────────
   const authParam = params.get('auth');
-  if (authParam === 'register') {
-    // Switch to register tab when landing page sends to /app?auth=register
-    document.addEventListener('DOMContentLoaded', () => {
-      setTimeout(() => switchAuthTab('register'), 100);
-    });
-    if (typeof switchAuthTab === 'function') switchAuthTab('register');
-  } else if (authParam === 'login') {
-    // Default is login tab — already shown, just ensure it's visible
-    if (typeof switchAuthTab === 'function') switchAuthTab('login');
+  if (authParam === 'register' || authParam === 'login') {
+    // Use multiple attempts to ensure tab switches after DOM is ready
+    const _switchTab = () => {
+      if (typeof switchAuthTab === 'function') {
+        switchAuthTab(authParam);
+        return true;
+      }
+      return false;
+    };
+    if (!_switchTab()) {
+      document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => _switchTab(), 50);
+        setTimeout(() => _switchTab(), 200);
+      });
+      setTimeout(() => _switchTab(), 300);
+    }
   }
 
   if (params.get('checkout') === 'success') {
