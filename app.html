@@ -7528,7 +7528,7 @@ function renderCompaniesPage() {
               <div class="form-group"><label class="form-label">Regione / Sede</label>
                 <select class="form-control" id="c_regione">
                   <option value="">— Seleziona —</option>
-                  ${['Abruzzo','Basilicata','Calabria','Campania','Emilia-Romagna','Friuli-Venezia Giulia','Lazio','Liguria','Lombardia','Marche','Molise','Piemonte','Puglia','Sardegna','Sicilia','Toscana','Trentino-Alto Adige','Umbria','Valle d\'Aosta','Veneto'].map(r=>'<option value="'+r+'" '+(c.regione===r?'selected':'')+'>'+r+'</option>').join('')}
+                  ${["Abruzzo","Basilicata","Calabria","Campania","Emilia-Romagna","Friuli-Venezia Giulia","Lazio","Liguria","Lombardia","Marche","Molise","Piemonte","Puglia","Sardegna","Sicilia","Toscana","Trentino-Alto Adige","Umbria","Valle d'Aosta","Veneto"].map(r=>'<option value="'+r+'" '+(c.regione===r?'selected':'')+'>'+r+'</option>').join('')}
                 </select></div>
             </div>
             <div class="form-row" style="margin-bottom:22px;">
@@ -11188,7 +11188,7 @@ const WIZARD_STEPS = [
     title: 'Localizzazione',
     sub: 'Regione e provincia per accedere ai bandi territoriali',
     fields: [
-      { id:'wiz_regione', label:'Regione', type:'select', options:['Abruzzo','Basilicata','Calabria','Campania','Emilia-Romagna','Friuli-Venezia Giulia','Lazio','Liguria','Lombardia','Marche','Molise','Piemonte','Puglia','Sardegna','Sicilia','Toscana','Trentino-Alto Adige','Umbria','Valle d'Aosta','Veneto'] },
+      { id:'wiz_regione', label:'Regione', type:'select', options:["Abruzzo","Basilicata","Calabria","Campania","Emilia-Romagna","Friuli-Venezia Giulia","Lazio","Liguria","Lombardia","Marche","Molise","Piemonte","Puglia","Sardegna","Sicilia","Toscana","Trentino-Alto Adige","Umbria","Valle d'Aosta","Veneto"] },
       { id:'wiz_provincia', label:'Provincia', type:'text', placeholder:'es. Cagliari' }
     ]
   },
