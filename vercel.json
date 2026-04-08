@@ -1,9 +1,22 @@
 {
   "version": 2,
   "builds": [
-    { "src": "AI_Analisi_Bandi_SaaS_FIXED.html", "use": "@vercel/static" }
+    { "src": "index.html", "use": "@vercel/static" },
+    { "src": "app.html",   "use": "@vercel/static" }
   ],
   "routes": [
-    { "src": "/(.*)", "dest": "/AI_Analisi_Bandi_SaaS_FIXED.html" }
+    { "src": "/app",  "dest": "/app.html" },
+    { "src": "/app/", "dest": "/app.html" },
+    { "src": "/",     "dest": "/index.html" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy",        "value": "strict-origin-when-cross-origin" }
+      ]
+    }
   ]
 }
