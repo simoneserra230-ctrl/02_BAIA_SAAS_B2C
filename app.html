@@ -3045,7 +3045,11 @@ async function authSignOut() {
 }
 
 function authSkipToDemo() {
-  document.getElementById('authOverlay').style.display = 'none';
+  const overlay = document.getElementById('authOverlay');
+  if (overlay) overlay.style.display = 'none';
+  // Pulisce lo stato prima di caricare la demo
+  _currentUser = null;
+  _authToken = null;
   loadDemoData();
 }
 
@@ -3298,11 +3302,17 @@ async function _loadCloudState() {
   // ── Handle landing page redirects ──────────────────────────
   const authParam = params.get('auth');
   if (authParam === 'demo') {
-    // Vai direttamente alla demo senza mostrare il login
-    document.addEventListener('DOMContentLoaded', () => {
-      setTimeout(() => { if (typeof authSkipToDemo === 'function') authSkipToDemo(); }, 200);
-    });
-    setTimeout(() => { if (typeof authSkipToDemo === 'function') authSkipToDemo(); }, 400);
+    // Nascondi overlay SUBITO — nessun flash di login
+    const overlay = document.getElementById('authOverlay');
+    if (overlay) overlay.style.display = 'none';
+    // Lancia demo dopo che il DOM è pronto
+    const _launchDemo = () => { if (typeof loadDemoData === 'function') { loadDemoData(); return true; } return false; };
+    if (!_launchDemo()) {
+      document.addEventListener('DOMContentLoaded', () => { setTimeout(_launchDemo, 100); setTimeout(_launchDemo, 400); });
+      setTimeout(_launchDemo, 200);
+      setTimeout(_launchDemo, 600);
+    }
+    return; // ← skip tutto il resto del bootstrap (getSession, overlay, ecc.)
   } else if (authParam === 'register' || authParam === 'login') {
     const _switchTab = () => {
       if (typeof switchAuthTab === 'function') { switchAuthTab(authParam); return true; }
@@ -3318,7 +3328,7 @@ async function _loadCloudState() {
   }
 
   if (params.get('checkout') === 'success') {
-    notify('🎉 Abbonamento attivato! Bentornato in GrantLens Pro.', 'success', 6000);
+    notify('🎉 Abbonamento attivato! Bentornato in BA.IA Pro.', 'success', 6000);
     history.replaceState({}, '', window.location.pathname);
   }
 
