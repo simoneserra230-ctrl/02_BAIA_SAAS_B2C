@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GrantLens — AI Analisi Bandi Pro</title>
+<title>BA.IA — Analisi AI Finanza Agevolata</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&family=JetBrains+Mono:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <!-- Supabase JS v2 — auth + realtime -->
@@ -3135,16 +3135,21 @@ async function _checkSubscription() {
   }
   try {
     const r = await fetch(`${BACKEND_URL}/subscription/status`, {
-      headers: { 'Authorization': `Bearer ${_authToken}` }
+      headers: { 'Authorization': `Bearer ${_authToken}` },
+      signal: AbortSignal.timeout(8000)
     });
+    if (!r.ok) { _updatePlanBadge('trial'); return; }
     const d = await r.json();
-    _updatePlanBadge(d.plan || 'free');
-    if (!d.active && d.plan === 'free') {
-      // Mostra overlay abbonamento dopo 1 secondo
-      setTimeout(openSubscriptionOverlay, 1000);
+    // Se il backend ha un errore (es. profilo non ancora creato), assume trial
+    if (d.error) { _updatePlanBadge('trial'); return; }
+    _updatePlanBadge(d.plan || 'trial');
+    // Mostra overlay solo se esplicitamente free (non trial, non errore)
+    if (!d.active && d.plan === 'free' && !d.error) {
+      setTimeout(openSubscriptionOverlay, 2000);
     }
   } catch(e) {
-    _updatePlanBadge('trial'); // in caso di errore assume trial
+    // Backend non raggiungibile (cold start Render) — assume trial, non bloccare
+    _updatePlanBadge('trial');
   }
 }
 
@@ -3528,6 +3533,18 @@ function extractNum(str) {
 
 // ─── STATE ───
 const BACKEND_URL = SAAS_CONFIG.backendUrl;
+// ── RENDER KEEPALIVE — ping ogni 10 minuti per evitare cold start ──
+(function _renderKeepalive() {
+  const ping = () => fetch(SAAS_CONFIG.backendUrl + '/', { 
+    method: 'GET', 
+    signal: AbortSignal.timeout(5000) 
+  }).catch(() => {});
+  // Primo ping dopo 30 secondi
+  setTimeout(ping, 30000);
+  // Poi ogni 10 minuti
+  setInterval(ping, 10 * 60 * 1000);
+})();
+
 
 // ─── ABORT + TOKEN TRACKING ───
 let _abortAnalysis_flag = false;
@@ -8580,7 +8597,7 @@ ${renderSection('5. Beneficiari e Requisiti Territoriali', d.sezione5_beneficiar
 ${renderNestedSection('6. Requisiti di Ammissibilità', d.sezione6_requisitiAmmissibilita)}
 ${renderSection('7. Spese Ammissibili', d.sezione7_speseAmmissibili)}
 ${renderSection('8. Spese Non Ammissibili', d.sezione8_speseNonAmmissibili)}
-${renderSection('9. Intensità dell\'Agevolazione', d.sezione9_intensitaAgevolazione)}
+${renderSection("9. Intensità dell'Agevolazione", d.sezione9_intensitaAgevolazione)}
 ${renderSection('10. Modalità di Presentazione', d.sezione10_modalitaPresentazione)}
 ${renderSection('11. Modalità di Erogazione', d.sezione11_modalitaErogazione)}
 ${renderSection('12. Rendicontazione', d.sezione12_rendicontazione)}
