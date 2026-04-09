@@ -2226,15 +2226,13 @@ input:focus, select:focus, textarea:focus {
           Continua con Google
         </button>
         <div class="auth-divider">oppure accedi con email</div>
-        <input class="auth-input" type="email" id="loginEmail" placeholder="La tua email" autocomplete="email">
+        <input class="auth-input" type="email" id="loginEmail" placeholder="Email" autocomplete="email">
         <input class="auth-input" type="password" id="loginPassword" placeholder="Password" autocomplete="current-password" onkeydown="if(event.key==='Enter')authLogin()">
-        <button class="auth-btn-primary" id="loginBtn" onclick="authLogin()"><span>→ Accedi</span></button>
-        <div class="auth-divider">oppure</div>
-        <button class="auth-demo-btn" onclick="authSkipToDemo()">🎭 Prova la Demo con dati di esempio</button>
+        <button class="auth-btn-primary" id="loginBtn" onclick="authLogin()"><span>→ Entra</span></button>
         <div class="auth-footer-note">
           <a href="#" onclick="showForgotPassword()" style="color:#4A8EFF;text-decoration:none;">Password dimenticata?</a>
           &nbsp;·&nbsp;
-          <a href="/" style="color:rgba(90,107,138,0.7);text-decoration:none;">← Torna alla home</a>
+          <a href="/" style="color:rgba(90,107,138,0.7);text-decoration:none;">← Home</a>
         </div>
       </div>
 
@@ -2244,16 +2242,19 @@ input:focus, select:focus, textarea:focus {
           <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
           Registrati con Google
         </button>
-        <div class="auth-divider">oppure crea account con email</div>
-        <input class="auth-input" type="email" id="regEmail" placeholder="La tua email" autocomplete="email">
-        <input class="auth-input" type="password" id="regPassword" placeholder="Scegli una password (min. 8 caratteri)" autocomplete="new-password">
-        <input class="auth-input" type="password" id="regPasswordConfirm" placeholder="Ripeti la password" autocomplete="new-password" onkeydown="if(event.key==='Enter')authRegister()">
-        <button class="auth-btn-primary" id="registerBtn" onclick="authRegister()"><span>✓ Crea Account Gratuito</span></button>
-        <div class="auth-divider">oppure</div>
-        <button class="auth-demo-btn" onclick="authSkipToDemo()">🎭 Prova prima la Demo</button>
+        <div class="auth-divider">oppure crea account</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <input class="auth-input" type="text" id="regNome" placeholder="Nome *" autocomplete="given-name" style="margin-bottom:0;">
+          <input class="auth-input" type="text" id="regCognome" placeholder="Cognome *" autocomplete="family-name" style="margin-bottom:0;">
+        </div>
+        <input class="auth-input" type="text" id="regCodiceFiscale" placeholder="Codice Fiscale *" autocomplete="off" style="text-transform:uppercase;" oninput="this.value=this.value.toUpperCase()">
+        <input class="auth-input" type="email" id="regEmail" placeholder="Email *" autocomplete="email">
+        <input class="auth-input" type="password" id="regPassword" placeholder="Password (min. 8 caratteri) *" autocomplete="new-password">
+        <input class="auth-input" type="password" id="regPasswordConfirm" placeholder="Conferma password *" autocomplete="new-password" onkeydown="if(event.key==='Enter')authRegister()">
+        <button class="auth-btn-primary" id="registerBtn" onclick="authRegister()"><span>✓ Crea Account</span></button>
         <div class="auth-footer-note">
           Registrandoti accetti i <a href="#" style="color:#4A8EFF;text-decoration:none;">Termini di Servizio</a>.<br>
-          14 giorni di trial gratuito · Nessuna carta richiesta<br>
+          Trial gratuito · Nessuna carta richiesta<br>
           <a href="/" style="color:rgba(90,107,138,0.7);text-decoration:none;">← Torna alla home</a>
         </div>
       </div>
@@ -2964,35 +2965,48 @@ async function authLogin() {
 }
 
 async function authRegister() {
-  const email   = document.getElementById('regEmail').value.trim();
-  const pass    = document.getElementById('regPassword').value;
-  const pass2   = document.getElementById('regPasswordConfirm').value;
-  if (!email || !pass) { _showAuthError('Compila tutti i campi'); return; }
-  if (pass !== pass2)  { _showAuthError('Le password non corrispondono'); return; }
-  if (pass.length < 8) { _showAuthError('La password deve avere almeno 8 caratteri'); return; }
+  const nome    = (document.getElementById('regNome')?.value || '').trim();
+  const cognome = (document.getElementById('regCognome')?.value || '').trim();
+  const cf      = (document.getElementById('regCodiceFiscale')?.value || '').trim().toUpperCase();
+  const email   = (document.getElementById('regEmail')?.value || '').trim();
+  const pass    = document.getElementById('regPassword')?.value || '';
+  const pass2   = document.getElementById('regPasswordConfirm')?.value || '';
 
-  const btn = document.getElementById('registerBtn');
-  btn.disabled = true; btn.textContent = '⏳ Registrazione…';
+  if (!nome || !cognome)    { _showAuthError('Inserisci nome e cognome'); return; }
+  if (!cf || cf.length < 11){ _showAuthError('Codice Fiscale non valido (min. 11 caratteri)'); return; }
+  if (!email)               { _showAuthError('Inserisci la tua email'); return; }
+  if (!pass || pass.length < 8) { _showAuthError('Password troppo corta (min. 8 caratteri)'); return; }
+  if (pass !== pass2)       { _showAuthError('Le password non coincidono'); return; }
 
   if (!_supabaseClient) {
-    _onAuthSuccess({ email, id: 'local-user' }, null);
+    _onAuthSuccess({ email, id: 'local-user', user_metadata: { nome, cognome, codice_fiscale: cf } }, null);
     return;
   }
+  const btn = document.getElementById('registerBtn');
+  btn.disabled = true;
+  btn.querySelector('span').textContent = 'Creazione account…';
 
-  try {
-    const { data, error } = await _supabaseClient.auth.signUp({ email, password: pass });
-    if (error) throw error;
-    if (data.user && !data.session) {
-      // Email confirmation required
-      _showAuthSuccess('✅ Controlla la tua email e clicca il link di conferma!');
-      btn.disabled = false; btn.textContent = '✓ Crea Account Gratuito';
-    } else if (data.session) {
-      _authToken = data.session.access_token;
-      await _onAuthSuccess(data.user, data.session);
+  const { data, error } = await _supabaseClient.auth.signUp({
+    email,
+    password: pass,
+    options: {
+      data: {
+        nome,
+        cognome,
+        codice_fiscale: cf,
+        full_name: nome + ' ' + cognome
+      }
     }
-  } catch (err) {
-    _showAuthError('❌ ' + (err.message || 'Errore durante la registrazione'));
-    btn.disabled = false; btn.textContent = '✓ Crea Account Gratuito';
+  });
+
+  btn.disabled = false;
+  btn.querySelector('span').textContent = '✓ Crea Account';
+  if (error) { _showAuthError(error.message); return; }
+  if (data?.user?.identities?.length === 0) { _showAuthError('Email già registrata. Usa Accedi.'); return; }
+  if (data.session) {
+    await _onAuthSuccess(data.user, data.session);
+  } else {
+    _showAuthSuccess("✅ Controlla la tua email per confermare l'account!");
   }
 }
 
@@ -3283,13 +3297,15 @@ async function _loadCloudState() {
 
   // ── Handle landing page redirects ──────────────────────────
   const authParam = params.get('auth');
-  if (authParam === 'register' || authParam === 'login') {
-    // Use multiple attempts to ensure tab switches after DOM is ready
+  if (authParam === 'demo') {
+    // Vai direttamente alla demo senza mostrare il login
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => { if (typeof authSkipToDemo === 'function') authSkipToDemo(); }, 200);
+    });
+    setTimeout(() => { if (typeof authSkipToDemo === 'function') authSkipToDemo(); }, 400);
+  } else if (authParam === 'register' || authParam === 'login') {
     const _switchTab = () => {
-      if (typeof switchAuthTab === 'function') {
-        switchAuthTab(authParam);
-        return true;
-      }
+      if (typeof switchAuthTab === 'function') { switchAuthTab(authParam); return true; }
       return false;
     };
     if (!_switchTab()) {
