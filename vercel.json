@@ -2,13 +2,15 @@
   "version": 2,
   "builds": [
     { "src": "index.html", "use": "@vercel/static" },
-    { "src": "app.html",   "use": "@vercel/static" }
+    { "src": "app.html",   "use": "@vercel/static" },
+    { "src": "demo.html",  "use": "@vercel/static" }
   ],
   "routes": [
-    { "src": "/app",  "dest": "/app.html" },
-    { "src": "/app/", "dest": "/app.html" },
-    { "src": "/",     "dest": "/index.html" },
-    { "src": "/(.*)", "dest": "/index.html" }
+    { "src": "/app",   "dest": "/app.html" },
+    { "src": "/app/",  "dest": "/app.html" },
+    { "src": "/demo",  "dest": "/demo.html" },
+    { "src": "/demo/", "dest": "/demo.html" },
+    { "src": "/",      "dest": "/index.html" }
   ],
   "headers": [
     {
