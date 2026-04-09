@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BA.IA — SS · Accedi</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:      #030712;
+    --bg2:     #060d1f;
+    --card:    rgba(255,255,255,0.04);
+    --border:  rgba(255,255,255,0.09);
+    --border2: rgba(255,255,255,0.15);
+    --text:    #EEF2FF;
+    --muted:   #8B9EC7;
+    --subtle:  #4A5578;
+    --gold:    #F5C842;
+    --gold-bg: rgba(245,200,66,0.08);
+    --blue:    #4A8EFF;
+    --blue-bg: rgba(74,142,255,0.08);
+    --green:   #00E5A0;
+    --red:     #FF5F7A;
+    --red-bg:  rgba(255,95,122,0.08);
+    --r:       10px;
+    --t:       0.18s ease;
+  }
+
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Background grid */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(74,142,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(74,142,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Glow top-left */
+  body::after {
+    content: '';
+    position: fixed;
+    top: -200px; left: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(74,142,255,0.07) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page {
+    position: relative; z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+  }
+
+  .auth-wrapper {
+    width: 100%;
+    max-width: 440px;
+  }
+
+  /* Logo */
+  .logo {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .logo-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px; height: 52px;
+    background: var(--gold-bg);
+    border: 1px solid rgba(245,200,66,0.3);
+    border-radius: 14px;
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+  .logo-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--text);
+  }
+  .logo-title span { color: var(--gold); }
+  .logo-sub {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* Card */
+  .auth-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .auth-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(245,200,66,0.4), transparent);
+  }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 4px;
+    margin-bottom: 24px;
+  }
+  .tab {
+    flex: 1;
+    padding: 8px 12px;
+    background: none;
+    border: none;
+    border-radius: 7px;
+    color: var(--muted);
+    font-size: 13.5px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--t);
+    font-family: 'Inter', sans-serif;
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active {
+    background: rgba(255,255,255,0.08);
+    color: var(--text);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+  }
+
+  /* Forms */
+  .form { display: none; }
+  .form.active { display: block; }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .field {
+    margin-bottom: 12px;
+  }
+  .field label {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+    margin-bottom: 5px;
+    letter-spacing: 0.01em;
+  }
+  .field input,
+  .field select {
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 10px 13px;
+    color: var(--text);
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    transition: border-color var(--t), box-shadow var(--t);
+    -webkit-appearance: none;
+  }
+  .field select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238B9EC7' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 32px;
+  }
+  .field select option { background: #0f1b35; color: var(--text); }
+  .field input::placeholder { color: var(--subtle); }
+  .field input:focus,
+  .field select:focus {
+    border-color: rgba(74,142,255,0.5);
+    box-shadow: 0 0 0 3px rgba(74,142,255,0.12);
+  }
+
+  /* Buttons */
+  .btn-primary {
+    width: 100%;
+    padding: 11px;
+    background: var(--blue);
+    border: none;
+    border-radius: var(--r);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--t);
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.01em;
+    margin-top: 4px;
+  }
+  .btn-primary:hover { background: #5a9eff; box-shadow: 0 4px 16px rgba(74,142,255,0.35); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .btn-google {
+    width: 100%;
+    padding: 10px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border2);
+    border-radius: var(--r);
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--t);
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+  }
+  .btn-google:hover {
+    background: rgba(255,255,255,0.09);
+    border-color: rgba(255,255,255,0.22);
+  }
+  .btn-google svg { flex-shrink: 0; }
+
+  /* Divider */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 16px 0;
+    color: var(--subtle);
+    font-size: 12px;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* Messages */
+  .msg {
+    padding: 10px 13px;
+    border-radius: var(--r);
+    font-size: 13px;
+    margin-bottom: 14px;
+    display: none;
+  }
+  .msg.error { background: var(--red-bg); border: 1px solid rgba(255,95,122,0.25); color: var(--red); display: block; }
+  .msg.success { background: rgba(0,229,160,0.07); border: 1px solid rgba(0,229,160,0.25); color: var(--green); display: block; }
+
+  /* Footer link */
+  .footer-link {
+    text-align: center;
+    margin-top: 18px;
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+  .footer-link a { color: var(--gold); text-decoration: none; }
+  .footer-link a:hover { text-decoration: underline; }
+
+  .forgot-link {
+    display: block;
+    text-align: right;
+    font-size: 12px;
+    color: var(--muted);
+    text-decoration: none;
+    margin-top: -6px;
+    margin-bottom: 14px;
+    transition: color var(--t);
+  }
+  .forgot-link:hover { color: var(--gold); }
+
+  /* Back to landing */
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--muted);
+    font-size: 12.5px;
+    text-decoration: none;
+    margin-bottom: 20px;
+    transition: color var(--t);
+    padding: 4px 0;
+  }
+  .back-btn:hover { color: var(--text); }
+
+  .spinner {
+    display: inline-block;
+    width: 14px; height: 14px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    vertical-align: middle;
+    margin-right: 6px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Password strength */
+  .pwd-strength {
+    margin-top: 5px;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--border);
+    overflow: hidden;
+  }
+  .pwd-strength-bar {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.3s, background 0.3s;
+    width: 0;
+  }
+
+  .terms-note {
+    font-size: 11.5px;
+    color: var(--subtle);
+    text-align: center;
+    margin-top: 12px;
+    line-height: 1.6;
+  }
+  .terms-note a { color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="auth-wrapper">
+
+    <a class="back-btn" href="index.html">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M8.5 3L4.5 7l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Torna alla home
+    </a>
+
+    <div class="logo">
+      <div class="logo-mark">📊</div>
+      <div class="logo-title">BA<span>.</span>IA <span>—</span> SS</div>
+      <div class="logo-sub">Analisi AI per finanza agevolata italiana</div>
+    </div>
+
+    <div class="auth-card">
+      <div class="tabs">
+        <button class="tab active" id="tabLogin" onclick="setTab('login')">Accedi</button>
+        <button class="tab" id="tabRegister" onclick="setTab('register')">Registrati</button>
+      </div>
+
+      <div id="msgBox" class="msg"></div>
+
+      <!-- ── LOGIN ── -->
+      <div id="formLogin" class="form active">
+        <div class="field">
+          <label>Email</label>
+          <input type="email" id="loginEmail" placeholder="nome@studio.it" autocomplete="email">
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password"
+            onkeydown="if(event.key==='Enter') doLogin()">
+        </div>
+        <a class="forgot-link" href="#" onclick="setTab('forgot');return false;">Password dimenticata?</a>
+
+        <button class="btn-primary" id="loginBtn" onclick="doLogin()">→ Accedi</button>
+
+        <div class="divider">oppure</div>
+
+        <button class="btn-google" onclick="doGoogle()">
+          <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"/></svg>
+          Continua con Google
+        </button>
+      </div>
+
+      <!-- ── REGISTER ── -->
+      <div id="formRegister" class="form">
+        <div class="form-row">
+          <div class="field">
+            <label>Nome *</label>
+            <input type="text" id="regNome" placeholder="Mario" autocomplete="given-name">
+          </div>
+          <div class="field">
+            <label>Cognome *</label>
+            <input type="text" id="regCognome" placeholder="Rossi" autocomplete="family-name">
+          </div>
+        </div>
+        <div class="field">
+          <label>Email *</label>
+          <input type="email" id="regEmail" placeholder="mario@studio.it" autocomplete="email">
+        </div>
+        <div class="field">
+          <label>Nome Studio / Azienda</label>
+          <input type="text" id="regAzienda" placeholder="Studio Rossi & Associati" autocomplete="organization">
+        </div>
+        <div class="field">
+          <label>Ruolo</label>
+          <select id="regRuolo">
+            <option value="">— Seleziona —</option>
+            <option value="Titolare di Studio">Titolare di Studio</option>
+            <option value="Consulente del Lavoro">Consulente del Lavoro</option>
+            <option value="Commercialista / Dottore Commercialista">Commercialista / Dottore Commercialista</option>
+            <option value="CFO / Responsabile Finanza">CFO / Responsabile Finanza</option>
+            <option value="Imprenditore / Manager">Imprenditore / Manager</option>
+            <option value="Consulente Finanziario">Consulente Finanziario</option>
+            <option value="Altro">Altro</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Password * <span style="color:var(--subtle);font-weight:400">(min. 8 caratteri)</span></label>
+          <input type="password" id="regPassword" placeholder="••••••••" autocomplete="new-password"
+            oninput="updatePwdStrength(this.value)">
+          <div class="pwd-strength"><div class="pwd-strength-bar" id="pwdBar"></div></div>
+        </div>
+        <div class="field">
+          <label>Conferma Password *</label>
+          <input type="password" id="regPasswordConfirm" placeholder="••••••••" autocomplete="new-password"
+            onkeydown="if(event.key==='Enter') doRegister()">
+        </div>
+
+        <button class="btn-primary" id="registerBtn" onclick="doRegister()">✓ Crea Account Gratuito</button>
+
+        <div class="divider">oppure</div>
+
+        <button class="btn-google" onclick="doGoogle()">
+          <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"/></svg>
+          Registrati con Google
+        </button>
+
+        <p class="terms-note">
+          Creando un account accetti i <a href="#">Termini di Servizio</a> e la <a href="#">Privacy Policy</a>.<br>
+          14 giorni di trial gratuito. Nessuna carta richiesta.
+        </p>
+      </div>
+
+      <!-- ── FORGOT PASSWORD ── -->
+      <div id="formForgot" class="form">
+        <p style="font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.6;">
+          Inserisci la tua email. Ti invieremo un link per reimpostare la password.
+        </p>
+        <div class="field">
+          <label>Email</label>
+          <input type="email" id="forgotEmail" placeholder="nome@studio.it">
+        </div>
+        <button class="btn-primary" onclick="doForgot()">📧 Invia link di reset</button>
+        <a class="forgot-link" href="#" style="text-align:left;" onclick="setTab('login');return false;">← Torna al login</a>
+      </div>
+    </div>
+
+    <div class="footer-link">
+      Vuoi solo esplorare? <a href="demo.html">→ Prova la demo gratuita</a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ── CONFIG ──────────────────────────────────────────────────────
+const SUPABASE_URL  = 'https://gtrjepxrnvptkqpezvba.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd0cmplcHhybnZwdGtxcGV6dmJhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ5NTE3MjcsImV4cCI6MjA5MDUyNzcyN30.9q2BkcZfe_Z9O1eI_HU3n7Y43acQg0KFmrRGxq-6sxk';
+const APP_URL       = 'app.html';  // redirect dopo login
+
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+// ── TABS ────────────────────────────────────────────────────────
+function setTab(t) {
+  ['login','register','forgot'].forEach(id => {
+    document.getElementById('form' + id.charAt(0).toUpperCase() + id.slice(1)).classList.toggle('active', id === t);
+    const btn = document.getElementById('tab' + id.charAt(0).toUpperCase() + id.slice(1));
+    if (btn) btn.classList.toggle('active', id === t);
+  });
+  clearMsg();
+}
+
+// ── MESSAGES ────────────────────────────────────────────────────
+function showMsg(text, type) {
+  const el = document.getElementById('msgBox');
+  el.textContent = text;
+  el.className = 'msg ' + type;
+}
+function clearMsg() {
+  const el = document.getElementById('msgBox');
+  el.className = 'msg';
+  el.textContent = '';
+}
+
+// ── PASSWORD STRENGTH ───────────────────────────────────────────
+function updatePwdStrength(v) {
+  const bar = document.getElementById('pwdBar');
+  let score = 0;
+  if (v.length >= 8) score++;
+  if (/[A-Z]/.test(v)) score++;
+  if (/[0-9]/.test(v)) score++;
+  if (/[^A-Za-z0-9]/.test(v)) score++;
+  const pct  = [0, 25, 50, 75, 100][score];
+  const clr  = ['', '#FF5F7A', '#FFB86C', '#F5C842', '#00E5A0'][score];
+  bar.style.width = pct + '%';
+  bar.style.background = clr;
+}
+
+// ── AUTH HANDLERS ───────────────────────────────────────────────
+async function doLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const pwd   = document.getElementById('loginPassword').value;
+  if (!email || !pwd) { showMsg('Compila tutti i campi.', 'error'); return; }
+
+  const btn = document.getElementById('loginBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Accesso in corso…';
+  clearMsg();
+
+  const { data, error } = await sb.auth.signInWithPassword({ email, password: pwd });
+  if (error) {
+    showMsg(translateError(error.message), 'error');
+    btn.disabled = false;
+    btn.textContent = '→ Accedi';
+  } else {
+    showMsg('✅ Accesso effettuato! Reindirizzamento…', 'success');
+    setTimeout(() => window.location.href = APP_URL, 800);
+  }
+}
+
+async function doRegister() {
+  const nome    = document.getElementById('regNome').value.trim();
+  const cognome = document.getElementById('regCognome').value.trim();
+  const email   = document.getElementById('regEmail').value.trim();
+  const azienda = document.getElementById('regAzienda').value.trim();
+  const ruolo   = document.getElementById('regRuolo').value;
+  const pwd     = document.getElementById('regPassword').value;
+  const pwd2    = document.getElementById('regPasswordConfirm').value;
+
+  if (!nome || !cognome || !email || !pwd) {
+    showMsg('Compila almeno Nome, Cognome, Email e Password.', 'error'); return;
+  }
+  if (pwd.length < 8) {
+    showMsg('La password deve essere di almeno 8 caratteri.', 'error'); return;
+  }
+  if (pwd !== pwd2) {
+    showMsg('Le password non coincidono.', 'error'); return;
+  }
+
+  const btn = document.getElementById('registerBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Creazione account…';
+  clearMsg();
+
+  const { data, error } = await sb.auth.signUp({
+    email,
+    password: pwd,
+    options: {
+      data: {
+        nome,
+        cognome,
+        full_name: `${nome} ${cognome}`,
+        nome_azienda: azienda,
+        ruolo
+      },
+      emailRedirectTo: window.location.origin + '/' + APP_URL
+    }
+  });
+
+  if (error) {
+    showMsg(translateError(error.message), 'error');
+    btn.disabled = false;
+    btn.textContent = '✓ Crea Account Gratuito';
+  } else if (data?.user?.identities?.length === 0) {
+    showMsg('⚠️ Esiste già un account con questa email. Accedi invece.', 'error');
+    btn.disabled = false;
+    btn.textContent = '✓ Crea Account Gratuito';
+  } else {
+    showMsg('📧 Controlla la tua email per confermare il tuo account!', 'success');
+    btn.textContent = '✓ Email inviata';
+  }
+}
+
+async function doGoogle() {
+  clearMsg();
+  const { error } = await sb.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: window.location.origin + '/' + APP_URL
+    }
+  });
+  if (error) showMsg(translateError(error.message), 'error');
+}
+
+async function doForgot() {
+  const email = document.getElementById('forgotEmail').value.trim();
+  if (!email) { showMsg('Inserisci la tua email.', 'error'); return; }
+  const { error } = await sb.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + '/' + APP_URL + '?reset=1'
+  });
+  if (error) showMsg(translateError(error.message), 'error');
+  else showMsg('📧 Link di reset inviato! Controlla la tua email.', 'success');
+}
+
+// ── ERROR TRANSLATOR ────────────────────────────────────────────
+function translateError(msg) {
+  if (!msg) return 'Errore sconosciuto.';
+  if (msg.includes('Invalid login'))     return 'Email o password errati.';
+  if (msg.includes('Email not confirmed')) return '⚠️ Conferma prima la tua email (controlla la casella).';
+  if (msg.includes('already registered')) return '⚠️ Email già registrata. Accedi o usa "Password dimenticata".';
+  if (msg.includes('rate limit'))         return '⚠️ Troppi tentativi. Attendi qualche minuto.';
+  if (msg.includes('User already'))       return '⚠️ Email già registrata. Accedi invece.';
+  return msg;
+}
+
+// ── AUTO-REDIRECT SE GIÀ LOGGATO ────────────────────────────────
+(async () => {
+  const { data } = await sb.auth.getSession();
+  if (data?.session) {
+    window.location.href = APP_URL;
+  }
+})();
+</script>
+</body>
+</html>
