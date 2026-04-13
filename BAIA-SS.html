@@ -1528,7 +1528,7 @@ textarea.form-control { resize: vertical; min-height: 80px; }
 .fade-in { animation: fadeIn 0.35s ease forwards; }
 
 /* ══ SETTINGS MODAL ══════════════════════════════════ */
-.settings-modal-box {
+.settings-modal-box { display:flex; flex-direction:column; max-height:90vh;
   background: rgba(6,13,31,0.97); border: 1px solid var(--border);
   border-radius: var(--r-2xl); padding: 0;
   max-width: 560px; width: 95%;
@@ -1546,7 +1546,7 @@ textarea.form-control { resize: vertical; min-height: 80px; }
 .settings-title { font-size: 17px; font-weight: 800; color: var(--text); display: flex; align-items: center; gap: 9px; }
 .settings-close { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 7px; padding: 4px 10px; cursor: pointer; font-size: 13px; color: var(--text-muted); transition: var(--t); }
 .settings-close:hover { background: var(--bg-hover); color: var(--text); }
-.settings-body { padding: 24px; }
+.settings-body { padding: 24px; overflow-y: auto; flex: 1; }
 .settings-section { margin-bottom: 24px; }
 .settings-section-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-subtle); font-family: 'JetBrains Mono', monospace; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
 .settings-section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
@@ -2185,7 +2185,7 @@ input:focus, textarea:focus, select:focus {
 [data-theme="light"] .home-kpi-val { color: #2563eb !important; text-shadow: none !important; }
 [data-theme="light"] .tabs { background: #f8f9fb !important; backdrop-filter: none !important; }
 [data-theme="light"] .cmd-palette { background: #ffffff !important; }
-[data-theme="light"] .modal-box, [data-theme="light"] .settings-modal-box { background: #ffffff !important; border-top-color: #c69229 !important; }
+[data-theme="light"] .modal-box, [data-theme="light"] .settings-modal-box { display:flex; flex-direction:column; max-height:90vh; background: #ffffff !important; border-top-color: #c69229 !important; }
 [data-theme="light"] .notification { background: #ffffff !important; }
 [data-theme="light"] .loading-box { background: #ffffff !important; border-color: #bfdbfe !important; }
 [data-theme="light"] .sidebar { background: #ffffff !important; }
@@ -2596,65 +2596,9 @@ body {
   -webkit-font-smoothing: antialiased;
   font-size: 13.5px;
   line-height: 1.55;
-  cursor: none;
 }
 
-/* ── CUSTOM CURSOR — instant, no lag ── */
-#cr {
-  position: fixed;
-  pointer-events: none;
-  z-index: 99999;
-  /* Crosshair-style: two lines */
-  width: 20px; height: 20px;
-  transform: translate(-50%, -50%);
-  transition: none; /* INSTANT */
-}
-#cr::before, #cr::after {
-  content: '';
-  position: absolute;
-  background: var(--acid);
-  border-radius: 1px;
-}
-#cr::before { /* horizontal line */
-  width: 20px; height: 1.5px;
-  top: 50%; left: 0;
-  transform: translateY(-50%);
-  box-shadow: 0 0 6px var(--acid);
-}
-#cr::after { /* vertical line */
-  width: 1.5px; height: 20px;
-  left: 50%; top: 0;
-  transform: translateX(-50%);
-  box-shadow: 0 0 6px var(--acid);
-}
-#cr.hover {
-  width: 28px; height: 28px;
-}
-#cr.click {
-  width: 14px; height: 14px;
-}
-/* Outer ring — instant */
-#cr-dot {
-  position: fixed;
-  width: 4px; height: 4px;
-  background: var(--acid);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 99999;
-  transform: translate(-50%, -50%);
-  transition: none;
-  box-shadow: 0 0 8px var(--acid);
-}
 
-/* ── CANVAS LAYERS ── */
-#canvas-bg {
-  position: fixed; inset: 0;
-  pointer-events: none; z-index: 0;
-}
-#canvas-trail {
-  position: fixed; inset: 0;
-  pointer-events: none; z-index: 1;
-}
 
 /* ── GRAIN ── */
 body::after {
@@ -2749,8 +2693,7 @@ nav button {
   font-family: 'Space Grotesk', sans-serif !important;
   font-size: 11px !important; font-weight: 600 !important;
   letter-spacing: 0.08em !important; text-transform: uppercase !important;
-  padding: 6px 11px !important; border-radius: 6px !important;
-  cursor: none; transition: color 0.15s, background 0.15s !important;
+  padding: 6px 11px !important; border-radius: 6px !important; transition: color 0.15s, background 0.15s !important;
   position: relative; white-space: nowrap;
 }
 nav button:hover { color: var(--t1) !important; background: rgba(255,255,255,0.04) !important; }
@@ -2787,7 +2730,7 @@ nav button.active::after {
   color: var(--t3) !important; letter-spacing: 1px;
   padding: 4px 8px !important;
   border: 1px solid var(--line) !important;
-  border-radius: 5px !important; background: transparent !important; cursor: none;
+  border-radius: 5px !important; background: transparent !important;
   transition: var(--t) !important;
 }
 .header-version:hover { border-color: rgba(0,240,220,0.25) !important; color: var(--acid) !important; }
@@ -2796,15 +2739,13 @@ nav button.active::after {
   border-radius: 7px !important;
   border: 1px solid var(--line) !important;
   background: transparent !important;
-  display: flex; align-items: center; justify-content: center;
-  cursor: none; transition: var(--t) !important;
+  display: flex; align-items: center; justify-content: center; transition: var(--t) !important;
 }
 .header-settings-btn:hover, #themeToggleBtn:hover { border-color: rgba(0,240,220,0.2) !important; background: rgba(0,240,220,0.04) !important; }
 .header-search-btn {
   background: rgba(255,255,255,0.03) !important;
   border: 1px solid var(--line) !important;
-  border-radius: 7px !important; color: var(--t2) !important;
-  cursor: none; transition: var(--t) !important; font-size: 11.5px !important;
+  border-radius: 7px !important; color: var(--t2) !important; transition: var(--t) !important; font-size: 11.5px !important;
 }
 .header-search-btn:hover { border-color: rgba(0,240,220,0.2) !important; color: var(--t1) !important; }
 .header-search-btn .kbd { font-family: 'DM Mono', monospace !important; font-size: 9px !important; background: rgba(255,255,255,0.04) !important; border-color: var(--line) !important; }
@@ -2845,7 +2786,7 @@ nav button.active::after {
   font-size: 10px !important; font-weight: 600 !important;
   letter-spacing: 0.1em !important; text-transform: uppercase !important;
   background: transparent !important; border: none !important;
-  color: var(--t3) !important; cursor: none; transition: var(--t) !important;
+  color: var(--t3) !important; transition: var(--t) !important;
   border-bottom: 2px solid transparent !important;
   border-bottom-left-radius: 0 !important; border-bottom-right-radius: 0 !important;
   padding-bottom: 8px !important;
@@ -2870,8 +2811,7 @@ nav button.active::after {
 .entity-item {
   background: rgba(255,255,255,0.02) !important;
   border: 1px solid rgba(255,255,255,0.04) !important;
-  border-radius: 8px !important;
-  cursor: none; transition: var(--ease) !important;
+  border-radius: 8px !important; transition: var(--ease) !important;
 }
 .entity-item:hover {
   background: rgba(0,240,220,0.04) !important;
@@ -2899,7 +2839,7 @@ nav button.active::after {
   font-family: 'Space Grotesk', sans-serif !important;
   font-size: 10.5px !important; font-weight: 600 !important;
   letter-spacing: 0.07em !important; text-transform: uppercase !important;
-  color: var(--t3) !important; cursor: none; transition: color 0.15s !important;
+  color: var(--t3) !important; transition: color 0.15s !important;
   border-bottom: 2px solid transparent !important;
 }
 .tab:hover { color: var(--t2) !important; }
@@ -2907,7 +2847,7 @@ nav button.active::after {
 .tab-badge { font-family: 'DM Mono', monospace !important; font-size: 8px !important; background: rgba(0,240,220,0.07) !important; color: var(--acid) !important; border-color: rgba(0,240,220,0.15) !important; }
 .ctx-bar { background: rgba(0,4,8,0.85) !important; border-bottom: 1px solid var(--line) !important; backdrop-filter: blur(16px) !important; }
 .ctx-title { font-family: 'Space Grotesk', sans-serif !important; font-size: 13px !important; font-weight: 700 !important; }
-.ctx-btn { font-family: 'Inter', sans-serif !important; font-size: 11.5px !important; background: rgba(255,255,255,0.03) !important; border-color: var(--line) !important; color: var(--t2) !important; border-radius: 7px !important; cursor: none; transition: var(--ease) !important; }
+.ctx-btn { font-family: 'Inter', sans-serif !important; font-size: 11.5px !important; background: rgba(255,255,255,0.03) !important; border-color: var(--line) !important; color: var(--t2) !important; border-radius: 7px !important; transition: var(--ease) !important; }
 .ctx-btn:hover { background: rgba(255,255,255,0.06) !important; border-color: rgba(0,240,220,0.18) !important; color: var(--t1) !important; transform: translateY(-1px) !important; }
 .ctx-btn-gold { background: rgba(255,208,50,0.06) !important; border-color: rgba(255,208,50,0.2) !important; color: var(--sol) !important; }
 
@@ -2920,8 +2860,7 @@ nav button.active::after {
   letter-spacing: 0.03em !important;
   background: rgba(255,255,255,0.04) !important;
   border: 1px solid var(--line) !important;
-  color: var(--t2) !important; border-radius: 7px !important;
-  cursor: none; transition: var(--ease) !important;
+  color: var(--t2) !important; border-radius: 7px !important; transition: var(--ease) !important;
 }
 .btn:hover { transform: translateY(-2px) !important; background: rgba(255,255,255,0.07) !important; border-color: var(--line-2) !important; color: var(--t1) !important; }
 .btn:active { transform: translateY(0) !important; }
@@ -2990,7 +2929,7 @@ nav button.active::after {
   border-radius: 14px !important;
   backdrop-filter: blur(8px) !important;
   position: relative !important;
-  transition: var(--ease) !important; cursor: none;
+  transition: var(--ease) !important;
   overflow: hidden !important;
 }
 .kpi-card::after {
@@ -3086,7 +3025,7 @@ nav button.active::after {
   background: rgba(255,255,255,0.025) !important;
   border: 1px solid rgba(255,255,255,0.05) !important;
   border-radius: 10px !important;
-  transition: var(--ease) !important; cursor: none;
+  transition: var(--ease) !important;
 }
 .home-kpi:hover {
   background: rgba(0,240,220,0.04) !important;
@@ -3123,7 +3062,7 @@ nav button.active::after {
   border: 1px solid rgba(255,255,255,0.06) !important;
   border-radius: 18px !important;
   backdrop-filter: blur(10px) !important;
-  position: relative; overflow: hidden; cursor: none;
+  position: relative; overflow: hidden;
   transition: var(--ease) !important;
 }
 .upload-zone::before {
@@ -3149,7 +3088,7 @@ nav button.active::after {
   border: 1px solid rgba(255,255,255,0.055) !important;
   border-radius: 14px !important;
   backdrop-filter: blur(5px) !important;
-  position: relative; overflow: hidden; cursor: none;
+  position: relative; overflow: hidden;
   transition: var(--ease) !important;
 }
 .feature-card::before { content: '' !important; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: transparent !important; transition: background 0.3s !important; }
@@ -3223,7 +3162,7 @@ nav button.active::after {
 .modal-overlay { background: rgba(0,4,8,0.88) !important; backdrop-filter: blur(14px) !important; }
 .modal-box { background: rgba(4,8,15,0.98) !important; border: 1px solid rgba(255,255,255,0.07) !important; border-top: 2px solid var(--sol) !important; border-radius: 18px !important; backdrop-filter: blur(32px) !important; box-shadow: var(--shadow-lg) !important; }
 .modal-title { font-family: 'Space Grotesk', sans-serif !important; font-weight: 800 !important; }
-.settings-modal-box { background: rgba(4,8,15,0.98) !important; border: 1px solid rgba(255,255,255,0.07) !important; border-top: 2px solid var(--acid) !important; border-radius: 18px !important; backdrop-filter: blur(32px) !important; }
+.settings-modal-box { display:flex; flex-direction:column; max-height:90vh; background: rgba(4,8,15,0.98) !important; border: 1px solid rgba(255,255,255,0.07) !important; border-top: 2px solid var(--acid) !important; border-radius: 18px !important; backdrop-filter: blur(32px) !important; }
 .settings-header { background: rgba(255,255,255,0.02) !important; }
 .settings-title { font-family: 'Space Grotesk', sans-serif !important; font-weight: 800 !important; }
 .settings-section-title { font-family: 'DM Mono', monospace !important; font-size: 9px !important; letter-spacing: 2px !important; color: var(--acid) !important; }
@@ -3241,7 +3180,7 @@ nav button.active::after {
 .cmd-input { font-family: 'Inter', sans-serif !important; font-size: 15px !important; color: var(--t1) !important; background: transparent !important; }
 .cmd-input::placeholder { color: var(--t3) !important; }
 .cmd-section-label, .cmd-section-title { font-family: 'DM Mono', monospace !important; font-size: 9px !important; letter-spacing: 2px !important; color: var(--t3) !important; }
-.cmd-item { cursor: none; transition: var(--t) !important; }
+.cmd-item { transition: var(--t) !important; }
 .cmd-item:hover, .cmd-item.selected { background: rgba(0,240,220,0.05) !important; border-left: 2px solid var(--acid) !important; padding-left: 17px; }
 .cmd-item-title { font-family: 'Space Grotesk', sans-serif !important; font-weight: 600 !important; }
 .cmd-footer { background: rgba(255,255,255,0.02) !important; }
@@ -3259,7 +3198,7 @@ nav button.active::after {
 .progress-fill { background: linear-gradient(90deg, var(--sol), var(--amber)) !important; box-shadow: 0 0 6px rgba(255,208,50,0.3) !important; }
 
 /* ── Studio KPI ── */
-.studio-kpi-card { background: rgba(255,255,255,0.025) !important; border: 1px solid rgba(255,255,255,0.05) !important; border-radius: 14px !important; transition: var(--ease) !important; cursor: none; }
+.studio-kpi-card { background: rgba(255,255,255,0.025) !important; border: 1px solid rgba(255,255,255,0.05) !important; border-radius: 14px !important; transition: var(--ease) !important; }
 .studio-kpi-card:hover { transform: translateY(-4px) !important; }
 .studio-kpi-card::before { display: none !important; }
 .skpi-val { font-family: 'DM Mono', monospace !important; font-size: 28px !important; font-weight: 500 !important; line-height: 1 !important; }
@@ -3295,7 +3234,7 @@ nav button.active::after {
 .chat-input:focus { border-color: rgba(0,240,220,0.3) !important; }
 .chat-send-btn { background: linear-gradient(135deg, var(--acid), var(--sky)) !important; border-radius: 9px !important; color: #000408 !important; box-shadow: 0 4px 16px rgba(0,240,220,0.2) !important; }
 .chat-send-btn:hover { box-shadow: 0 8px 28px rgba(0,240,220,0.35) !important; transform: translateY(-2px) !important; }
-.chat-suggestion { background: rgba(255,255,255,0.03) !important; border-color: rgba(255,255,255,0.05) !important; border-radius: 20px !important; cursor: none; font-size: 11px !important; transition: var(--ease) !important; }
+.chat-suggestion { background: rgba(255,255,255,0.03) !important; border-color: rgba(255,255,255,0.05) !important; border-radius: 20px !important; font-size: 11px !important; transition: var(--ease) !important; }
 .chat-suggestion:hover { border-color: rgba(0,240,220,0.22) !important; color: var(--acid) !important; background: rgba(0,240,220,0.04) !important; transform: translateY(-2px) !important; }
 
 /* ── Auth ── */
@@ -3307,7 +3246,7 @@ nav button.active::after {
 .auth-input { background: rgba(255,255,255,0.04) !important; border: 1px solid rgba(255,255,255,0.07) !important; color: var(--t1) !important; border-radius: 9px !important; font-family: 'Inter', sans-serif !important; }
 .auth-input:focus { border-color: rgba(0,240,220,0.3) !important; box-shadow: 0 0 0 3px rgba(0,240,220,0.06) !important; }
 .auth-tabs { background: rgba(255,255,255,0.04) !important; border-radius: 9px !important; }
-.auth-tab { font-family: 'Space Grotesk', sans-serif !important; border-radius: 7px !important; cursor: none; }
+.auth-tab { font-family: 'Space Grotesk', sans-serif !important; border-radius: 7px !important; }
 .auth-tab.active { background: rgba(255,255,255,0.08) !important; color: var(--t1) !important; }
 .auth-btn-primary { background: linear-gradient(135deg, var(--acid), var(--sky)) !important; border-radius: 9px !important; font-family: 'Space Grotesk', sans-serif !important; font-weight: 700 !important; color: #000408 !important; }
 .auth-btn-primary:hover { box-shadow: 0 8px 28px rgba(0,240,220,0.28) !important; }
@@ -3316,7 +3255,7 @@ nav button.active::after {
 .user-menu:hover { border-color: rgba(0,240,220,0.18) !important; }
 .user-avatar { background: linear-gradient(135deg, var(--acid), var(--sky)) !important; color: #000408 !important; }
 #userDropdown { background: rgba(4,8,15,0.98) !important; border-color: rgba(255,255,255,0.07) !important; border-radius: 12px !important; backdrop-filter: blur(32px) !important; }
-.user-drop-item { font-family: 'Inter', sans-serif !important; cursor: none; }
+.user-drop-item { font-family: 'Inter', sans-serif !important; }
 .user-drop-item:hover { background: rgba(255,255,255,0.04) !important; }
 .user-drop-divider { background: rgba(255,255,255,0.05) !important; }
 .tag { background: rgba(255,208,50,0.07) !important; border-color: rgba(255,208,50,0.18) !important; color: var(--sol) !important; border-radius: 20px !important; }
@@ -3346,8 +3285,8 @@ nav button.active::after {
   --amber: #D97706; --amber-bg: #FFFBEB; --amber-border: #FDE68A; --amber-text: #B45309;
   --purple: #7C3AED; --purple-bg: #F5F3FF; --purple-border: #DDD6FE;
 }
-[data-theme="light"] body { cursor: default; background: var(--void); }
-[data-theme="light"] #cr, [data-theme="light"] #cr-dot, [data-theme="light"] #canvas-bg, [data-theme="light"] #canvas-trail { display: none !important; }
+
+
 [data-theme="light"] body::after { display: none !important; }
 [data-theme="light"] header { background: rgba(255,255,255,0.88) !important; box-shadow: 0 1px 0 #E2E8F0, 0 4px 20px rgba(0,0,0,0.05) !important; }
 [data-theme="light"] header::after { display: none; }
@@ -3369,7 +3308,7 @@ nav button.active::after {
 [data-theme="light"] .entity-item.active { background: #EFF6FF !important; border-color: #BFDBFE !important; box-shadow: none !important; }
 [data-theme="light"] .header-stat strong { color: #0891B2 !important; text-shadow: none !important; }
 [data-theme="light"] .sidebar-tab.active { color: #0891B2 !important; border-bottom-color: #0891B2 !important; }
-[data-theme="light"] .modal-box, [data-theme="light"] .settings-modal-box { background: #FFFFFF !important; }
+[data-theme="light"] .modal-box, [data-theme="light"] .settings-modal-box { display:flex; flex-direction:column; max-height:90vh; background: #FFFFFF !important; }
 [data-theme="light"] .cmd-palette { background: #FFFFFF !important; }
 [data-theme="light"] .notification { background: #FFFFFF !important; }
 [data-theme="light"] .loading-box { background: #FFFFFF !important; }
@@ -3385,7 +3324,7 @@ nav button.active::after {
 [data-theme="light"] #canvas-bg { display: none !important; }
 
 
-/* ── LIGHT MODE: restore default cursor everywhere ── */
+
 [data-theme="light"] *,
 [data-theme="light"] button,
 [data-theme="light"] a,
@@ -3413,7 +3352,7 @@ nav button.active::after {
 [data-theme="light"] .upload-zone,
 [data-theme="light"] .user-menu,
 [data-theme="light"] nav button,
-[data-theme="light"] .sidebar-search-input { cursor: default !important; }
+[data-theme="light"] .sidebar-search-input {  }
 [data-theme="light"] a,
 [data-theme="light"] button,
 [data-theme="light"] .btn,
@@ -3426,82 +3365,21 @@ nav button.active::after {
 [data-theme="light"] .chat-suggestion,
 [data-theme="light"] .auth-tab,
 [data-theme="light"] .user-menu,
-[data-theme="light"] nav button { cursor: pointer !important; }
+[data-theme="light"] nav button {  }
 [data-theme="light"] input,
-[data-theme="light"] textarea { cursor: text !important; }
-[data-theme="light"] select { cursor: pointer !important; }
+[data-theme="light"] textarea {  }
+[data-theme="light"] select {  }
 </style>
 </head>
 <body>
 <!-- ═══════════════════════════════════════ OBSIDIAN OS RUNTIME ═══════ -->
-<canvas id="canvas-bg"></canvas>
-<canvas id="canvas-trail"></canvas>
-<div id="cr"></div>
-<div id="cr-dot"></div>
+<canvas id="canvas-bg" style="position:fixed;inset:0;pointer-events:none;z-index:0;"></canvas>
+
+
+
 <script>
 (function(){
 'use strict';
-
-// ─── 1. INSTANT CURSOR (zero lag) ──────────────────────────────
-const cr    = document.getElementById('cr');
-const crdot = document.getElementById('cr-dot');
-let mx = -200, my = -200;
-
-function moveCursor(e) {
-  mx = e.clientX; my = e.clientY;
-  // INSTANT — no transition on position
-  if(cr)    { cr.style.left    = mx+'px'; cr.style.top    = my+'px'; }
-  if(crdot) { crdot.style.left = mx+'px'; crdot.style.top = my+'px'; }
-}
-
-document.addEventListener('mousemove', moveCursor, {passive:true});
-document.addEventListener('mousedown', ()=>{ if(cr) cr.className='click'; });
-document.addEventListener('mouseup',   ()=>{ if(cr) cr.className=''; });
-document.addEventListener('mouseleave',()=>{ if(cr){cr.style.opacity='0';} if(crdot){crdot.style.opacity='0';} });
-document.addEventListener('mouseenter',()=>{ if(cr){cr.style.opacity='1';} if(crdot){crdot.style.opacity='1';} });
-
-// Hover state — expand cursor on interactive
-document.addEventListener('mouseover', e => {
-  const hit = e.target.closest('button,a,input,textarea,select,[onclick],.entity-item,.feature-card,.kpi-card,.home-kpi,.btn,.tab,.sidebar-tab,.chat-suggestion,label');
-  if(cr) cr.className = hit ? 'hover' : '';
-}, {passive:true});
-
-
-// ─── 2. CURSOR TRAIL (canvas, smooth) ──────────────────────────
-const tc = document.getElementById('canvas-trail');
-if(tc) {
-  const tctx = tc.getContext('2d');
-  let tw = tc.width  = window.innerWidth;
-  let th = tc.height = window.innerHeight;
-  window.addEventListener('resize', ()=>{ tw = tc.width = window.innerWidth; th = tc.height = window.innerHeight; }, {passive:true});
-
-  const TRAIL = 22;
-  const pts   = Array.from({length:TRAIL}, ()=>({x:0, y:0}));
-  let ti = 0;
-
-  function drawTrail() {
-    tctx.clearRect(0,0,tw,th);
-    pts[ti % TRAIL] = {x:mx, y:my};
-    ti++;
-    for(let i=0;i<TRAIL-1;i++){
-      const ai = (ti-i-1+TRAIL*10)%TRAIL;
-      const bi = (ti-i-2+TRAIL*10)%TRAIL;
-      const a  = pts[ai]; const b = pts[bi];
-      const alpha = (1 - i/TRAIL) * 0.28;
-      const width = (1 - i/TRAIL) * 1.8;
-      tctx.beginPath();
-      tctx.moveTo(a.x, a.y);
-      tctx.lineTo(b.x, b.y);
-      tctx.strokeStyle = `rgba(0,240,220,${alpha})`;
-      tctx.lineWidth   = width;
-      tctx.lineCap     = 'round';
-      tctx.stroke();
-    }
-    requestAnimationFrame(drawTrail);
-  }
-  drawTrail();
-}
-
 
 // ─── 3. AURORA / MESH GRADIENT BACKGROUND ──────────────────────
 const bgc = document.getElementById('canvas-bg');
@@ -3795,83 +3673,6 @@ document.addEventListener('click', e=>{
      ═══════════════════════════════════════════════════════════ -->
 <canvas id="baia-aurora" style="position:fixed;inset:0;pointer-events:none;z-index:0;opacity:0.6;"></canvas>
 <canvas id="baia-particles" style="position:fixed;inset:0;pointer-events:none;z-index:1;opacity:0.4;"></canvas>
-<div id="baia-cursor" style="position:fixed;pointer-events:none;z-index:99999;top:0;left:0;will-change:transform;"></div>
-<div id="baia-ripple-container" style="position:fixed;inset:0;pointer-events:none;z-index:9998;overflow:hidden;"></div>
-
-<style>
-/* ── CURSOR v5 — Instant crosshair ── */
-body { cursor: none !important; }
-body * { cursor: none !important; }
-
-#baia-cursor {
-  width: 0; height: 0;
-  transform: translate(-50%, -50%);
-}
-#baia-cursor::before {
-  /* Main dot */
-  content: '';
-  position: absolute;
-  width: 6px; height: 6px;
-  background: #06FFF0;
-  border-radius: 50%;
-  top: -3px; left: -3px;
-  box-shadow: 0 0 10px #06FFF0, 0 0 20px rgba(6,255,240,0.4);
-  transition: transform 0.1s ease, width 0.1s ease, height 0.1s ease;
-}
-#baia-cursor::after {
-  /* Outer ring — instant, no lerp */
-  content: '';
-  position: absolute;
-  width: 28px; height: 28px;
-  border: 1.5px solid rgba(99,179,237,0.5);
-  border-radius: 50%;
-  top: -14px; left: -14px;
-  transition: transform 0.08s ease, width 0.08s ease, height 0.08s ease, border-color 0.1s ease;
-}
-#baia-cursor.hover::before { width: 10px; height: 10px; top: -5px; left: -5px; }
-#baia-cursor.hover::after { width: 44px; height: 44px; top: -22px; left: -22px; border-color: rgba(6,255,240,0.7); }
-#baia-cursor.click::before { transform: scale(0.5); }
-#baia-cursor.click::after  { transform: scale(0.7); border-color: var(--cyan, #06FFF0); }
-
-/* ── RIPPLE ── */
-.baia-ripple {
-  position: absolute;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(6,255,240,0.2) 0%, transparent 70%);
-  transform: translate(-50%, -50%) scale(0);
-  animation: ripple-expand 0.6s cubic-bezier(0.23,1,0.32,1) forwards;
-  pointer-events: none;
-}
-@keyframes ripple-expand {
-  to { transform: translate(-50%,-50%) scale(1); opacity: 0; }
-}
-
-/* ── PARTICLE ── */
-.baia-particle {
-  position: fixed;
-  pointer-events: none;
-  border-radius: 50%;
-  animation: particle-float linear infinite;
-  z-index: 2;
-}
-@keyframes particle-float {
-  0%   { transform: translateY(0) translateX(0); opacity: 0; }
-  10%  { opacity: 1; }
-  90%  { opacity: 0.3; }
-  100% { transform: translateY(-100vh) translateX(var(--drift)); opacity: 0; }
-}
-
-/* ── CURSOR TRAIL ── */
-.baia-trail-dot {
-  position: fixed;
-  width: 4px; height: 4px;
-  border-radius: 50%;
-  background: var(--cyan, #06FFF0);
-  pointer-events: none;
-  z-index: 99990;
-  transform: translate(-50%, -50%);
-}
-</style>
 
 <script>
 'use strict';
@@ -3879,129 +3680,9 @@ body * { cursor: none !important; }
 //  BA.IA v5 — EFFECTS ENGINE
 // ═══════════════════════════════════════════════════════
 
-// ── 1. INSTANT CURSOR (zero lerp, zero delay) ──────────
-(function initCursor() {
-  const cur = document.getElementById('baia-cursor');
-  if (!cur) return;
 
-  let mx = window.innerWidth / 2;
-  let my = window.innerHeight / 2;
 
-  // Direct RAF — no setTimeout, no lerp on main dot
-  function moveCursor() {
-    cur.style.transform = `translate(calc(${mx}px - 50%), calc(${my}px - 50%))`;
-    requestAnimationFrame(moveCursor);
-  }
-  requestAnimationFrame(moveCursor);
 
-  document.addEventListener('mousemove', e => {
-    mx = e.clientX;
-    my = e.clientY;
-  }, { passive: true });
-
-  // Hover state
-  const hoverSel = 'button, a, input, textarea, select, label, [role="button"], .entity-item, .feature-card, .kpi-card, .home-kpi, .sidebar-tab, .btn, .tab, .cmd-item, .chat-suggestion, .import-zone';
-  document.addEventListener('mouseover', e => {
-    if (e.target.matches(hoverSel) || e.target.closest(hoverSel)) {
-      cur.classList.add('hover');
-    }
-  });
-  document.addEventListener('mouseout', e => {
-    if (e.target.matches(hoverSel) || e.target.closest(hoverSel)) {
-      cur.classList.remove('hover');
-    }
-  });
-
-  // Click state
-  document.addEventListener('mousedown', () => cur.classList.add('click'));
-  document.addEventListener('mouseup',   () => cur.classList.remove('click'));
-
-  // Hide when leaving window
-  document.addEventListener('mouseleave', () => { cur.style.opacity = '0'; });
-  document.addEventListener('mouseenter', () => { cur.style.opacity = '1'; });
-  
-  // Light mode: show native cursor
-  const obs = new MutationObserver(() => {
-    const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
-    document.body.style.cursor = isDark ? 'none' : '';
-    cur.style.display = isDark ? '' : 'none';
-  });
-  obs.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
-})();
-
-// ── 2. CURSOR TRAIL (fading dots) ─────────────────────
-(function initTrail() {
-  const TRAIL_LEN = 8;
-  const trail = [];
-  const positions = [];
-  let posIdx = 0;
-  
-  // Create trail dots
-  for (let i = 0; i < TRAIL_LEN; i++) {
-    const d = document.createElement('div');
-    d.className = 'baia-trail-dot';
-    d.style.cssText = `
-      opacity: ${(TRAIL_LEN - i) / TRAIL_LEN * 0.35};
-      width: ${4 - i * 0.35}px;
-      height: ${4 - i * 0.35}px;
-      z-index: ${99989 - i};
-      transition: none;
-      will-change: transform;
-    `;
-    document.body.appendChild(d);
-    trail.push(d);
-    positions.push({ x: 0, y: 0 });
-  }
-  
-  let histX = Array(TRAIL_LEN * 2).fill(0);
-  let histY = Array(TRAIL_LEN * 2).fill(0);
-  let hIdx = 0;
-  let lastMx = 0, lastMy = 0;
-
-  document.addEventListener('mousemove', e => {
-    lastMx = e.clientX; lastMy = e.clientY;
-    histX[hIdx] = e.clientX;
-    histY[hIdx] = e.clientY;
-    hIdx = (hIdx + 1) % (TRAIL_LEN * 2);
-  }, { passive: true });
-
-  function animateTrail() {
-    for (let i = 0; i < TRAIL_LEN; i++) {
-      const pastIdx = ((hIdx - (i * 2 + 2)) + TRAIL_LEN * 4) % (TRAIL_LEN * 2);
-      const x = histX[pastIdx] || lastMx;
-      const y = histY[pastIdx] || lastMy;
-      trail[i].style.transform = `translate(calc(${x}px - 50%), calc(${y}px - 50%))`;
-    }
-    requestAnimationFrame(animateTrail);
-  }
-  requestAnimationFrame(animateTrail);
-
-  // Hide in light mode
-  const obs = new MutationObserver(() => {
-    const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
-    trail.forEach(d => d.style.display = isDark ? '' : 'none');
-  });
-  obs.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
-})();
-
-// ── 3. CLICK RIPPLE ───────────────────────────────────
-(function initRipple() {
-  const container = document.getElementById('baia-ripple-container');
-  if (!container) return;
-
-  document.addEventListener('click', e => {
-    if (document.documentElement.getAttribute('data-theme') === 'light') return;
-    const ripple = document.createElement('div');
-    ripple.className = 'baia-ripple';
-    const size = 120 + Math.random() * 80;
-    ripple.style.cssText = `
-      width: ${size}px; height: ${size}px;
-      left: ${e.clientX}px; top: ${e.clientY}px;
-    `;
-    container.appendChild(ripple);
-    setTimeout(() => ripple.remove(), 650);
-  });
-})();
 
 // ── 4. AURORA BACKGROUND (smooth animated mesh) ───────
 (function initAurora() {
@@ -4975,16 +4656,38 @@ body * { cursor: none !important; }
     </div>
     <div class="settings-body">
 
+      <!-- PROVIDER SELECTOR -->
+      <div class="settings-section">
+        <div class="settings-section-title">🤖 Provider AI attivo</div>
+        <div style="display:flex;gap:10px;">
+          <label style="flex:1;display:flex;align-items:center;gap:10px;padding:12px 14px;border:2px solid var(--border);border-radius:var(--r-lg);cursor:pointer;transition:var(--t);" id="providerGroqLabel">
+            <input type="radio" name="aiProvider" value="groq" id="providerGroq" style="margin:0;" onchange="saveProviderChoice()">
+            <div>
+              <div style="font-size:13px;font-weight:700;color:var(--text);">⚡ Groq — LLaMA 3.3</div>
+              <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">Veloce · piano gratuito disponibile</div>
+            </div>
+          </label>
+          <label style="flex:1;display:flex;align-items:center;gap:10px;padding:12px 14px;border:2px solid var(--border);border-radius:var(--r-lg);cursor:pointer;transition:var(--t);" id="providerAnthropicLabel">
+            <input type="radio" name="aiProvider" value="anthropic" id="providerAnthropic" style="margin:0;" onchange="saveProviderChoice()">
+            <div>
+              <div style="font-size:13px;font-weight:700;color:var(--text);">✦ Anthropic — Claude</div>
+              <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">Massima qualità · a pagamento</div>
+            </div>
+          </label>
+        </div>
+      </div>
+
       <!-- GROQ API KEY -->
       <div class="settings-section">
-        <div class="settings-section-title">🔑 Connessione AI — Groq</div>
+        <div class="settings-section-title">🔑 API Key — Groq</div>
         <div class="form-group" style="margin-bottom:10px;">
-          <label class="form-label" style="margin-bottom:6px;display:block;">API Key Groq <span style="color:var(--red);font-weight:700;">*</span></label>
+          <label class="form-label" style="margin-bottom:6px;display:block;">API Key Groq</label>
           <div style="display:flex;gap:8px;align-items:center;">
             <input class="form-control" type="password" id="groqApiKeyInput"
               placeholder="gsk_••••••••••••••••••••••••••••••••••••••••••••••••••••••"
               style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.5px;flex:1;"
               oninput="saveAllSettings()">
+            <button class="btn btn-outline btn-sm" onclick="toggleKeyVisibility('groqApiKeyInput','toggleGroqEye')" style="flex-shrink:0;" id="toggleGroqEye" title="Mostra/nascondi">👁</button>
             <button class="btn btn-outline btn-sm" onclick="testGroqConnection()" style="flex-shrink:0;white-space:nowrap;">
               🧪 Testa
             </button>
@@ -4998,6 +4701,123 @@ body * { cursor: none !important; }
         <div style="display:none;" id="settingsUserEmail"></div>
         <div style="display:none;" id="settingsUserPlan"></div>
       </div>
+
+      <!-- ANTHROPIC API KEY -->
+      <div class="settings-section">
+        <div class="settings-section-title">🔑 API Key — Anthropic (Claude)</div>
+        <div class="form-group" style="margin-bottom:10px;">
+          <label class="form-label" style="margin-bottom:6px;display:block;">API Key Anthropic</label>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <input class="form-control" type="password" id="anthropicApiKeyInput"
+              placeholder="sk-ant-api03-••••••••••••••••••••••••••••••••••••••••••••"
+              style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.5px;flex:1;"
+              oninput="saveAllSettings()">
+            <button class="btn btn-outline btn-sm" onclick="toggleKeyVisibility('anthropicApiKeyInput','toggleAnthropicEye')" style="flex-shrink:0;" id="toggleAnthropicEye" title="Mostra/nascondi">👁</button>
+            <button class="btn btn-outline btn-sm" onclick="testAnthropicConnection()" style="flex-shrink:0;white-space:nowrap;">
+              🧪 Testa
+            </button>
+          </div>
+          <div id="anthropicKeyStatus" style="margin-top:7px;font-size:11px;color:var(--text-muted);"></div>
+        </div>
+        <div style="background:var(--blue-bg);border:1px solid var(--blue-border);border-radius:var(--r);padding:10px 14px;font-size:11px;color:var(--blue-text);line-height:1.6;">
+          <strong>Come ottenere la chiave:</strong> Vai su <a href="https://console.anthropic.com/keys" target="_blank" style="color:var(--blue);text-decoration:underline;">console.anthropic.com/keys</a> → crea una nuova chiave → incollala qui.<br>
+          Richiede account Anthropic con credito disponibile. Modello: claude-sonnet-4-20250514.
+        </div>
+      </div>
+
+      <!-- CONSULTANT NAME -->
+      <div class="settings-section">
+        <div class="settings-section-title">👤 Profilo Consulente</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Il tuo nome</label>
+            <input class="form-control" id="consultantNameInput" placeholder="Es. Mario Rossi" oninput="saveConsultantProfile()">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Ruolo</label>
+            <select class="form-control" id="consultantRoleInput" onchange="saveConsultantProfile()">
+              <option value="Senior Consultant">Senior Consultant</option>
+              <option value="Junior Consultant">Junior Consultant</option>
+              <option value="Partner">Partner</option>
+              <option value="Responsabile Area">Responsabile Area</option>
+              <option value="Stagista">Stagista</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- STUDIO NAME -->
+      <div class="settings-section">
+        <div class="settings-section-title">🏢 Dati Studio</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Nome Studio</label>
+            <input class="form-control" id="studioNameInput" placeholder="Es. Studio Finanza Srl" oninput="saveStudioProfile()">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Città</label>
+            <input class="form-control" id="studioCityInput" placeholder="Es. Milano" oninput="saveStudioProfile()">
+          </div>
+        </div>
+        <div class="form-hint" style="margin-top:-8px;">Il nome dello studio verrà visualizzato nella Dashboard KPI Studio e nei report.</div>
+      </div>
+
+      <!-- SGI KNOWLEDGE BASE -->
+      <div class="settings-section">
+        <div class="settings-section-title">📚 Procedure SGI — Knowledge Base</div>
+        <div style="background:var(--blue-bg);border:1px solid var(--blue-border);border-radius:var(--r);padding:10px 14px;font-size:11.5px;color:var(--blue-text);line-height:1.6;margin-bottom:12px;">
+          <strong>Cos'è:</strong> Carica le procedure operative del tuo SGI (PDF, DOCX o TXT, anche più file insieme).
+          Il testo estratto viene usato dall'AI come contesto aggiuntivo durante ogni analisi bando,
+          migliorando la qualità di checklist, step operativi e suggerimenti.<br>
+          <strong>💾 Persistenza:</strong> I testi estratti vengono salvati nel <em>localStorage</em> del browser —
+          ovvero nella memoria locale di questo browser su questo computer. Restano disponibili anche dopo aver
+          chiuso e riaperto la pagina, <strong>finché non pulisci la cache del browser o clicchi "Rimuovi tutto"</strong>.
+          Non vengono mai inviati a server esterni.
+        </div>
+        <div id="sgiStatusBar" style="display:none;flex-direction:column;gap:8px;padding:10px 14px;background:var(--green-bg);border:1px solid var(--green-border);border-radius:var(--r);margin-bottom:10px;font-size:12px;color:var(--green-text);">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span>📚</span>
+            <span id="sgiStatusText">Procedure SGI caricate</span>
+            <button onclick="clearSgiContext()" style="margin-left:auto;background:none;border:1px solid var(--green-border);border-radius:5px;color:var(--green-text);font-size:11px;padding:2px 8px;cursor:pointer;">✕ Rimuovi tutto</button>
+          </div>
+          <div id="sgiFileList" style="display:flex;flex-direction:column;gap:4px;padding-left:24px;"></div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <label style="flex:1;display:flex;align-items:center;gap:10px;padding:12px 16px;border:2px dashed var(--border-2);border-radius:var(--r-lg);cursor:pointer;transition:var(--t);" onmouseover="this.style.borderColor='var(--border-gold)'" onmouseout="this.style.borderColor='var(--border-2)'">
+            <input type="file" id="sgiFileInput" accept=".pdf,.docx,.doc,.txt" multiple style="display:none" onchange="loadSgiFiles(this)">
+            <span style="font-size:22px;">📄</span>
+            <div>
+              <div style="font-size:12.5px;font-weight:700;color:var(--text);">Carica procedure SGI</div>
+              <div style="font-size:11px;color:var(--text-muted);">PDF, DOCX o TXT — più file selezionabili insieme</div>
+            </div>
+            <span class="btn btn-outline btn-sm" style="margin-left:auto;pointer-events:none;">Sfoglia</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- MODALITÀ ANALISI -->
+      <div class="settings-section">
+        <div class="settings-section-title">⚡ Modalità Analisi PDF</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <label style="display:flex;align-items:flex-start;gap:12px;padding:12px 14px;border:2px solid var(--border);border-radius:var(--r-lg);cursor:pointer;transition:var(--t);" id="modeRapidaLabel">
+            <input type="radio" name="analysisMode" value="rapida" id="modeRapida" style="margin-top:3px;" onchange="saveAnalysisMode()">
+            <div>
+              <div style="font-size:13px;font-weight:700;color:var(--text);">⚡ Rapida <span style="font-size:10px;font-weight:600;background:var(--green-bg);color:var(--green-text);border:1px solid var(--green-border);padding:1px 7px;border-radius:20px;margin-left:4px;">default</span></div>
+              <div style="font-size:11.5px;color:var(--text-muted);margin-top:2px;">Tutti i PDF vengono combinati in un unico prompt. ~40-60 secondi. Risultati buoni su bandi singoli e ben strutturati.</div>
+            </div>
+          </label>
+          <label style="display:flex;align-items:flex-start;gap:12px;padding:12px 14px;border:2px solid var(--border);border-radius:var(--r-lg);cursor:pointer;transition:var(--t);" id="modeAccurataLabel">
+            <input type="radio" name="analysisMode" value="accurata" id="modeAccurata" style="margin-top:3px;" onchange="saveAnalysisMode()">
+            <div>
+              <div style="font-size:13px;font-weight:700;color:var(--text);">🔬 Accurata <span style="font-size:10px;font-weight:600;background:var(--blue-bg);color:var(--blue-text);border:1px solid var(--blue-border);padding:1px 7px;border-radius:20px;margin-left:4px;">qualità superiore</span></div>
+              <div style="font-size:11.5px;color:var(--text-muted);margin-top:2px;">Ogni PDF viene analizzato separatamente e i risultati vengono fusi. 2-3× più lenta ma molto più precisa su bandi complessi o multi-documento.</div>
+            </div>
+          </label>
+        </div>
+        <div style="margin-top:8px;font-size:11px;color:var(--text-subtle);">💡 Consigliato: usa Rapida per bandi semplici, Accurata per bandi con allegati tecnici multipli.</div>
+      </div>
+
+    
 
       <!-- CONSULTANT NAME -->
       <div class="settings-section">
@@ -5843,19 +5663,23 @@ function repairJson(str) {
   return str;
 }
 
-// ─── API CALL — Groq diretto (client-side, no backend) ───
-const GROQ_ENDPOINT = 'https://api.groq.com/openai/v1/chat/completions';
-const GROQ_MODEL    = 'llama-3.3-70b-versatile';
+// ─── API CALL — Groq / Anthropic (client-side, no backend) ───
+const GROQ_ENDPOINT      = 'https://api.groq.com/openai/v1/chat/completions';
+const GROQ_MODEL         = 'llama-3.3-70b-versatile';
+const ANTHROPIC_ENDPOINT = 'https://api.anthropic.com/v1/messages';
+const ANTHROPIC_MODEL    = 'claude-sonnet-4-20250514';
 
 async function callApi(content, _attempt) {
   _attempt = _attempt || 1;
   if (_abortAnalysis_flag) throw new Error('__ABORTED__');
 
-  const apiKey = getApiKey();
+  const provider = getActiveProvider();
+  const apiKey   = getApiKey();
+
   if (!apiKey) {
     showLoading(false);
     openSettings();
-    throw new Error('API key Groq mancante — inseriscila nelle Impostazioni ⚙️');
+    throw new Error(`API key ${provider === 'anthropic' ? 'Anthropic' : 'Groq'} mancante — inseriscila nelle Impostazioni ⚙️`);
   }
 
   const prompt = content
@@ -5863,6 +5687,14 @@ async function callApi(content, _attempt) {
     .map(item => item.text)
     .join('\n');
 
+  if (provider === 'anthropic') {
+    return await _callAnthropic(prompt, apiKey, _attempt);
+  } else {
+    return await _callGroq(prompt, apiKey, _attempt, content);
+  }
+}
+
+async function _callGroq(prompt, apiKey, _attempt, content) {
   console.log(`[GROQ] Invio diretto: ${prompt.length} car. tentativo ${_attempt}`);
 
   const response = await fetch(GROQ_ENDPOINT, {
@@ -5879,7 +5711,6 @@ async function callApi(content, _attempt) {
     })
   });
 
-  // Rate limit 429
   if (response.status === 429) {
     if (_attempt >= 4) throw new Error('Rate limit Groq: troppi tentativi. Riprova tra qualche minuto.');
     const retryAfter = parseInt(response.headers.get('retry-after') || '15');
@@ -5904,6 +5735,54 @@ async function callApi(content, _attempt) {
   _addTokens(
     data.usage?.prompt_tokens ? data.usage.prompt_tokens * 4 : prompt.length,
     data.usage?.completion_tokens ? data.usage.completion_tokens * 4 : result.length
+  );
+
+  return result;
+}
+
+async function _callAnthropic(prompt, apiKey, _attempt) {
+  console.log(`[ANTHROPIC] Invio: ${prompt.length} car. tentativo ${_attempt}`);
+
+  const response = await fetch(ANTHROPIC_ENDPOINT, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify({
+      model: ANTHROPIC_MODEL,
+      max_tokens: 8000,
+      temperature: 0.1,
+      messages: [{ role: 'user', content: prompt }]
+    })
+  });
+
+  if (response.status === 429) {
+    if (_attempt >= 4) throw new Error('Rate limit Anthropic: troppi tentativi. Riprova tra qualche minuto.');
+    const retryAfter = parseInt(response.headers.get('retry-after') || '30');
+    showRateLimitBanner(retryAfter);
+    await new Promise(r => setTimeout(r, retryAfter * 1000));
+    hideRateLimitBanner();
+    return _callAnthropic(prompt, apiKey, _attempt + 1);
+  }
+
+  if (response.status === 401) {
+    showLoading(false);
+    openSettings();
+    throw new Error('API key Anthropic non valida — verificala nelle Impostazioni ⚙️');
+  }
+
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.error?.message || `HTTP ${response.status}`);
+
+  const result = data.content?.[0]?.text || '';
+  console.log(`[ANTHROPIC] Risposta: ${result.length} car.`);
+
+  _addTokens(
+    data.usage?.input_tokens ? data.usage.input_tokens * 4 : prompt.length,
+    data.usage?.output_tokens ? data.usage.output_tokens * 4 : result.length
   );
 
   return result;
@@ -11824,6 +11703,16 @@ function openSettings() {
   if (studioCity) studioCity.value = s.studioCity || '';
   const groqKeyInput = document.getElementById('groqApiKeyInput');
   if (groqKeyInput) groqKeyInput.value = s.groqApiKey || '';
+  const anthropicKeyInput = document.getElementById('anthropicApiKeyInput');
+  if (anthropicKeyInput) anthropicKeyInput.value = s.anthropicApiKey || '';
+
+  // Provider selector
+  const provider = s.aiProvider || 'groq';
+  const pGroq = document.getElementById('providerGroq');
+  const pAnthropic = document.getElementById('providerAnthropic');
+  if (pGroq) pGroq.checked = provider === 'groq';
+  if (pAnthropic) pAnthropic.checked = provider === 'anthropic';
+  _styleProviderLabels(provider);
 
   // ── Account SaaS ──
   const emailEl = document.getElementById('settingsUserEmail');
@@ -12025,16 +11914,46 @@ function saveAllSettings() {
   s.studioName      = document.getElementById('studioNameInput')?.value || '';
   s.studioCity      = document.getElementById('studioCityInput')?.value || '';
   s.groqApiKey      = (document.getElementById('groqApiKeyInput')?.value || '').trim();
+  s.anthropicApiKey = (document.getElementById('anthropicApiKeyInput')?.value || '').trim();
+  s.aiProvider      = document.querySelector('input[name="aiProvider"]:checked')?.value || 'groq';
   saveSettingsToStorage(s);
   updateHeaderApiDot();
   closeSettings();
   notify('✅ Impostazioni salvate!', 'success');
 }
 
-// In SaaS mode, l'API key non è più necessaria (backend la gestisce internamente)
-// La funzione è mantenuta per compatibilità con il codice esistente
+// Restituisce la chiave del provider attivo
 function getApiKey() {
-  return (loadSettings().groqApiKey || '').trim();
+  const s = loadSettings();
+  const provider = s.aiProvider || 'groq';
+  if (provider === 'anthropic') return (s.anthropicApiKey || '').trim();
+  return (s.groqApiKey || '').trim();
+}
+
+function getActiveProvider() {
+  return (loadSettings().aiProvider || 'groq');
+}
+
+function saveProviderChoice() {
+  const s = loadSettings();
+  s.aiProvider = document.querySelector('input[name="aiProvider"]:checked')?.value || 'groq';
+  saveSettingsToStorage(s);
+  _styleProviderLabels(s.aiProvider);
+}
+
+function _styleProviderLabels(provider) {
+  const lG = document.getElementById('providerGroqLabel');
+  const lA = document.getElementById('providerAnthropicLabel');
+  if (lG) lG.style.borderColor = provider === 'groq'      ? 'var(--gold-solid)' : 'var(--border)';
+  if (lA) lA.style.borderColor = provider === 'anthropic' ? 'var(--blue)'       : 'var(--border)';
+}
+
+function toggleKeyVisibility(inputId, btnId) {
+  const input = document.getElementById(inputId);
+  if (!input) return;
+  input.type = input.type === 'password' ? 'text' : 'password';
+  const btn = document.getElementById(btnId);
+  if (btn) btn.textContent = input.type === 'password' ? '👁' : '🙈';
 }
 
 
@@ -12076,11 +11995,55 @@ async function testGroqConnection() {
   }
 }
 
+// ─── TEST ANTHROPIC CONNECTION ───
+async function testAnthropicConnection() {
+  const key = (document.getElementById('anthropicApiKeyInput')?.value || '').trim();
+  const statusEl = document.getElementById('anthropicKeyStatus');
+  if (!key) {
+    if (statusEl) statusEl.innerHTML = '<span style="color:var(--red)">❌ Inserisci prima la chiave API Anthropic</span>';
+    return;
+  }
+  if (statusEl) statusEl.innerHTML = '<span style="color:var(--text-muted)">⏳ Test in corso…</span>';
+  try {
+    const r = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': key,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 10,
+        messages: [{ role: 'user', content: 'Rispondi solo con: OK' }]
+      })
+    });
+    const d = await r.json();
+    if (r.status === 401) {
+      if (statusEl) statusEl.innerHTML = '<span style="color:var(--red)">❌ Chiave non valida — verificala su console.anthropic.com</span>';
+    } else if (!r.ok) {
+      if (statusEl) statusEl.innerHTML = `<span style="color:var(--red)">❌ Errore ${r.status}: ${d.error?.message || 'sconosciuto'}</span>`;
+    } else {
+      const model = d.model || 'claude';
+      if (statusEl) statusEl.innerHTML = `<span style="color:var(--green)">✅ Connessione OK — modello: ${model}</span>`;
+      const s = loadSettings();
+      s.anthropicApiKey = key;
+      saveSettingsToStorage(s);
+      notify('✅ Chiave Anthropic valida e salvata!', 'success');
+    }
+  } catch(e) {
+    if (statusEl) statusEl.innerHTML = `<span style="color:var(--red)">❌ Errore di rete: ${e.message}</span>`;
+  }
+}
+
 function updateHeaderApiDot() {
   const btn = document.querySelector('.header-settings-btn');
   if (!btn) return;
   const hasKey = !!getApiKey();
-  btn.title = hasKey ? '⚙️ Impostazioni' : '⚙️ Impostazioni — ⚠️ API Key Groq mancante!';
+  const provider = getActiveProvider();
+  const label = provider === 'anthropic' ? 'Anthropic' : 'Groq';
+  btn.title = hasKey ? `⚙️ Impostazioni — Provider: ${label}` : `⚙️ Impostazioni — ⚠️ API Key ${label} mancante!`;
   btn.style.borderColor = hasKey ? 'transparent' : 'var(--amber)';
   btn.style.background  = hasKey ? 'none' : 'var(--amber-bg)';
   btn.style.color       = hasKey ? '' : 'var(--amber)';
