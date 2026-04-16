@@ -14,4 +14,4 @@ Disallow: /confirm-email.html
 Disallow: /payment-success.html
 Disallow: /reset-password.html
 
-Sitemap: https://baia-ss.com/sitemap.xml
+Sitemap: https://02-baia-saas-b2-c.vercel.app/sitemap.xml

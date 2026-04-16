@@ -1,16 +1,31 @@
 {
   "version": 2,
-  "builds": [
-    { "src": "index.html", "use": "@vercel/static" },
-    { "src": "app.html",   "use": "@vercel/static" },
-    { "src": "demo.html",  "use": "@vercel/static" }
-  ],
   "routes": [
-    { "src": "/app",   "dest": "/app.html" },
-    { "src": "/app/",  "dest": "/app.html" },
-    { "src": "/demo",  "dest": "/demo.html" },
-    { "src": "/demo/", "dest": "/demo.html" },
-    { "src": "/",      "dest": "/index.html" }
+    { "src": "/app",                "dest": "/BAIA-SS.html" },
+    { "src": "/app/",               "dest": "/BAIA-SS.html" },
+    { "src": "/demo",               "dest": "/demo.html" },
+    { "src": "/demo/",              "dest": "/demo.html" },
+    { "src": "/login",              "dest": "/login.html" },
+    { "src": "/login/",             "dest": "/login.html" },
+    { "src": "/signup",             "dest": "/signup.html" },
+    { "src": "/signup/",            "dest": "/signup.html" },
+    { "src": "/account",            "dest": "/account.html" },
+    { "src": "/account/",           "dest": "/account.html" },
+    { "src": "/privacy",            "dest": "/privacy.html" },
+    { "src": "/privacy/",           "dest": "/privacy.html" },
+    { "src": "/terms",              "dest": "/terms.html" },
+    { "src": "/terms/",             "dest": "/terms.html" },
+    { "src": "/cookie-policy",      "dest": "/cookie-policy.html" },
+    { "src": "/cookie-policy/",     "dest": "/cookie-policy.html" },
+    { "src": "/confirm-email",      "dest": "/confirm-email.html" },
+    { "src": "/confirm-email/",     "dest": "/confirm-email.html" },
+    { "src": "/reset-password",     "dest": "/reset-password.html" },
+    { "src": "/reset-password/",    "dest": "/reset-password.html" },
+    { "src": "/payment-success",    "dest": "/payment-success.html" },
+    { "src": "/payment-success/",   "dest": "/payment-success.html" },
+    { "src": "/guida",              "dest": "/GUIDA_UTILIZZO.html" },
+    { "src": "/guida/",             "dest": "/GUIDA_UTILIZZO.html" },
+    { "src": "/",                   "dest": "/index.html" }
   ],
   "headers": [
     {

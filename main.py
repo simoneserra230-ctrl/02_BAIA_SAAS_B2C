@@ -593,6 +593,50 @@ async def stripe_webhook(request: Request):
     return {"ok": True}
 
 
+@app.get("/invoices")
+async def list_invoices(user: dict = Depends(get_current_user)):
+    """Ritorna le fatture Stripe dell'utente."""
+    if LOCAL_MODE:
+        return {"invoices": []}
+
+    if not _stripe_ok or not STRIPE_SECRET_KEY:
+        return {"invoices": []}
+
+    # Recupera stripe_customer_id dal profilo
+    customer_id = None
+    if supabase:
+        try:
+            res = supabase.table("profiles") \
+                .select("stripe_customer_id") \
+                .eq("id", user["sub"]) \
+                .single() \
+                .execute()
+            customer_id = (res.data or {}).get("stripe_customer_id")
+        except Exception:
+            pass
+
+    if not customer_id:
+        return {"invoices": []}
+
+    try:
+        invoices = stripe.Invoice.list(customer=customer_id, limit=24)
+        return {
+            "invoices": [
+                {
+                    "id": inv.id,
+                    "created": inv.created,
+                    "amount_paid": inv.amount_paid,
+                    "status": inv.status,
+                    "description": (inv.lines.data[0].description if inv.lines.data else None),
+                    "invoice_pdf": inv.invoice_pdf,
+                }
+                for inv in invoices.auto_paging_iter()
+            ][:24]
+        }
+    except Exception as e:
+        return {"invoices": [], "error": str(e)}
+
+
 # ══════════════════════════════════════════════════════════════════
 # ENDPOINTS  —  PERSISTENZA CLOUD  (bandi e aziende su Supabase)
 # ══════════════════════════════════════════════════════════════════

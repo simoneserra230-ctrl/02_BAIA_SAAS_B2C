@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BA.IA — SS · Analisi Bandi AI</title>
+<title>BA.IA — SS · Demo Interattiva</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <!-- Supabase JS v2 — auth + realtime -->
@@ -5174,8 +5174,8 @@ const SAAS_CONFIG = {
   // ─── Supabase (obbligatorio per auth + cloud) ───
   supabaseUrl:     'https://gtrjepxrnvptkqpezvba.supabase.co',
   supabaseAnonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd0cmplcHhybnZwdGtxcGV6dmJhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ5NTE3MjcsImV4cCI6MjA5MDUyNzcyN30.9q2BkcZfe_Z9O1eI_HU3n7Y43acQg0KFmrRGxq-6sxk',
-  // ─── Backend Railway/locale ───
-  backendUrl:      'https://PLACEHOLDER-RENDER-URL.onrender.com',
+  // ─── Backend (non usato in demo, ma presente per compatibilità) ───
+  backendUrl:      'https://PLACEHOLDER-RENDER-URL.onrender.com',  // non necessario per la demo
   // ─── Modalità: 'saas' = auth+cloud | 'local' = solo locale ───
   mode:            'local',  // cambia in 'saas' dopo aver configurato Supabase
 };
@@ -13331,46 +13331,31 @@ function toggleTheme() {
   applyTheme(current === 'dark' ? 'light' : 'dark');
 }
 
-// BOOTSTRAP LOCALE (eseguito solo in modalità locale, senza Supabase)
-// In modalità SaaS il bootstrap è gestito da _bootstrapAuth() sopra
+// BOOTSTRAP DEMO — Carica direttamente i dati demo, skip auth
 // ════════════════════════════════════════════════════════════════
-let _hadData = false;
-if (!_supabaseClient) {
-  // Modalità locale: nascondi auth overlay e carica dati subito
-  document.getElementById('authOverlay').style.display = 'none';
-  _hadData = loadPersistedState();
-  // Avvisa se API key Groq non configurata
-  setTimeout(() => {
-    if (!getApiKey()) {
-      notify('⚙️ Configura la tua API Key Groq nelle Impostazioni per abilitare le analisi AI', 'warn', 9000);
-      updateHeaderApiDot();
-    }
-  }, 1200);
-  _loadSgiFromStorage();
-  updateSidebars();
+(function _bootstrapDemo() {
+  // Nascondi auth overlay immediatamente
+  const ao = document.getElementById('authOverlay');
+  if (ao) ao.style.display = 'none';
 
-  if (!state.activeBandoId) {
-    state.currentPage = 'home';
-    _setContextBar('home');
-  }
-  if (_hadData && state.activeBandoId) {
-    state.currentPage = 'dashboard';
-    const hs = document.getElementById('homeState');
-    const av = document.getElementById('analysisView');
-    if (hs) hs.style.display = 'none';
-    if (av) av.style.display = 'block';
-    renderActiveView();
-    document.querySelectorAll('nav button').forEach((b,i) => b.classList.toggle('active', i === 1));
-    _setContextBar('dashboard');
-    const n = state.bandi.length;
-    setTimeout(() => notify(`✅ Sessione ripristinata: ${n} bando${n!==1?'i':''} · ${state.companies.length} aziend${state.companies.length!==1?'e':'a'}`, 'success'), 400);
-  }
-} else {
-  // Modalità SaaS: _bootstrapAuth() ha già avviato il flusso auth
-  // Inizializziamo solo le SGI dal localStorage (non richiedono auth)
-  _loadSgiFromStorage();
-  updateSidebars();
-}
+  // Carica dati demo
+  loadDemoData();
+
+  // Mostra la dashboard con i dati demo
+  state.currentPage = 'dashboard';
+  const hs = document.getElementById('homeState');
+  const av = document.getElementById('analysisView');
+  if (hs) hs.style.display = 'none';
+  if (av) av.style.display = 'block';
+  showPage('dashboard');
+  const navBtns = document.querySelectorAll('nav button');
+  navBtns.forEach((b,i) => b.classList.toggle('active', i === 1));
+  setActiveNav(navBtns[1]);
+  renderActiveView();
+
+  setTimeout(() => notify('🎭 Demo BA.IA — SS · Esplora 2 bandi, 2 aziende e 3 match precaricati. Prova tutte le funzionalità!', 'success', 8000), 500);
+})();
 </script>
 </body>
 </html>
+
