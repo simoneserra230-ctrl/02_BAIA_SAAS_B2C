@@ -4952,7 +4952,7 @@ const SAAS_CONFIG = {
   // ─── Backend Railway/locale ───
   backendUrl:      'https://PLACEHOLDER-RENDER-URL.onrender.com',
   // ─── Modalità: 'saas' = auth+cloud | 'local' = solo locale ───
-  mode:            'local',  // cambia in 'saas' dopo aver configurato Supabase
+  mode:            'saas',
 };
 
 // ════════════════════════════════════════════════════════════════
@@ -5089,11 +5089,8 @@ async function authSignOut() {
   state.activeBandoId = null; state.activeCompanyId = null;
   state.salTrackers = {};
   try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
-  // Mostra auth overlay
-  document.getElementById('authOverlay').style.display = 'flex';
-  document.getElementById('userMenuBtn').style.display = 'none';
-  updateSidebars();
-  notify('👋 Logout effettuato', 'warn');
+  // Redirect a login dopo logout
+  window.location.href = 'login.html';
 }
 
 async function _onAuthSuccess(user, session) {
@@ -5342,8 +5339,10 @@ async function _loadCloudState() {
   if (data?.session?.user) {
     _authToken = data.session.access_token;
     await _onAuthSuccess(data.session.user, data.session);
+  } else {
+    // Nessuna sessione attiva → rimanda al login
+    window.location.href = 'login.html';
   }
-  // Altrimenti auth overlay rimane visibile
 })();
 
 
