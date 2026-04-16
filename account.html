@@ -296,6 +296,8 @@ body::after {
 /* Spinner screen */
 #loadingScreen { min-height: 60vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
 </style>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" href="favicon.png">
 </head>
 <body>
 <div class="bg-glow"></div><div class="bg-grid"></div>
@@ -545,7 +547,7 @@ async function changePwd(){
 
 function renderUsage(){
   try{
-    const raw=localStorage.getItem('baia_ss_v2')||localStorage.getItem('baia_ss_state');
+    const raw=localStorage.getItem('grantlens_v7')||localStorage.getItem('baia_ss_v2')||localStorage.getItem('baia_ss_state');
     if(!raw) return;
     const st=JSON.parse(raw);
     const b=(st.bandi||[]).length, az=(st.companies||[]).length, an=(st.matchHistory||[]).length;
@@ -598,5 +600,28 @@ async function signOut(){
   window.location.href='login.html';
 }
 </script>
+
+<!-- COOKIE BANNER -->
+<div id="cookieBanner" role="dialog" aria-label="Cookie consent">
+  <div class="cb-text">🍪 Questo sito usa cookie tecnici e, se accetti, cookie analitici. Leggi la <a href="privacy.html">Privacy Policy</a> e la <a href="cookie-policy.html">Cookie Policy</a>.</div>
+  <div class="cb-actions">
+    <button class="cb-btn cb-decline" onclick="cookieDecline()">Solo necessari</button>
+    <button class="cb-btn cb-accept" onclick="cookieAccept()">Accetta tutti</button>
+  </div>
+</div>
+<script>
+
+(function(){if(localStorage.getItem('baia_cookie_consent'))return;const b=document.getElementById('cookieBanner');if(b)setTimeout(()=>b.classList.add('show'),800);})();
+function cookieAccept(){localStorage.setItem('baia_cookie_consent','accepted');const b=document.getElementById('cookieBanner');if(b){b.style.transition='transform .3s ease';b.style.transform='translateY(100%)';}}
+function cookieDecline(){localStorage.setItem('baia_cookie_consent','declined');const b=document.getElementById('cookieBanner');if(b){b.style.transition='transform .3s ease';b.style.transform='translateY(100%)';}}
+
+</script>
+<footer style="border-top:1px solid rgba(255,255,255,.06);padding:40px 0;margin-top:80px;position:relative;z-index:2;">
+  <div style="max-width:1100px;margin:0 auto;padding:0 36px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;">
+    <div style="display:flex;align-items:center;gap:10px;"><span style="font-family:'Instrument Serif',serif;font-size:17px;color:#EEF2FF;">BA<span style="color:#4A8EFF">.</span>IA</span><span style="font-family:'Space Mono',monospace;font-size:9px;color:#00D4FF;background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.2);border-radius:3px;padding:2px 6px;">SS</span></div>
+    <div style="display:flex;gap:24px;flex-wrap:wrap;"><a href="terms.html" style="font-size:12px;color:#5A6B8A;text-decoration:none;">Termini</a><a href="privacy.html" style="font-size:12px;color:#5A6B8A;text-decoration:none;">Privacy</a><a href="cookie-policy.html" style="font-size:12px;color:#5A6B8A;text-decoration:none;">Cookie</a><a href="mailto:support@baia-ss.com" style="font-size:12px;color:#5A6B8A;text-decoration:none;">Contatti</a></div>
+    <div style="font-size:11px;color:#5A6B8A;font-family:'Space Mono',monospace;">© 2026 BA.IA — SS</div>
+  </div>
+</footer>
 </body>
 </html>

@@ -3369,10 +3369,134 @@ nav button.active::after {
 [data-theme="light"] input,
 [data-theme="light"] textarea {  }
 [data-theme="light"] select {  }
+
+/* ═══════════════════════════════════════
+   PLAN BANNER
+═══════════════════════════════════════ */
+#planBanner {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 10000;
+  padding: 9px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 600;
+  gap: 12px;
+  animation: slideDown 0.4s cubic-bezier(0.215,0.61,0.355,1);
+}
+@keyframes slideDown { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+#planBanner.trial {
+  background: linear-gradient(90deg, rgba(6,182,212,0.15) 0%, rgba(59,130,246,0.12) 100%);
+  border-bottom: 1px solid rgba(6,182,212,0.25);
+  color: #67e8f9;
+}
+#planBanner.free {
+  background: linear-gradient(90deg, rgba(124,58,237,0.18) 0%, rgba(139,92,246,0.12) 100%);
+  border-bottom: 1px solid rgba(139,92,246,0.3);
+  color: #c4b5fd;
+}
+#planBanner.demo {
+  background: linear-gradient(90deg, rgba(234,179,8,0.15) 0%, rgba(245,158,11,0.1) 100%);
+  border-bottom: 1px solid rgba(234,179,8,0.25);
+  color: #fde68a;
+}
+#planBanner .banner-left { display: flex; align-items: center; gap: 10px; }
+#planBanner .banner-icon { font-size: 16px; }
+#planBanner .banner-text em { font-style: normal; opacity: 0.7; font-weight: 400; }
+#planBanner .banner-actions { display: flex; align-items: center; gap: 8px; }
+#planBanner .banner-upgrade-btn {
+  background: linear-gradient(135deg, #7c3aed, #4f46e5);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 5px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.15s;
+  white-space: nowrap;
+}
+#planBanner .banner-upgrade-btn:hover { opacity: 0.88; }
+#planBanner .banner-dismiss {
+  background: none; border: none;
+  color: inherit; opacity: 0.4;
+  cursor: pointer; font-size: 16px;
+  line-height: 1; padding: 2px 4px;
+  transition: opacity 0.15s;
+}
+#planBanner .banner-dismiss:hover { opacity: 0.8; }
+#planBanner .trial-bar-wrap {
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 20px; padding: 3px 10px 3px 8px;
+}
+#planBanner .trial-bar {
+  width: 80px; height: 4px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 2px; overflow: hidden;
+}
+#planBanner .trial-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #06b6d4, #3b82f6);
+  border-radius: 2px;
+  transition: width 0.6s ease;
+}
+/* Spinge il contenuto sotto il banner */
+body.has-plan-banner header { margin-top: 38px; }
+
+/* ═══════════════════════════════════════
+   FEATURE LOCK
+═══════════════════════════════════════ */
+.feature-locked {
+  position: relative !important;
+  pointer-events: none;
+  user-select: none;
+}
+.feature-locked::after {
+  content: '🔒 Funzionalità Pro';
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: #c4b5fd;
+  border-radius: inherit;
+  border: 1px solid rgba(139,92,246,0.3);
+  pointer-events: all;
+  cursor: pointer;
+  z-index: 10;
+}
+.feature-locked.sal-lock::after  { content: '🔒 SAL & Rendicontazione — Piano Pro'; }
+.feature-locked.kpi-lock::after  { content: '🔒 Studio KPI — Piano Pro'; }
+.feature-locked.pdf-lock::after  { content: '🔒 Export PDF — Piano Pro'; }
+.feature-locked.crm-lock::after  { content: '🔒 Export CRM — Piano Pro'; }
+
+/* ── COOKIE BANNER ── */
+#cookieBanner{position:fixed;bottom:0;left:0;right:0;z-index:99998;background:rgba(7,13,26,.97);backdrop-filter:blur(20px);border-top:1px solid rgba(74,142,255,.2);padding:16px 32px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;justify-content:space-between;transform:translateY(100%);transition:transform .4s cubic-bezier(.215,.61,.355,1);box-shadow:0 -8px 40px rgba(0,0,0,.5);}
+#cookieBanner.show{transform:translateY(0);}
+#cookieBanner .cb-text{font-size:13px;color:var(--text2,#8B9EC7);line-height:1.6;flex:1;min-width:260px;}
+#cookieBanner .cb-text a{color:var(--blue,#4A8EFF);text-decoration:underline;}
+#cookieBanner .cb-actions{display:flex;gap:10px;flex-shrink:0;flex-wrap:wrap;}
+#cookieBanner .cb-btn{padding:8px 18px;border-radius:8px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;border:none;}
+#cookieBanner .cb-accept{background:linear-gradient(135deg,#4A8EFF,#7B5CF0);color:#fff;}
+#cookieBanner .cb-accept:hover{opacity:.88;}
+#cookieBanner .cb-decline{background:transparent;border:1px solid rgba(255,255,255,.1);color:#8B9EC7;}
+#cookieBanner .cb-decline:hover{border-color:rgba(255,255,255,.2);color:#EEF2FF;}
+
 </style>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" href="favicon.png">
 </head>
 <body>
 <!-- ═══════════════════════════════════════ OBSIDIAN OS RUNTIME ═══════ -->
+<!-- PLAN BANNER (iniettato via JS se trial/free/demo) -->
+<div id="planBanner" style="display:none;"></div>
 <canvas id="canvas-bg" style="position:fixed;inset:0;pointer-events:none;z-index:0;"></canvas>
 
 
@@ -4273,7 +4397,8 @@ document.addEventListener('click', e=>{
     <div style="font-size:11px;color:var(--text-muted);margin-top:2px;" id="dropUserPlan">Piano: —</div>
   </div>
   <button class="user-drop-item" onclick="closeUserDropdown();openSettings()">⚙️ Impostazioni Studio</button>
-  <button class="user-drop-item" onclick="closeUserDropdown();openSubscriptionOverlay()">💳 Gestisci Abbonamento</button>
+  <a class="user-drop-item" href="account.html" onclick="closeUserDropdown()">👤 Il mio Account</a>
+  <button class="user-drop-item" onclick="closeUserDropdown();openSubscriptionOverlay()">💳 Abbonamento</button>
   <button class="user-drop-item" onclick="closeUserDropdown();exportState()">⬇️ Esporta Dati</button>
   <div class="user-drop-divider"></div>
   <button class="user-drop-item danger" onclick="closeUserDropdown();authSignOut()">🚪 Esci (Logout)</button>
@@ -5141,7 +5266,7 @@ function _updateUserMenuUI(user) {
   _updatePlanBadge(_userPlan);
 }
 
-function _updatePlanBadge(plan) {
+function _updatePlanBadge(plan, meta) {
   _userPlan = plan;
   const badge = document.getElementById('planBadgeDisplay');
   if (badge) {
@@ -5150,14 +5275,20 @@ function _updatePlanBadge(plan) {
   }
   const dropPlan = document.getElementById('dropUserPlan');
   if (dropPlan) {
-    const labels = { pro: '✅ Piano Pro attivo', trial: '🔵 Trial gratuito', free: '🔒 Piano Free' };
+    const labels = { pro: '✅ Piano Pro attivo', trial: '🔵 Trial gratuito (14 gg)', free: '🔒 Piano Free — limitato' };
     dropPlan.textContent = labels[plan] || plan;
   }
+  // Banner piano
+  const daysLeft = meta?.trial_days_left ?? 14;
+  setTimeout(() => {
+    showPlanBanner(plan, daysLeft);
+    applyFeatureGating();
+  }, 800);
 }
 
 async function _checkSubscription() {
   if (!_cloudSyncActive || !_authToken) {
-    _updatePlanBadge('pro'); // locale = sempre pro
+    _updatePlanBadge('trial', { trial_days_left: 14 }); // locale = trial
     return;
   }
   try {
@@ -5165,13 +5296,12 @@ async function _checkSubscription() {
       headers: { 'Authorization': `Bearer ${_authToken}` }
     });
     const d = await r.json();
-    _updatePlanBadge(d.plan || 'free');
+    _updatePlanBadge(d.plan || 'free', { trial_days_left: d.trial_days_left ?? 14 });
     if (!d.active && d.plan === 'free') {
-      // Mostra overlay abbonamento dopo 1 secondo
-      setTimeout(openSubscriptionOverlay, 1000);
+      setTimeout(openSubscriptionOverlay, 2000);
     }
   } catch(e) {
-    _updatePlanBadge('trial'); // in caso di errore assume trial
+    _updatePlanBadge('trial', { trial_days_left: 14 });
   }
 }
 
@@ -6818,6 +6948,22 @@ ${fmtBlock('📋 Risposta AI — Seconda parte (sezioni 10-19)', raw2)}
   <button onclick="window.print()" style="padding:10px 28px;background:#1a1a2e;color:#fff;border:none;border-radius:6px;font-size:14px;cursor:pointer">🖨️ Stampa / Salva come PDF</button>
   <button onclick="window.close()" style="padding:10px 20px;margin-left:12px;background:#eee;border:none;border-radius:6px;font-size:14px;cursor:pointer">✕ Chiudi</button>
 </div>
+
+<!-- COOKIE BANNER -->
+<div id="cookieBanner" role="dialog" aria-label="Cookie consent">
+  <div class="cb-text">🍪 Questo sito usa cookie tecnici e, se accetti, cookie analitici. Leggi la <a href="privacy.html">Privacy Policy</a> e la <a href="cookie-policy.html">Cookie Policy</a>.</div>
+  <div class="cb-actions">
+    <button class="cb-btn cb-decline" onclick="cookieDecline()">Solo necessari</button>
+    <button class="cb-btn cb-accept" onclick="cookieAccept()">Accetta tutti</button>
+  </div>
+</div>
+<script>
+
+(function(){if(localStorage.getItem('baia_cookie_consent'))return;const b=document.getElementById('cookieBanner');if(b)setTimeout(()=>b.classList.add('show'),800);})();
+function cookieAccept(){localStorage.setItem('baia_cookie_consent','accepted');const b=document.getElementById('cookieBanner');if(b){b.style.transition='transform .3s ease';b.style.transform='translateY(100%)';}}
+function cookieDecline(){localStorage.setItem('baia_cookie_consent','declined');const b=document.getElementById('cookieBanner');if(b){b.style.transition='transform .3s ease';b.style.transform='translateY(100%)';}}
+
+</script>
 </body></html>`;
 
   const win = window.open('', '_blank', 'width=900,height=700');
@@ -12047,6 +12193,147 @@ function updateHeaderApiDot() {
   btn.style.background  = hasKey ? 'none' : 'var(--amber-bg)';
   btn.style.color       = hasKey ? '' : 'var(--amber)';
 }
+
+
+// ════════════════════════════════════════════════════════
+//  PLAN BANNER + FEATURE GATING
+// ════════════════════════════════════════════════════════
+
+const PLAN_LIMITS = {
+  free:  { maxBandi: 2,  maxAziende: 3,  pdf: false, crm: false, sal: false, kpi: false },
+  trial: { maxBandi: 99, maxAziende: 99, pdf: true,  crm: true,  sal: true,  kpi: true  },
+  pro:   { maxBandi: 99, maxAziende: 99, pdf: true,  crm: true,  sal: true,  kpi: true  },
+};
+
+function getPlanLimits() {
+  return PLAN_LIMITS[_userPlan] || PLAN_LIMITS.free;
+}
+
+function showPlanBanner(plan, trialDaysLeft) {
+  const banner = document.getElementById('planBanner');
+  if (!banner) return;
+
+  if (plan === 'pro') {
+    banner.style.display = 'none';
+    document.body.classList.remove('has-plan-banner');
+    return;
+  }
+
+  let inner = '';
+  if (plan === 'trial') {
+    const pct = Math.round((trialDaysLeft / 14) * 100);
+    inner = `
+      <div class="banner-left">
+        <span class="banner-icon">🔵</span>
+        <span class="banner-text">Trial gratuito — <em>${trialDaysLeft} giorni rimanenti</em></span>
+        <div class="trial-bar-wrap">
+          <div class="trial-bar"><div class="trial-bar-fill" style="width:${pct}%"></div></div>
+          <span style="font-size:11px;opacity:0.6;">${trialDaysLeft}/14</span>
+        </div>
+      </div>
+      <div class="banner-actions">
+        <button class="banner-upgrade-btn" onclick="openSubscriptionOverlay()">🚀 Passa a Pro</button>
+        <button class="banner-dismiss" onclick="dismissPlanBanner()" title="Chiudi">✕</button>
+      </div>`;
+    banner.className = 'trial';
+  } else if (plan === 'free') {
+    inner = `
+      <div class="banner-left">
+        <span class="banner-icon">🔒</span>
+        <span class="banner-text">Modalità Free — <em>max 2 bandi, 3 aziende. Alcune funzionalità non disponibili.</em></span>
+      </div>
+      <div class="banner-actions">
+        <button class="banner-upgrade-btn" onclick="openSubscriptionOverlay()">🚀 Sblocca tutto — €129/mese</button>
+        <button class="banner-dismiss" onclick="dismissPlanBanner()" title="Chiudi">✕</button>
+      </div>`;
+    banner.className = 'free';
+  } else if (plan === 'demo') {
+    inner = `
+      <div class="banner-left">
+        <span class="banner-icon">🎭</span>
+        <span class="banner-text">Modalità Demo — <em>stai esplorando BA.IA con dati di esempio. Nessun dato viene salvato.</em></span>
+      </div>
+      <div class="banner-actions">
+        <a href="signup.html" style="display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;border:none;border-radius:6px;padding:5px 14px;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap;">✨ Inizia gratis 14 giorni</a>
+        <button class="banner-dismiss" onclick="dismissPlanBanner()" title="Chiudi">✕</button>
+      </div>`;
+    banner.className = 'demo';
+  }
+
+  banner.innerHTML = inner;
+  banner.style.display = 'flex';
+  document.body.classList.add('has-plan-banner');
+}
+
+function dismissPlanBanner() {
+  const banner = document.getElementById('planBanner');
+  if (banner) { banner.style.display = 'none'; }
+  document.body.classList.remove('has-plan-banner');
+}
+
+function applyFeatureGating() {
+  const limits = getPlanLimits();
+
+  // NAV buttons — blocca SAL e Studio KPI per piano free
+  document.querySelectorAll('nav button').forEach(btn => {
+    const txt = btn.textContent;
+    if (!limits.sal && txt.includes('SAL')) {
+      btn.onclick = (e) => { e.preventDefault(); openSubscriptionOverlay(); };
+      btn.title = '🔒 Piano Pro';
+      btn.style.opacity = '0.5';
+    }
+    if (!limits.kpi && txt.includes('Studio KPI')) {
+      btn.onclick = (e) => { e.preventDefault(); openSubscriptionOverlay(); };
+      btn.title = '🔒 Piano Pro';
+      btn.style.opacity = '0.5';
+    }
+  });
+}
+
+// Controlla limite bandi prima di caricare
+const _origOpenFilePicker = window.openFilePicker;
+window.openFilePicker = function() {
+  const limits = getPlanLimits();
+  if (state.bandi && state.bandi.length >= limits.maxBandi) {
+    notify(`🔒 Piano Free: max ${limits.maxBandi} bandi. Passa a Pro per analisi illimitate.`, 'warn', 5000);
+    openSubscriptionOverlay();
+    return;
+  }
+  if (_origOpenFilePicker) _origOpenFilePicker();
+};
+
+// Controlla limite aziende prima di creare
+const _origOpenNewCompanyForm = window.openNewCompanyForm;
+window.openNewCompanyForm = function() {
+  const limits = getPlanLimits();
+  if (state.companies && state.companies.length >= limits.maxAziende) {
+    notify(`🔒 Piano Free: max ${limits.maxAziende} aziende. Passa a Pro per aziende illimitate.`, 'warn', 5000);
+    openSubscriptionOverlay();
+    return;
+  }
+  if (_origOpenNewCompanyForm) _origOpenNewCompanyForm();
+};
+
+// Block PDF export
+const _origExportPdf = window.exportPdf;
+window.exportPdf = function() {
+  if (!getPlanLimits().pdf) { openSubscriptionOverlay(); return; }
+  if (_origExportPdf) _origExportPdf();
+};
+
+// Block CRM export
+const _origOpenCrmExport = window.openCrmExport;
+window.openCrmExport = function() {
+  if (!getPlanLimits().crm) { openSubscriptionOverlay(); return; }
+  if (_origOpenCrmExport) _origOpenCrmExport();
+};
+
+// Block generatePdfReport
+const _origGeneratePdfReport = window.generatePdfReport;
+window.generatePdfReport = function(bId, cId) {
+  if (!getPlanLimits().pdf) { openSubscriptionOverlay(); return; }
+  if (_origGeneratePdfReport) _origGeneratePdfReport(bId, cId);
+};
 
 // ════════════════════════════════════════════════════════════════
 // ─── STUDIO KPI DASHBOARD PAGE ─────────────────────────────────

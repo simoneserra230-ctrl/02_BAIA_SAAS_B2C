@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /index.html
+Allow: /demo.html
+Allow: /signup.html
+Allow: /login.html
+Allow: /terms.html
+Allow: /privacy.html
+Allow: /cookie-policy.html
+
+# Pagine riservate — no index
+Disallow: /BAIA-SS.html
+Disallow: /account.html
+Disallow: /confirm-email.html
+Disallow: /payment-success.html
+Disallow: /reset-password.html
+
+Sitemap: https://baia-ss.com/sitemap.xml

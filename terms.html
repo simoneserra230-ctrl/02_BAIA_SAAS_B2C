@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BA.IA — SS · Termini di Servizio</title>
+<meta name="description" content="Termini e condizioni di utilizzo di BA.IA — Studio Suite.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Termini di Servizio — BA.IA SS">
+<meta property="og:description" content="Termini e condizioni di utilizzo di BA.IA — Studio Suite.">
+<meta property="og:url" content="https://baia-ss.com/terms.html">
+<meta property="og:image" content="https://baia-ss.com/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Termini di Servizio — BA.IA SS">
+<meta name="twitter:description" content="Termini e condizioni di utilizzo di BA.IA — Studio Suite.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+
+/* ═══════════════════════════════════════════════
+   BA.IA — SS · DESIGN SYSTEM
+═══════════════════════════════════════════════ */
+:root {
+  --bg:     #04080F;
+  --bg2:    #070D1A;
+  --bg3:    #0A1428;
+  --surface:  rgba(255,255,255,0.04);
+  --surface2: rgba(255,255,255,0.07);
+  --glass:    rgba(10,20,40,0.78);
+  --blue:   #4A8EFF;
+  --blue2:  #2D6FE8;
+  --cyan:   #00D4FF;
+  --purple: #7B5CF0;
+  --violet: #A78BFA;
+  --green:  #00E5A0;
+  --pink:   #F472B6;
+  --gold:   #C6921F;
+  --gold-l: #F0B429;
+  --red:    #EF4444;
+  --amber:  #F59E0B;
+  --border:  rgba(255,255,255,0.08);
+  --border2: rgba(74,142,255,0.28);
+  --text:  #EEF2FF;
+  --text2: #8B9EC7;
+  --text3: #5A6B8A;
+  --ff-d: 'Instrument Serif', Georgia, serif;
+  --ff-b: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --ff-m: 'Space Mono', monospace;
+  --ease: all .2s ease;
+  --r:    10px;
+  --r-lg: 16px;
+  --r-xl: 22px;
+  --shadow-lg: 0 40px 100px rgba(0,0,0,.55);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--ff-b);
+  line-height: 1.65;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+a { text-decoration: none; color: inherit; }
+::selection { background: rgba(74,142,255,.35); color: #fff; }
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--blue2); border-radius: 2px; }
+
+/* ── BACKGROUND EFFECTS ── */
+.bg-grid {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(74,142,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(74,142,255,.025) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+.bg-glow {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 40% at 20% 10%, rgba(74,142,255,.07) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 40% at 80% 80%, rgba(123,92,240,.05) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 30% at 60% 30%, rgba(0,212,255,.04) 0%, transparent 60%);
+}
+/* Scan lines */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 1; pointer-events: none;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,212,255,.005) 2px, rgba(0,212,255,.005) 4px);
+  animation: scan 8s linear infinite;
+}
+@keyframes scan { from { background-position: 0 0; } to { background-position: 0 100px; } }
+/* Noise */
+body::after {
+  content: '';
+  position: fixed; inset: 0; z-index: 1; pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.022'/%3E%3C/svg%3E");
+  opacity: .55; mix-blend-mode: screen;
+}
+
+/* ── NAV ── */
+.baia-nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 200;
+  padding: 16px 0;
+  transition: all .3s;
+}
+.baia-nav.scrolled {
+  padding: 10px 0;
+  background: rgba(4,8,15,.92);
+  backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  max-width: 1100px; margin: 0 auto; padding: 0 36px;
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 10px;
+  cursor: pointer; text-decoration: none; color: inherit;
+}
+.logo-mark svg { width: 34px; height: 34px; }
+.logo-wordmark {
+  font-family: var(--ff-d); font-size: 21px; font-weight: 400; color: var(--text);
+}
+.logo-wordmark span { color: var(--blue); }
+.logo-ss-tag {
+  font-family: var(--ff-m); font-size: 10px; color: var(--cyan);
+  background: rgba(0,212,255,.08); border: 1px solid rgba(0,212,255,.2);
+  border-radius: 4px; padding: 2px 7px; letter-spacing: .08em;
+}
+.nav-links { display: flex; gap: 28px; list-style: none; }
+.nav-links a { font-size: 13.5px; color: var(--text2); transition: color .2s; }
+.nav-links a:hover { color: var(--cyan); }
+.nav-pill { display: flex; gap: 10px; align-items: center; }
+@media (max-width: 720px) { .nav-links { display: none; } }
+
+/* ── BUTTONS ── */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 20px; border-radius: var(--r); font-family: var(--ff-b);
+  font-size: 13.5px; font-weight: 600; cursor: pointer; transition: var(--ease);
+  border: none; position: relative; overflow: hidden; white-space: nowrap;
+}
+.btn-ghost {
+  background: transparent; border: 1px solid var(--border); color: var(--text2);
+}
+.btn-ghost:hover { border-color: var(--border2); color: var(--text); background: var(--surface); }
+.btn-primary {
+  background: linear-gradient(135deg, var(--blue), var(--purple)); color: #fff;
+}
+.btn-primary::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, var(--cyan), var(--blue)); opacity: 0; transition: opacity .3s;
+}
+.btn-primary:hover::after { opacity: 1; }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(74,142,255,.45); }
+.btn-primary span, .btn-primary svg { position: relative; z-index: 1; }
+.btn-cta-nav {
+  font-size: 13.5px; font-weight: 600; color: #fff; padding: 9px 20px;
+  background: linear-gradient(135deg, var(--blue), var(--purple));
+  border-radius: var(--r); border: none; cursor: pointer; font-family: var(--ff-b);
+  transition: var(--ease); display: inline-flex; align-items: center; gap: 8px;
+  position: relative; overflow: hidden;
+}
+.btn-cta-nav::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg,var(--cyan),var(--blue)); opacity: 0; transition: opacity .3s; }
+.btn-cta-nav:hover::after { opacity: 1; }
+.btn-cta-nav:hover { transform: translateY(-1px); box-shadow: 0 8px 28px rgba(74,142,255,.45); }
+.btn-cta-nav span, .btn-cta-nav svg { position: relative; z-index: 1; }
+.btn-gold {
+  background: linear-gradient(135deg, var(--gold), var(--gold-l)); color: #fff;
+}
+.btn-gold:hover { transform: translateY(-1px); box-shadow: 0 8px 28px rgba(198,146,31,.4); }
+.btn-danger { background: rgba(239,68,68,.1); color: var(--red); border: 1px solid rgba(239,68,68,.25); }
+.btn-danger:hover { background: rgba(239,68,68,.2); }
+.btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text2); }
+.btn-outline:hover { border-color: var(--border2); color: var(--text); background: var(--surface); }
+.btn-sm { padding: 6px 13px; font-size: 12px; }
+.btn-lg { padding: 14px 32px; font-size: 15px; font-weight: 700; }
+.btn:disabled { opacity: .5; pointer-events: none; }
+
+/* ── CARD ── */
+.baia-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--r-xl); padding: 32px; position: relative; overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,.35);
+}
+.baia-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--blue), var(--cyan), var(--purple), transparent);
+  opacity: .5;
+}
+.baia-card.glow::after {
+  content: ''; position: absolute; inset: -1px; border-radius: inherit;
+  background: linear-gradient(90deg, transparent, var(--blue), var(--cyan), transparent);
+  background-size: 400% 100%; animation: border-run 4s linear infinite; z-index: -1; opacity: .5; filter: blur(1px);
+}
+@keyframes border-run { 0% { background-position: 0% 0; } 100% { background-position: 400% 0; } }
+
+/* ── FORM ── */
+.form-group { margin-bottom: 16px; }
+.form-label { font-size: 12px; color: var(--text2); font-weight: 600; display: block; margin-bottom: 5px; letter-spacing: .02em; }
+.form-input {
+  width: 100%; background: rgba(255,255,255,.04); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 10px 13px; color: var(--text);
+  font-family: var(--ff-b); font-size: 13.5px; outline: none; transition: border-color .15s, background .15s;
+}
+.form-input:focus { border-color: var(--blue); background: rgba(74,142,255,.04); }
+.form-input::placeholder { color: var(--text3); }
+.form-input[readonly] { opacity: .5; cursor: default; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 520px) { .form-row { grid-template-columns: 1fr; } }
+
+/* ── MESSAGES ── */
+.msg { padding: 11px 14px; border-radius: var(--r); font-size: 13px; font-weight: 600; margin-bottom: 14px; display: none; }
+.msg.error   { background: rgba(239,68,68,.08);  color: #fca5a5; border: 1px solid rgba(239,68,68,.25); }
+.msg.success { background: rgba(0,229,160,.08);  color: var(--green); border: 1px solid rgba(0,229,160,.25); }
+.msg.info    { background: rgba(74,142,255,.08); color: var(--blue);  border: 1px solid rgba(74,142,255,.25); }
+
+/* ── BADGE ── */
+.badge { font-size: 10px; padding: 2px 9px; border-radius: 4px; font-weight: 700; font-family: var(--ff-m); letter-spacing: .05em; }
+.badge-pro   { background: rgba(0,229,160,.1);   color: var(--green);  border: 1px solid rgba(0,229,160,.3); }
+.badge-trial { background: rgba(0,212,255,.1);   color: var(--cyan);   border: 1px solid rgba(0,212,255,.3); }
+.badge-free  { background: rgba(123,92,240,.1);  color: var(--violet); border: 1px solid rgba(123,92,240,.3); }
+.badge-paid  { background: rgba(0,229,160,.1);   color: var(--green);  border: 1px solid rgba(0,229,160,.25); }
+
+/* ── NOTIFY ── */
+#notify { position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; }
+.notify-item {
+  padding: 12px 18px; border-radius: 12px; font-size: 13px; font-weight: 600;
+  backdrop-filter: blur(12px); border: 1px solid; animation: notIn .25s ease;
+  box-shadow: 0 8px 32px rgba(0,0,0,.4); max-width: 340px;
+}
+@keyframes notIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+.notify-success { background: rgba(0,229,160,.12); color: var(--green);  border-color: rgba(0,229,160,.3); }
+.notify-error   { background: rgba(239,68,68,.12); color: #fca5a5;       border-color: rgba(239,68,68,.3); }
+.notify-info    { background: rgba(74,142,255,.12); color: var(--blue);   border-color: rgba(74,142,255,.3); }
+.notify-warn    { background: rgba(245,158,11,.12); color: #fcd34d;       border-color: rgba(245,158,11,.3); }
+
+/* ── SPINNER ── */
+.spinner { width: 36px; height: 36px; border: 2px solid var(--surface2); border-top-color: var(--blue); border-radius: 50%; animation: spin .7s linear infinite; margin: 32px auto; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── ANIMATIONS ── */
+@keyframes fade-up  { from { opacity:0; transform: translateY(24px); } to { opacity:1; transform: translateY(0); } }
+@keyframes fade-in  { from { opacity:0; } to { opacity:1; } }
+@keyframes scale-in { from { opacity:0; transform: scale(.93); } to { opacity:1; transform: scale(1); } }
+
+/* ── PAGE WRAPPER ── */
+.page-wrap { position: relative; z-index: 2; padding-top: 80px; }
+
+
+/* ── COOKIE BANNER ── */
+#cookieBanner {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 99998;
+  background: rgba(7,13,26,.97); backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(74,142,255,.2);
+  padding: 16px 32px; display: flex; align-items: center; gap: 20px;
+  flex-wrap: wrap; justify-content: space-between;
+  transform: translateY(100%); transition: transform .4s cubic-bezier(.215,.61,.355,1);
+  box-shadow: 0 -8px 40px rgba(0,0,0,.5);
+}
+#cookieBanner.show { transform: translateY(0); }
+#cookieBanner .cb-text { font-size: 13px; color: var(--text2,#8B9EC7); line-height: 1.6; flex: 1; min-width: 260px; }
+#cookieBanner .cb-text a { color: var(--blue,#4A8EFF); text-decoration: underline; }
+#cookieBanner .cb-actions { display: flex; gap: 10px; flex-shrink: 0; flex-wrap: wrap; }
+#cookieBanner .cb-btn {
+  padding: 8px 18px; border-radius: 8px; font-family: inherit;
+  font-size: 13px; font-weight: 600; cursor: pointer; transition: all .15s; border: none;
+}
+#cookieBanner .cb-accept {
+  background: linear-gradient(135deg,#4A8EFF,#7B5CF0); color: #fff;
+}
+#cookieBanner .cb-accept:hover { opacity: .88; }
+#cookieBanner .cb-decline {
+  background: transparent; border: 1px solid rgba(255,255,255,.1); color: #8B9EC7;
+}
+#cookieBanner .cb-decline:hover { border-color: rgba(255,255,255,.2); color: #EEF2FF; }
+
+.prose {
+  max-width: 780px; margin: 0 auto; padding: 100px 32px 80px;
+  position: relative; z-index: 2;
+}
+.prose-header { margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+.prose-label { font-family: var(--ff-m); font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--blue); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.prose-label::before { content:''; width:16px; height:1px; background:var(--blue); opacity:.7; }
+.prose-title { font-family: var(--ff-d); font-size: 44px; font-weight: 400; letter-spacing: -.03em; line-height: 1.05; margin-bottom: 12px; }
+.prose-meta { font-size: 13px; color: var(--text3); }
+.prose h2 { font-family: var(--ff-d); font-size: 24px; font-weight: 400; letter-spacing: -.02em; margin: 40px 0 14px; color: var(--text); }
+.prose h3 { font-size: 15px; font-weight: 700; margin: 24px 0 10px; color: var(--text); }
+.prose p { font-size: 14.5px; color: var(--text2); line-height: 1.8; margin-bottom: 16px; }
+.prose ul { padding-left: 20px; margin-bottom: 16px; }
+.prose ul li { font-size: 14.5px; color: var(--text2); line-height: 1.75; margin-bottom: 6px; }
+.prose a { color: var(--blue); }
+.prose a:hover { text-decoration: underline; }
+.prose .highlight-box {
+  background: rgba(74,142,255,.06); border: 1px solid rgba(74,142,255,.15);
+  border-radius: var(--r-lg); padding: 20px 24px; margin: 24px 0; font-size: 14px; color: var(--text2); line-height: 1.7;
+}
+.prose strong { color: var(--text); font-weight: 600; }
+@media (max-width: 600px) { .prose { padding: 90px 20px 60px; } .prose-title { font-size: 32px; } }
+</style>
+</head>
+<body>
+<div class="bg-glow"></div><div class="bg-grid"></div>
+<nav class="baia-nav" id="baia-nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html">
+      <div class="logo-mark"><svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="36" height="36" rx="10" fill="#0A1428"/>
+          <rect x="0.5" y="0.5" width="35" height="35" rx="9.5" stroke="rgba(74,142,255,0.35)"/>
+          <path d="M10 9h8.5c2.8 0 4.5 1.5 4.5 3.8 0 1.4-.7 2.5-1.8 3.2 1.6.6 2.8 1.9 2.8 3.8 0 2.7-2 4.2-5.2 4.2H10V9z" fill="#4A8EFF" opacity="0.9"/>
+          <path d="M13 12h5c1 0 1.8.7 1.8 1.8s-.8 1.8-1.8 1.8h-5v-3.6z" fill="#04080F"/>
+          <path d="M13 17h5.5c1.2 0 2 .8 2 2s-.8 2-2 2H13v-4z" fill="#04080F"/>
+          <circle cx="27" cy="13" r="1.5" fill="#00D4FF" opacity="0.9"/>
+          <circle cx="27" cy="19" r="1.5" fill="#7B5CF0" opacity="0.7"/>
+          <circle cx="27" cy="25" r="1.5" fill="#4A8EFF" opacity="0.5"/>
+          <line x1="26" y1="13" x2="22" y2="14" stroke="rgba(0,212,255,0.35)" stroke-width="0.8"/>
+          <line x1="26" y1="19" x2="22" y2="18" stroke="rgba(123,92,240,0.35)" stroke-width="0.8"/>
+          <line x1="26" y1="25" x2="22" y2="23" stroke="rgba(74,142,255,0.35)" stroke-width="0.8"/>
+          <line x1="27" y1="14.5" x2="27" y2="17.5" stroke="rgba(74,142,255,0.2)" stroke-width="0.8"/>
+          <line x1="27" y1="20.5" x2="27" y2="23.5" stroke="rgba(74,142,255,0.2)" stroke-width="0.8"/>
+        </svg></div>
+      <span class="logo-wordmark">BA<span>.</span>IA</span>
+      <span class="logo-ss-tag">SS</span>
+    </a>
+    <div class="nav-pill">
+      <a href="login.html" class="btn btn-ghost">Accedi</a>
+      <a href="signup.html" class="btn-cta-nav"><span>Inizia gratis</span><svg width="13" height="13" viewBox="0 0 14 14" fill="none" style="position:relative;z-index:1"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    </div>
+  </div>
+</nav>
+<script>
+window.addEventListener('scroll',()=>{document.getElementById('baia-nav').classList.toggle('scrolled',scrollY>20)},{passive:true});
+</script>
+<div class="prose">
+  <div class="prose-header">
+    <div class="prose-label">Legale</div>
+    <h1 class="prose-title">Termini di Servizio</h1>
+    <p class="prose-meta">Ultimo aggiornamento: 1 aprile 2026 · Versione 1.0</p>
+  </div>
+
+  <div class="highlight-box">
+    📋 <strong>Riepilogo in breve:</strong> BA.IA — Studio Suite è un software SaaS per l'analisi AI di bandi pubblici italiani. Utilizzandolo accetti questi termini. Il servizio è fornito "as is" e ti fatturiamo il piano scelto. Puoi cancellare in qualsiasi momento.
+  </div>
+
+  <h2>1. Definizioni</h2>
+  <p><strong>"BA.IA — SS"</strong> o <strong>"il Servizio"</strong> si riferisce alla piattaforma web BA.IA — Studio Suite, accessibile all'indirizzo baia-ss.com. <strong>"Utente"</strong> indica qualsiasi persona fisica o giuridica che accede al Servizio. <strong>"Contenuti"</strong> indica documenti, testi, dati e qualsiasi altro materiale caricato dall'Utente.</p>
+
+  <h2>2. Accettazione dei Termini</h2>
+  <p>Registrandoti o utilizzando il Servizio, dichiari di aver letto, compreso e accettato integralmente questi Termini. Se utilizzi il Servizio per conto di un'organizzazione, dichiari di avere l'autorità per vincolare tale organizzazione.</p>
+
+  <h2>3. Il Servizio</h2>
+  <p>BA.IA — SS è una piattaforma SaaS che utilizza intelligenza artificiale (Groq/LLaMA e Anthropic/Claude) per analizzare bandi pubblici italiani, calcolare score di eligibilità per profili aziendali e generare report professionali.</p>
+  <h3>3.1 Piani di abbonamento</h3>
+  <ul>
+    <li><strong>Trial gratuito (14 giorni):</strong> accesso completo, nessuna carta richiesta</li>
+    <li><strong>Piano Free:</strong> max 2 bandi, 3 aziende, funzionalità limitate</li>
+    <li><strong>Piano Pro (€129/mese):</strong> accesso illimitato a tutte le funzionalità</li>
+  </ul>
+  <h3>3.2 Limitazioni del servizio</h3>
+  <p>L'analisi AI è fornita a scopo informativo e non costituisce consulenza legale, fiscale o finanziaria. I risultati devono essere verificati da un professionista qualificato prima di qualsiasi utilizzo in ambito legale o contrattuale.</p>
+
+  <h2>4. Account Utente</h2>
+  <p>Sei responsabile della sicurezza del tuo account e di tutte le attività che avvengono sotto le tue credenziali. Devi notificarci immediatamente di qualsiasi utilizzo non autorizzato a <a href="mailto:security@baia-ss.com">security@baia-ss.com</a>. Non è consentito condividere l'account con terze parti.</p>
+
+  <h2>5. Pagamenti e Fatturazione</h2>
+  <p>I pagamenti sono gestiti da <strong>Stripe</strong>. Il Piano Pro viene rinnovato automaticamente ogni mese. Puoi cancellare in qualsiasi momento dal pannello Account — l'accesso Pro rimane attivo fino alla fine del periodo già pagato. Non sono previsti rimborsi per periodi parziali.</p>
+
+  <h2>6. Proprietà Intellettuale</h2>
+  <p>Il Servizio, inclusi software, design, logo e contenuti prodotti dalla piattaforma, sono di proprietà esclusiva di BA.IA — SS. I Contenuti caricati dall'Utente rimangono di proprietà dell'Utente. L'Utente concede a BA.IA — SS una licenza limitata, non esclusiva, per elaborare i Contenuti al solo scopo di erogare il Servizio.</p>
+
+  <h2>7. Privacy e Dati</h2>
+  <p>Il trattamento dei dati personali è disciplinato dalla nostra <a href="privacy.html">Informativa sulla Privacy</a>. I documenti caricati vengono elaborati e non archiviati permanentemente sui nostri server, salvo per le funzionalità di sync cloud esplicitamente attivate dall'Utente.</p>
+
+  <h2>8. Limitazione di Responsabilità</h2>
+  <p>Il Servizio è fornito "as is" e "as available". BA.IA — SS non garantisce che il Servizio sia privo di errori o che i risultati dell'analisi AI siano accurati al 100%. In nessun caso la responsabilità di BA.IA — SS supererà l'importo pagato dall'Utente negli ultimi 3 mesi.</p>
+
+  <h2>9. Modifiche ai Termini</h2>
+  <p>Ci riserviamo il diritto di modificare questi Termini in qualsiasi momento. Le modifiche rilevanti saranno comunicate via email con almeno 14 giorni di preavviso. L'uso continuato del Servizio dopo tale periodo costituisce accettazione.</p>
+
+  <h2>10. Legge Applicabile</h2>
+  <p>Questi Termini sono regolati dalla legge italiana. Per qualsiasi controversia è competente il Tribunale di Cagliari, salvo diversa normativa inderogabile applicabile.</p>
+
+  <h2>11. Contatti</h2>
+  <p>Per qualsiasi domanda: <a href="mailto:legal@baia-ss.com">legal@baia-ss.com</a></p>
+</div>
+<footer style="border-top:1px solid rgba(255,255,255,.06);padding:40px 0;margin-top:80px;position:relative;z-index:2;">
+  <div style="max-width:1100px;margin:0 auto;padding:0 36px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span style="font-family:'Instrument Serif',serif;font-size:17px;color:#EEF2FF;">BA<span style="color:#4A8EFF">.</span>IA</span>
+      <span style="font-family:'Space Mono',monospace;font-size:9px;color:#00D4FF;background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.2);border-radius:3px;padding:2px 6px;">SS</span>
+    </div>
+    <div style="display:flex;gap:24px;flex-wrap:wrap;">
+      <a href="terms.html" style="font-size:12px;color:#5A6B8A;text-decoration:none;transition:color .15s;" onmouseover="this.style.color='#8B9EC7'" onmouseout="this.style.color='#5A6B8A'">Termini</a>
+      <a href="privacy.html" style="font-size:12px;color:#5A6B8A;text-decoration:none;transition:color .15s;" onmouseover="this.style.color='#8B9EC7'" onmouseout="this.style.color='#5A6B8A'">Privacy</a>
+      <a href="cookie-policy.html" style="font-size:12px;color:#5A6B8A;text-decoration:none;transition:color .15s;" onmouseover="this.style.color='#8B9EC7'" onmouseout="this.style.color='#5A6B8A'">Cookie Policy</a>
+      <a href="mailto:support@baia-ss.com" style="font-size:12px;color:#5A6B8A;text-decoration:none;transition:color .15s;" onmouseover="this.style.color='#8B9EC7'" onmouseout="this.style.color='#5A6B8A'">Contatti</a>
+    </div>
+    <div style="font-size:11px;color:#5A6B8A;font-family:'Space Mono',monospace;">© 2026 BA.IA — SS · Tutti i diritti riservati</div>
+  </div>
+</footer>
+<!-- COOKIE BANNER -->
+<div id="cookieBanner" role="dialog" aria-label="Cookie consent">
+  <div class="cb-text">
+    🍪 Questo sito usa cookie tecnici e, se accetti, cookie analitici per migliorare l'esperienza.
+    Leggi la <a href="privacy.html">Privacy Policy</a> e la <a href="cookie-policy.html">Cookie Policy</a>.
+  </div>
+  <div class="cb-actions">
+    <button class="cb-btn cb-decline" onclick="cookieDecline()">Solo necessari</button>
+    <button class="cb-btn cb-accept" onclick="cookieAccept()">Accetta tutti</button>
+  </div>
+</div>
+<div id="notify"></div>
+<script>
+
+function notify(msg, type='info') {
+  const wrap = document.getElementById('notify');
+  if (!wrap) return;
+  const el = document.createElement('div');
+  el.className = `notify-item notify-${type}`;
+  el.textContent = msg;
+  wrap.appendChild(el);
+  setTimeout(() => el.style.opacity = '0', 4000);
+  setTimeout(() => el.remove(), 4300);
+}
+
+
+// ── COOKIE CONSENT ──────────────────────────────────
+(function(){
+  if(localStorage.getItem('baia_cookie_consent')) return;
+  const b = document.getElementById('cookieBanner');
+  if(b) setTimeout(()=>b.classList.add('show'), 800);
+})();
+function cookieAccept(){
+  localStorage.setItem('baia_cookie_consent','accepted');
+  const b=document.getElementById('cookieBanner');
+  if(b){b.style.transition='transform .3s ease';b.style.transform='translateY(100%)';}
+}
+function cookieDecline(){
+  localStorage.setItem('baia_cookie_consent','declined');
+  const b=document.getElementById('cookieBanner');
+  if(b){b.style.transition='transform .3s ease';b.style.transform='translateY(100%)';}
+}
+
+</script>
+</body>
+</html>
