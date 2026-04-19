@@ -4,315 +4,47 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BA.IA — SS · Conferma Email</title>
+<meta name="description" content="Conferma la tua email per attivare l'account BA.IA — SS.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" href="favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/theme.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <style>
-
-/* ═══════════════════════════════════════════════
-   BA.IA — SS · DESIGN SYSTEM
-═══════════════════════════════════════════════ */
-:root {
-  --bg:     #04080F;
-  --bg2:    #070D1A;
-  --bg3:    #0A1428;
-  --surface:  rgba(255,255,255,0.04);
-  --surface2: rgba(255,255,255,0.07);
-  --glass:    rgba(10,20,40,0.78);
-  --blue:   #4A8EFF;
-  --blue2:  #2D6FE8;
-  --cyan:   #00D4FF;
-  --purple: #7B5CF0;
-  --violet: #A78BFA;
-  --green:  #00E5A0;
-  --pink:   #F472B6;
-  --gold:   #C6921F;
-  --gold-l: #F0B429;
-  --red:    #EF4444;
-  --amber:  #F59E0B;
-  --border:  rgba(255,255,255,0.08);
-  --border2: rgba(74,142,255,0.28);
-  --text:  #EEF2FF;
-  --text2: #8B9EC7;
-  --text3: #5A6B8A;
-  --ff-d: 'Instrument Serif', Georgia, serif;
-  --ff-b: 'Plus Jakarta Sans', system-ui, sans-serif;
-  --ff-m: 'Space Mono', monospace;
-  --ease: all .2s ease;
-  --r:    10px;
-  --r-lg: 16px;
-  --r-xl: 22px;
-  --shadow-lg: 0 40px 100px rgba(0,0,0,.55);
-}
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--ff-b);
-  line-height: 1.65;
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-a { text-decoration: none; color: inherit; }
-::selection { background: rgba(74,142,255,.35); color: #fff; }
-::-webkit-scrollbar { width: 3px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--blue2); border-radius: 2px; }
-
-/* ── BACKGROUND EFFECTS ── */
-.bg-grid {
-  position: fixed; inset: 0; z-index: 0; pointer-events: none;
-  background-image:
-    linear-gradient(rgba(74,142,255,.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(74,142,255,.025) 1px, transparent 1px);
-  background-size: 48px 48px;
-}
-.bg-glow {
-  position: fixed; inset: 0; z-index: 0; pointer-events: none;
-  background:
-    radial-gradient(ellipse 60% 40% at 20% 10%, rgba(74,142,255,.07) 0%, transparent 70%),
-    radial-gradient(ellipse 50% 40% at 80% 80%, rgba(123,92,240,.05) 0%, transparent 70%),
-    radial-gradient(ellipse 40% 30% at 60% 30%, rgba(0,212,255,.04) 0%, transparent 60%);
-}
-/* Scan lines */
-body::before {
-  content: '';
-  position: fixed; inset: 0; z-index: 1; pointer-events: none;
-  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,212,255,.005) 2px, rgba(0,212,255,.005) 4px);
-  animation: scan 8s linear infinite;
-}
-@keyframes scan { from { background-position: 0 0; } to { background-position: 0 100px; } }
-/* Noise */
-body::after {
-  content: '';
-  position: fixed; inset: 0; z-index: 1; pointer-events: none;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.022'/%3E%3C/svg%3E");
-  opacity: .55; mix-blend-mode: screen;
-}
-
-/* ── NAV ── */
-.baia-nav {
-  position: fixed; top: 0; left: 0; right: 0;
-  z-index: 200;
-  padding: 16px 0;
-  transition: all .3s;
-}
-.baia-nav.scrolled {
-  padding: 10px 0;
-  background: rgba(4,8,15,.92);
-  backdrop-filter: blur(24px);
-  border-bottom: 1px solid var(--border);
-}
-.nav-inner {
-  display: flex; align-items: center; justify-content: space-between;
-  max-width: 1100px; margin: 0 auto; padding: 0 36px;
-}
-.nav-logo {
-  display: flex; align-items: center; gap: 10px;
-  cursor: pointer; text-decoration: none; color: inherit;
-}
-.logo-mark svg { width: 34px; height: 34px; }
-.logo-wordmark {
-  font-family: var(--ff-d); font-size: 21px; font-weight: 400; color: var(--text);
-}
-.logo-wordmark span { color: var(--blue); }
-.logo-ss-tag {
-  font-family: var(--ff-m); font-size: 10px; color: var(--cyan);
-  background: rgba(0,212,255,.08); border: 1px solid rgba(0,212,255,.2);
-  border-radius: 4px; padding: 2px 7px; letter-spacing: .08em;
-}
-.nav-links { display: flex; gap: 28px; list-style: none; }
-.nav-links a { font-size: 13.5px; color: var(--text2); transition: color .2s; }
-.nav-links a:hover { color: var(--cyan); }
-.nav-pill { display: flex; gap: 10px; align-items: center; }
-@media (max-width: 720px) { .nav-links { display: none; } }
-
-/* ── BUTTONS ── */
-.btn {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 10px 20px; border-radius: var(--r); font-family: var(--ff-b);
-  font-size: 13.5px; font-weight: 600; cursor: pointer; transition: var(--ease);
-  border: none; position: relative; overflow: hidden; white-space: nowrap;
-}
-.btn-ghost {
-  background: transparent; border: 1px solid var(--border); color: var(--text2);
-}
-.btn-ghost:hover { border-color: var(--border2); color: var(--text); background: var(--surface); }
-.btn-primary {
-  background: linear-gradient(135deg, var(--blue), var(--purple)); color: #fff;
-}
-.btn-primary::after {
-  content: ''; position: absolute; inset: 0;
-  background: linear-gradient(135deg, var(--cyan), var(--blue)); opacity: 0; transition: opacity .3s;
-}
-.btn-primary:hover::after { opacity: 1; }
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(74,142,255,.45); }
-.btn-primary span, .btn-primary svg { position: relative; z-index: 1; }
-.btn-cta-nav {
-  font-size: 13.5px; font-weight: 600; color: #fff; padding: 9px 20px;
-  background: linear-gradient(135deg, var(--blue), var(--purple));
-  border-radius: var(--r); border: none; cursor: pointer; font-family: var(--ff-b);
-  transition: var(--ease); display: inline-flex; align-items: center; gap: 8px;
-  position: relative; overflow: hidden;
-}
-.btn-cta-nav::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg,var(--cyan),var(--blue)); opacity: 0; transition: opacity .3s; }
-.btn-cta-nav:hover::after { opacity: 1; }
-.btn-cta-nav:hover { transform: translateY(-1px); box-shadow: 0 8px 28px rgba(74,142,255,.45); }
-.btn-cta-nav span, .btn-cta-nav svg { position: relative; z-index: 1; }
-.btn-gold {
-  background: linear-gradient(135deg, var(--gold), var(--gold-l)); color: #fff;
-}
-.btn-gold:hover { transform: translateY(-1px); box-shadow: 0 8px 28px rgba(198,146,31,.4); }
-.btn-danger { background: rgba(239,68,68,.1); color: var(--red); border: 1px solid rgba(239,68,68,.25); }
-.btn-danger:hover { background: rgba(239,68,68,.2); }
-.btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text2); }
-.btn-outline:hover { border-color: var(--border2); color: var(--text); background: var(--surface); }
-.btn-sm { padding: 6px 13px; font-size: 12px; }
-.btn-lg { padding: 14px 32px; font-size: 15px; font-weight: 700; }
-.btn:disabled { opacity: .5; pointer-events: none; }
-
-/* ── CARD ── */
-.baia-card {
-  background: var(--bg2); border: 1px solid var(--border);
-  border-radius: var(--r-xl); padding: 32px; position: relative; overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0,0,0,.35);
-}
-.baia-card::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--blue), var(--cyan), var(--purple), transparent);
-  opacity: .5;
-}
-.baia-card.glow::after {
-  content: ''; position: absolute; inset: -1px; border-radius: inherit;
-  background: linear-gradient(90deg, transparent, var(--blue), var(--cyan), transparent);
-  background-size: 400% 100%; animation: border-run 4s linear infinite; z-index: -1; opacity: .5; filter: blur(1px);
-}
-@keyframes border-run { 0% { background-position: 0% 0; } 100% { background-position: 400% 0; } }
-
-/* ── FORM ── */
-.form-group { margin-bottom: 16px; }
-.form-label { font-size: 12px; color: var(--text2); font-weight: 600; display: block; margin-bottom: 5px; letter-spacing: .02em; }
-.form-input {
-  width: 100%; background: rgba(255,255,255,.04); border: 1px solid var(--border);
-  border-radius: var(--r); padding: 10px 13px; color: var(--text);
-  font-family: var(--ff-b); font-size: 13.5px; outline: none; transition: border-color .15s, background .15s;
-}
-.form-input:focus { border-color: var(--blue); background: rgba(74,142,255,.04); }
-.form-input::placeholder { color: var(--text3); }
-.form-input[readonly] { opacity: .5; cursor: default; }
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-@media (max-width: 520px) { .form-row { grid-template-columns: 1fr; } }
-
-/* ── MESSAGES ── */
-.msg { padding: 11px 14px; border-radius: var(--r); font-size: 13px; font-weight: 600; margin-bottom: 14px; display: none; }
-.msg.error   { background: rgba(239,68,68,.08);  color: #fca5a5; border: 1px solid rgba(239,68,68,.25); }
-.msg.success { background: rgba(0,229,160,.08);  color: var(--green); border: 1px solid rgba(0,229,160,.25); }
-.msg.info    { background: rgba(74,142,255,.08); color: var(--blue);  border: 1px solid rgba(74,142,255,.25); }
-
-/* ── BADGE ── */
-.badge { font-size: 10px; padding: 2px 9px; border-radius: 4px; font-weight: 700; font-family: var(--ff-m); letter-spacing: .05em; }
-.badge-pro   { background: rgba(0,229,160,.1);   color: var(--green);  border: 1px solid rgba(0,229,160,.3); }
-.badge-trial { background: rgba(0,212,255,.1);   color: var(--cyan);   border: 1px solid rgba(0,212,255,.3); }
-.badge-free  { background: rgba(123,92,240,.1);  color: var(--violet); border: 1px solid rgba(123,92,240,.3); }
-.badge-paid  { background: rgba(0,229,160,.1);   color: var(--green);  border: 1px solid rgba(0,229,160,.25); }
-
-/* ── NOTIFY ── */
-#notify { position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; }
-.notify-item {
-  padding: 12px 18px; border-radius: 12px; font-size: 13px; font-weight: 600;
-  backdrop-filter: blur(12px); border: 1px solid; animation: notIn .25s ease;
-  box-shadow: 0 8px 32px rgba(0,0,0,.4); max-width: 340px;
-}
-@keyframes notIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
-.notify-success { background: rgba(0,229,160,.12); color: var(--green);  border-color: rgba(0,229,160,.3); }
-.notify-error   { background: rgba(239,68,68,.12); color: #fca5a5;       border-color: rgba(239,68,68,.3); }
-.notify-info    { background: rgba(74,142,255,.12); color: var(--blue);   border-color: rgba(74,142,255,.3); }
-.notify-warn    { background: rgba(245,158,11,.12); color: #fcd34d;       border-color: rgba(245,158,11,.3); }
-
-/* ── SPINNER ── */
-.spinner { width: 36px; height: 36px; border: 2px solid var(--surface2); border-top-color: var(--blue); border-radius: 50%; animation: spin .7s linear infinite; margin: 32px auto; }
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* ── ANIMATIONS ── */
-@keyframes fade-up  { from { opacity:0; transform: translateY(24px); } to { opacity:1; transform: translateY(0); } }
-@keyframes fade-in  { from { opacity:0; } to { opacity:1; } }
-@keyframes scale-in { from { opacity:0; transform: scale(.93); } to { opacity:1; transform: scale(1); } }
-
-/* ── PAGE WRAPPER ── */
-.page-wrap { position: relative; z-index: 2; padding-top: 80px; }
-
-.center-wrap {
-  min-height: 100vh; display: flex; align-items: center; justify-content: center;
-  padding: 100px 20px 40px; position: relative; z-index: 2;
-}
-.baia-card { max-width: 480px; width: 100%; text-align: center; animation: scale-in .55s cubic-bezier(.215,.61,.355,1) both; }
-.state-icon { width: 88px; height: 88px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 38px; margin: 0 auto 26px; }
-.icon-email   { background: rgba(74,142,255,.1);  border: 1px solid rgba(74,142,255,.2); }
-.icon-success { background: rgba(0,229,160,.1);   border: 1px solid rgba(0,229,160,.2);  }
-.icon-error   { background: rgba(239,68,68,.1);   border: 1px solid rgba(239,68,68,.2);  animation: shake .4s ease; }
-@keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
-h1 { font-family: var(--ff-d); font-size: 28px; font-weight: 400; letter-spacing:-.02em; margin-bottom: 10px; }
-.sub { font-size: 14px; color: var(--text2); line-height: 1.7; margin-bottom: 28px; }
-.email-chip {
-  display: inline-block; background: rgba(0,212,255,.08); border: 1px solid rgba(0,212,255,.2);
-  color: var(--cyan); border-radius: 100px; padding: 3px 14px; font-size: 13px; font-weight: 600; font-family: var(--ff-m);
-}
-.steps-list { display: flex; flex-direction: column; gap: 10px; margin: 20px 0 28px; text-align: left; }
-.step-row {
-  display: flex; align-items: flex-start; gap: 13px; padding: 12px 16px;
-  background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg);
-}
-.step-n {
-  width: 26px; height: 26px; background: rgba(74,142,255,.12); border: 1px solid rgba(74,142,255,.25);
-  border-radius: 50%; display: flex; align-items: center; justify-content: center;
-  font-family: var(--ff-m); font-size: 11px; font-weight: 700; color: var(--blue); flex-shrink: 0;
-}
-.step-row h4 { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
-.step-row p { font-size: 12px; color: var(--text3); margin: 0; }
-.resend { font-size: 12.5px; color: var(--text3); margin-top: 16px; }
-.resend a { color: var(--blue); cursor: pointer; }
-.resend a:hover { text-decoration: underline; }
-.countdown-badge {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: rgba(0,229,160,.08); border: 1px solid rgba(0,229,160,.2);
-  color: var(--green); border-radius: 100px; padding: 5px 16px;
-  font-family: var(--ff-m); font-size: 11px; margin-bottom: 20px;
-}
+.center-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:120px 24px 60px;position:relative;z-index:2}
+.baia-card{width:100%;max-width:480px;background:var(--glass);backdrop-filter:blur(32px);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:40px;position:relative;overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,.6);text-align:center}
+.baia-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(74,142,255,.04),rgba(0,212,255,.03));pointer-events:none}
+.baia-card::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--blue),var(--cyan),transparent);opacity:.7}
+.baia-card > *{position:relative;z-index:1}
+.baia-card h1{font-family:var(--ff-d);font-size:32px;font-weight:400;letter-spacing:-.02em;line-height:1.15;color:var(--text);margin:0 0 12px}
+.baia-card .sub{font-size:14.5px;color:var(--text2);line-height:1.65;margin:0 0 24px}
+.state-icon{width:80px;height:80px;border-radius:20px;display:flex;align-items:center;justify-content:center;margin:0 auto 22px;font-size:36px;position:relative}
+.icon-email{background:rgba(74,142,255,.1);border:1px solid rgba(74,142,255,.25);color:var(--blue);box-shadow:0 0 60px rgba(74,142,255,.15)}
+.icon-success{background:rgba(0,229,160,.1);border:1px solid rgba(0,229,160,.25);color:var(--green);box-shadow:0 0 60px rgba(0,229,160,.15)}
+.icon-error{background:rgba(255,107,157,.1);border:1px solid rgba(255,107,157,.3);color:#FF6B9D;box-shadow:0 0 60px rgba(255,107,157,.15)}
+@keyframes scale-in{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
+.email-chip{display:inline-block;margin-top:6px;font-family:var(--ff-m);font-size:13px;background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.2);color:var(--cyan);padding:5px 12px;border-radius:6px}
+.steps-list{display:flex;flex-direction:column;gap:10px;margin:24px 0;text-align:left}
+.step-row{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:flex-start;padding:12px 14px;background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:10px}
+.step-n{width:28px;height:28px;border-radius:50%;background:rgba(74,142,255,.1);border:1px solid rgba(74,142,255,.3);display:flex;align-items:center;justify-content:center;font-family:var(--ff-m);font-size:12px;font-weight:700;color:var(--blue);flex-shrink:0}
+.step-row h4{margin:0 0 2px;font-size:13px;font-weight:600;color:var(--text)}
+.step-row p{margin:0;font-size:12px;color:var(--text3);line-height:1.45}
+.resend{font-size:13px;color:var(--text3);margin-top:16px}
+.resend a{color:var(--cyan);cursor:pointer;border-bottom:1px solid rgba(0,212,255,.25)}
+.resend a:hover{color:var(--blue)}
+.countdown-badge{display:inline-block;font-family:var(--ff-m);font-size:11px;letter-spacing:.1em;color:var(--green);background:rgba(0,229,160,.08);border:1px solid rgba(0,229,160,.25);padding:6px 14px;border-radius:100px;margin-bottom:14px}
+.spinner{width:36px;height:36px;border:3px solid rgba(74,142,255,.18);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;display:block;margin:0 auto 20px}
+@keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
-<div class="bg-glow"></div><div class="bg-grid"></div>
-<nav class="baia-nav" id="baia-nav">
-  <div class="nav-inner">
-    <a class="nav-logo" href="index.html">
-      <div class="logo-mark"><svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="36" height="36" rx="10" fill="#0A1428"/>
-          <rect x="0.5" y="0.5" width="35" height="35" rx="9.5" stroke="rgba(74,142,255,0.35)"/>
-          <path d="M10 9h8.5c2.8 0 4.5 1.5 4.5 3.8 0 1.4-.7 2.5-1.8 3.2 1.6.6 2.8 1.9 2.8 3.8 0 2.7-2 4.2-5.2 4.2H10V9z" fill="#4A8EFF" opacity="0.9"/>
-          <path d="M13 12h5c1 0 1.8.7 1.8 1.8s-.8 1.8-1.8 1.8h-5v-3.6z" fill="#04080F"/>
-          <path d="M13 17h5.5c1.2 0 2 .8 2 2s-.8 2-2 2H13v-4z" fill="#04080F"/>
-          <circle cx="27" cy="13" r="1.5" fill="#00D4FF" opacity="0.9"/>
-          <circle cx="27" cy="19" r="1.5" fill="#7B5CF0" opacity="0.7"/>
-          <circle cx="27" cy="25" r="1.5" fill="#4A8EFF" opacity="0.5"/>
-          <line x1="26" y1="13" x2="22" y2="14" stroke="rgba(0,212,255,0.35)" stroke-width="0.8"/>
-          <line x1="26" y1="19" x2="22" y2="18" stroke="rgba(123,92,240,0.35)" stroke-width="0.8"/>
-          <line x1="26" y1="25" x2="22" y2="23" stroke="rgba(74,142,255,0.35)" stroke-width="0.8"/>
-          <line x1="27" y1="14.5" x2="27" y2="17.5" stroke="rgba(74,142,255,0.2)" stroke-width="0.8"/>
-          <line x1="27" y1="20.5" x2="27" y2="23.5" stroke="rgba(74,142,255,0.2)" stroke-width="0.8"/>
-        </svg></div>
-      <span class="logo-wordmark">BA<span>.</span>IA</span>
-      <span class="logo-ss-tag">SS</span>
-    </a>
-    <div class="nav-pill">
-      <a href="login.html" class="btn btn-ghost">Accedi</a>
-      <a href="signup.html" class="btn-cta-nav"><span>Inizia gratis</span><svg width="13" height="13" viewBox="0 0 14 14" fill="none" style="position:relative;z-index:1"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-    </div>
-  </div>
-</nav>
+<div class="bg-glow"></div>
+<div class="bg-grid"></div>
+<nav class="baia-nav" id="baia-nav"><div class="nav-inner"><a class="nav-logo" href="index.html"><div class="logo-mark"><svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="36" height="36" rx="10" fill="#0A1428"/><rect x="0.5" y="0.5" width="35" height="35" rx="9.5" stroke="rgba(74,142,255,0.35)"/><path d="M10 9h8.5c2.8 0 4.5 1.5 4.5 3.8 0 1.4-.7 2.5-1.8 3.2 1.6.6 2.8 1.9 2.8 3.8 0 2.7-2 4.2-5.2 4.2H10V9z" fill="#4A8EFF" opacity="0.9"/><path d="M13 12h5c1 0 1.8.7 1.8 1.8s-.8 1.8-1.8 1.8h-5v-3.6z" fill="#04080F"/><path d="M13 17h5.5c1.2 0 2 .8 2 2s-.8 2-2 2H13v-4z" fill="#04080F"/><circle cx="27" cy="13" r="1.5" fill="#00D4FF" opacity="0.9"/><circle cx="27" cy="19" r="1.5" fill="#7B5CF0" opacity="0.7"/><circle cx="27" cy="25" r="1.5" fill="#4A8EFF" opacity="0.5"/></svg></div><span class="logo-wordmark">BA<span>.</span>IA</span><span class="logo-ss-tag">SS</span></a><div class="nav-pill"><a href="login.html" class="btn btn-ghost">Accedi</a><a href="signup.html" class="btn-cta-nav"><span>Inizia gratis</span><svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div></nav>
 <script>
-window.addEventListener('scroll',()=>{document.getElementById('baia-nav').classList.toggle('scrolled',scrollY>20)},{passive:true});
+window.addEventListener('scroll',()=>{var n=document.getElementById('baia-nav');if(n)n.classList.toggle('scrolled',scrollY>20)},{passive:true});
 </script>
 
 <div class="center-wrap">
@@ -344,7 +76,7 @@ window.addEventListener('scroll',()=>{document.getElementById('baia-nav').classL
       <h1>Email confermata!</h1>
       <div class="countdown-badge">✨ TRIAL GRATUITO ATTIVATO</div>
       <p class="sub">Il tuo account è attivo.<br>14 giorni con tutte le funzionalità Pro disponibili.</p>
-      <a href="BAIA-SS.html" class="btn btn-primary btn-lg" style="width:100%;justify-content:center;">🚀 Entra nell'app</a>
+      <a href="BAIA-SS.html" class="btn btn-primary btn-lg btn-block">🚀 Entra nell'app</a>
       <p style="margin-top:14px;font-size:12px;color:var(--text3)">Reindirizzamento automatico tra <span id="countdown">5</span>s…</p>
     </div>
 
@@ -353,8 +85,8 @@ window.addEventListener('scroll',()=>{document.getElementById('baia-nav').classL
       <div class="state-icon icon-error">❌</div>
       <h1>Link non valido</h1>
       <p class="sub" id="errorMsg">Il link di conferma è scaduto o già utilizzato.</p>
-      <a href="signup.html" class="btn btn-primary btn-lg" style="width:100%;justify-content:center;margin-bottom:10px;">→ Torna alla registrazione</a>
-      <a href="login.html" class="btn btn-outline btn-lg" style="width:100%;justify-content:center;">Accedi con account esistente</a>
+      <a href="signup.html" class="btn btn-primary btn-lg btn-block" style="margin-bottom:10px;">→ Torna alla registrazione</a>
+      <a href="login.html" class="btn btn-outline btn-lg btn-block">Accedi con account esistente</a>
     </div>
 
   </div>
@@ -367,20 +99,19 @@ const SUPABASE_URL  = 'https://gtrjepxrnvptkqpezvba.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd0cmplcHhybnZwdGtxcGV6dmJhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ5NTE3MjcsImV4cCI6MjA5MDUyNzcyN30.9q2BkcZfe_Z9O1eI_HU3n7Y43acQg0KFmrRGxq-6sxk';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
-function notify(msg, type='info') {
-  const wrap = document.getElementById('notify');
-  if (!wrap) return;
-  const el = document.createElement('div');
-  el.className = `notify-item notify-${type}`;
+function notify(msg, type) {
+  type = type || 'info';
+  var wrap = document.getElementById('notify'); if (!wrap) return;
+  var el = document.createElement('div');
+  el.className = 'notify-item notify-' + type;
   el.textContent = msg;
   wrap.appendChild(el);
-  setTimeout(() => el.style.opacity = '0', 4000);
-  setTimeout(() => el.remove(), 4300);
+  setTimeout(function(){ el.style.opacity='0'; }, 4000);
+  setTimeout(function(){ el.remove(); }, 4300);
 }
 
-
 function show(id) {
-  ['stateWaiting','stateVerifying','stateSuccess','stateError'].forEach(s => {
+  ['stateWaiting','stateVerifying','stateSuccess','stateError'].forEach(function(s){
     document.getElementById(s).style.display = s === id ? '' : 'none';
   });
 }
@@ -404,7 +135,7 @@ function show(id) {
     return;
   }
   const { data } = await sb.auth.getSession();
-  if (data?.session?.user) { window.location.href = 'BAIA-SS.html'; return; }
+  if (data && data.session && data.session.user) { window.location.href = 'BAIA-SS.html'; return; }
   const email = sessionStorage.getItem('baia_signup_email');
   if (email) document.getElementById('emailDisplay').textContent = email;
   show('stateWaiting');
@@ -413,7 +144,7 @@ async function resendEmail() {
   const email = sessionStorage.getItem('baia_signup_email');
   if (!email) { notify('Torna alla registrazione e riprova', 'error'); return; }
   try {
-    await sb.auth.resend({ type: 'signup', email });
+    await sb.auth.resend({ type: 'signup', email: email });
     notify('✅ Email inviata di nuovo!', 'success');
   } catch(e) { notify('❌ ' + e.message, 'error'); }
 }
