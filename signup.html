@@ -3,366 +3,59 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BA.IA — SS · Registrati gratis</title>
+<title>BA.IA — SS · Registrati</title>
+<meta name="description" content="Crea il tuo account gratuito BA.IA — SS. 14 giorni trial Pro, nessuna carta richiesta.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" href="favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/theme.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <style>
-
-/* ═══════════════════════════════════════════════
-   BA.IA — SS · DESIGN SYSTEM
-═══════════════════════════════════════════════ */
-:root {
-  --bg:     #04080F;
-  --bg2:    #070D1A;
-  --bg3:    #0A1428;
-  --surface:  rgba(255,255,255,0.04);
-  --surface2: rgba(255,255,255,0.07);
-  --glass:    rgba(10,20,40,0.78);
-  --blue:   #4A8EFF;
-  --blue2:  #2D6FE8;
-  --cyan:   #00D4FF;
-  --purple: #7B5CF0;
-  --violet: #A78BFA;
-  --green:  #00E5A0;
-  --pink:   #F472B6;
-  --gold:   #C6921F;
-  --gold-l: #F0B429;
-  --red:    #EF4444;
-  --amber:  #F59E0B;
-  --border:  rgba(255,255,255,0.08);
-  --border2: rgba(74,142,255,0.28);
-  --text:  #EEF2FF;
-  --text2: #8B9EC7;
-  --text3: #5A6B8A;
-  --ff-d: 'Instrument Serif', Georgia, serif;
-  --ff-b: 'Plus Jakarta Sans', system-ui, sans-serif;
-  --ff-m: 'Space Mono', monospace;
-  --ease: all .2s ease;
-  --r:    10px;
-  --r-lg: 16px;
-  --r-xl: 22px;
-  --shadow-lg: 0 40px 100px rgba(0,0,0,.55);
-}
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--ff-b);
-  line-height: 1.65;
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-a { text-decoration: none; color: inherit; }
-::selection { background: rgba(74,142,255,.35); color: #fff; }
-::-webkit-scrollbar { width: 3px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--blue2); border-radius: 2px; }
-
-/* ── BACKGROUND EFFECTS ── */
-.bg-grid {
-  position: fixed; inset: 0; z-index: 0; pointer-events: none;
-  background-image:
-    linear-gradient(rgba(74,142,255,.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(74,142,255,.025) 1px, transparent 1px);
-  background-size: 48px 48px;
-}
-.bg-glow {
-  position: fixed; inset: 0; z-index: 0; pointer-events: none;
-  background:
-    radial-gradient(ellipse 60% 40% at 20% 10%, rgba(74,142,255,.07) 0%, transparent 70%),
-    radial-gradient(ellipse 50% 40% at 80% 80%, rgba(123,92,240,.05) 0%, transparent 70%),
-    radial-gradient(ellipse 40% 30% at 60% 30%, rgba(0,212,255,.04) 0%, transparent 60%);
-}
-/* Scan lines */
-body::before {
-  content: '';
-  position: fixed; inset: 0; z-index: 1; pointer-events: none;
-  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,212,255,.005) 2px, rgba(0,212,255,.005) 4px);
-  animation: scan 8s linear infinite;
-}
-@keyframes scan { from { background-position: 0 0; } to { background-position: 0 100px; } }
-/* Noise */
-body::after {
-  content: '';
-  position: fixed; inset: 0; z-index: 1; pointer-events: none;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.022'/%3E%3C/svg%3E");
-  opacity: .55; mix-blend-mode: screen;
-}
-
-/* ── NAV ── */
-.baia-nav {
-  position: fixed; top: 0; left: 0; right: 0;
-  z-index: 200;
-  padding: 16px 0;
-  transition: all .3s;
-}
-.baia-nav.scrolled {
-  padding: 10px 0;
-  background: rgba(4,8,15,.92);
-  backdrop-filter: blur(24px);
-  border-bottom: 1px solid var(--border);
-}
-.nav-inner {
-  display: flex; align-items: center; justify-content: space-between;
-  max-width: 1100px; margin: 0 auto; padding: 0 36px;
-}
-.nav-logo {
-  display: flex; align-items: center; gap: 10px;
-  cursor: pointer; text-decoration: none; color: inherit;
-}
-.logo-mark svg { width: 34px; height: 34px; }
-.logo-wordmark {
-  font-family: var(--ff-d); font-size: 21px; font-weight: 400; color: var(--text);
-}
-.logo-wordmark span { color: var(--blue); }
-.logo-ss-tag {
-  font-family: var(--ff-m); font-size: 10px; color: var(--cyan);
-  background: rgba(0,212,255,.08); border: 1px solid rgba(0,212,255,.2);
-  border-radius: 4px; padding: 2px 7px; letter-spacing: .08em;
-}
-.nav-links { display: flex; gap: 28px; list-style: none; }
-.nav-links a { font-size: 13.5px; color: var(--text2); transition: color .2s; }
-.nav-links a:hover { color: var(--cyan); }
-.nav-pill { display: flex; gap: 10px; align-items: center; }
-@media (max-width: 720px) { .nav-links { display: none; } }
-
-/* ── BUTTONS ── */
-.btn {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 10px 20px; border-radius: var(--r); font-family: var(--ff-b);
-  font-size: 13.5px; font-weight: 600; cursor: pointer; transition: var(--ease);
-  border: none; position: relative; overflow: hidden; white-space: nowrap;
-}
-.btn-ghost {
-  background: transparent; border: 1px solid var(--border); color: var(--text2);
-}
-.btn-ghost:hover { border-color: var(--border2); color: var(--text); background: var(--surface); }
-.btn-primary {
-  background: linear-gradient(135deg, var(--blue), var(--purple)); color: #fff;
-}
-.btn-primary::after {
-  content: ''; position: absolute; inset: 0;
-  background: linear-gradient(135deg, var(--cyan), var(--blue)); opacity: 0; transition: opacity .3s;
-}
-.btn-primary:hover::after { opacity: 1; }
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(74,142,255,.45); }
-.btn-primary span, .btn-primary svg { position: relative; z-index: 1; }
-.btn-cta-nav {
-  font-size: 13.5px; font-weight: 600; color: #fff; padding: 9px 20px;
-  background: linear-gradient(135deg, var(--blue), var(--purple));
-  border-radius: var(--r); border: none; cursor: pointer; font-family: var(--ff-b);
-  transition: var(--ease); display: inline-flex; align-items: center; gap: 8px;
-  position: relative; overflow: hidden;
-}
-.btn-cta-nav::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg,var(--cyan),var(--blue)); opacity: 0; transition: opacity .3s; }
-.btn-cta-nav:hover::after { opacity: 1; }
-.btn-cta-nav:hover { transform: translateY(-1px); box-shadow: 0 8px 28px rgba(74,142,255,.45); }
-.btn-cta-nav span, .btn-cta-nav svg { position: relative; z-index: 1; }
-.btn-gold {
-  background: linear-gradient(135deg, var(--gold), var(--gold-l)); color: #fff;
-}
-.btn-gold:hover { transform: translateY(-1px); box-shadow: 0 8px 28px rgba(198,146,31,.4); }
-.btn-danger { background: rgba(239,68,68,.1); color: var(--red); border: 1px solid rgba(239,68,68,.25); }
-.btn-danger:hover { background: rgba(239,68,68,.2); }
-.btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text2); }
-.btn-outline:hover { border-color: var(--border2); color: var(--text); background: var(--surface); }
-.btn-sm { padding: 6px 13px; font-size: 12px; }
-.btn-lg { padding: 14px 32px; font-size: 15px; font-weight: 700; }
-.btn:disabled { opacity: .5; pointer-events: none; }
-
-/* ── CARD ── */
-.baia-card {
-  background: var(--bg2); border: 1px solid var(--border);
-  border-radius: var(--r-xl); padding: 32px; position: relative; overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0,0,0,.35);
-}
-.baia-card::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--blue), var(--cyan), var(--purple), transparent);
-  opacity: .5;
-}
-.baia-card.glow::after {
-  content: ''; position: absolute; inset: -1px; border-radius: inherit;
-  background: linear-gradient(90deg, transparent, var(--blue), var(--cyan), transparent);
-  background-size: 400% 100%; animation: border-run 4s linear infinite; z-index: -1; opacity: .5; filter: blur(1px);
-}
-@keyframes border-run { 0% { background-position: 0% 0; } 100% { background-position: 400% 0; } }
-
-/* ── FORM ── */
-.form-group { margin-bottom: 16px; }
-.form-label { font-size: 12px; color: var(--text2); font-weight: 600; display: block; margin-bottom: 5px; letter-spacing: .02em; }
-.form-input {
-  width: 100%; background: rgba(255,255,255,.04); border: 1px solid var(--border);
-  border-radius: var(--r); padding: 10px 13px; color: var(--text);
-  font-family: var(--ff-b); font-size: 13.5px; outline: none; transition: border-color .15s, background .15s;
-}
-.form-input:focus { border-color: var(--blue); background: rgba(74,142,255,.04); }
-.form-input::placeholder { color: var(--text3); }
-.form-input[readonly] { opacity: .5; cursor: default; }
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-@media (max-width: 520px) { .form-row { grid-template-columns: 1fr; } }
-
-/* ── MESSAGES ── */
-.msg { padding: 11px 14px; border-radius: var(--r); font-size: 13px; font-weight: 600; margin-bottom: 14px; display: none; }
-.msg.error   { background: rgba(239,68,68,.08);  color: #fca5a5; border: 1px solid rgba(239,68,68,.25); }
-.msg.success { background: rgba(0,229,160,.08);  color: var(--green); border: 1px solid rgba(0,229,160,.25); }
-.msg.info    { background: rgba(74,142,255,.08); color: var(--blue);  border: 1px solid rgba(74,142,255,.25); }
-
-/* ── BADGE ── */
-.badge { font-size: 10px; padding: 2px 9px; border-radius: 4px; font-weight: 700; font-family: var(--ff-m); letter-spacing: .05em; }
-.badge-pro   { background: rgba(0,229,160,.1);   color: var(--green);  border: 1px solid rgba(0,229,160,.3); }
-.badge-trial { background: rgba(0,212,255,.1);   color: var(--cyan);   border: 1px solid rgba(0,212,255,.3); }
-.badge-free  { background: rgba(123,92,240,.1);  color: var(--violet); border: 1px solid rgba(123,92,240,.3); }
-.badge-paid  { background: rgba(0,229,160,.1);   color: var(--green);  border: 1px solid rgba(0,229,160,.25); }
-
-/* ── NOTIFY ── */
-#notify { position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; }
-.notify-item {
-  padding: 12px 18px; border-radius: 12px; font-size: 13px; font-weight: 600;
-  backdrop-filter: blur(12px); border: 1px solid; animation: notIn .25s ease;
-  box-shadow: 0 8px 32px rgba(0,0,0,.4); max-width: 340px;
-}
-@keyframes notIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
-.notify-success { background: rgba(0,229,160,.12); color: var(--green);  border-color: rgba(0,229,160,.3); }
-.notify-error   { background: rgba(239,68,68,.12); color: #fca5a5;       border-color: rgba(239,68,68,.3); }
-.notify-info    { background: rgba(74,142,255,.12); color: var(--blue);   border-color: rgba(74,142,255,.3); }
-.notify-warn    { background: rgba(245,158,11,.12); color: #fcd34d;       border-color: rgba(245,158,11,.3); }
-
-/* ── SPINNER ── */
-.spinner { width: 36px; height: 36px; border: 2px solid var(--surface2); border-top-color: var(--blue); border-radius: 50%; animation: spin .7s linear infinite; margin: 32px auto; }
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* ── ANIMATIONS ── */
-@keyframes fade-up  { from { opacity:0; transform: translateY(24px); } to { opacity:1; transform: translateY(0); } }
-@keyframes fade-in  { from { opacity:0; } to { opacity:1; } }
-@keyframes scale-in { from { opacity:0; transform: scale(.93); } to { opacity:1; transform: scale(1); } }
-
-/* ── PAGE WRAPPER ── */
-.page-wrap { position: relative; z-index: 2; padding-top: 80px; }
-
-.auth-wrap {
-  min-height: 100vh; display: flex; align-items: center; justify-content: center;
-  padding: 100px 20px 60px; position: relative; z-index: 2;
-}
-.auth-card {
-  width: 100%; max-width: 500px;
-  background: var(--glass); backdrop-filter: blur(32px);
-  border: 1px solid rgba(255,255,255,.1); border-radius: 24px;
-  overflow: hidden; box-shadow: var(--shadow-lg);
-  animation: scale-in .55s cubic-bezier(.215,.61,.355,1) both;
-}
-.auth-header {
-  padding: 36px 40px 28px; text-align: center;
-  background: linear-gradient(180deg, rgba(74,142,255,.07) 0%, transparent 100%);
-  border-bottom: 1px solid var(--border);
-}
-.auth-logo { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 18px; }
-.auth-logo .logo-mark svg { width: 38px; height: 38px; }
-.auth-logo .logo-wordmark { font-family: var(--ff-d); font-size: 24px; font-weight: 400; }
-.auth-logo .logo-wordmark span { color: var(--blue); }
-.auth-logo .logo-ss-tag {
-  font-family: var(--ff-m); font-size: 10px; color: var(--cyan);
-  background: rgba(0,212,255,.08); border: 1px solid rgba(0,212,255,.2);
-  border-radius: 4px; padding: 2px 7px; letter-spacing: .08em;
-}
-.auth-header h2 { font-family: var(--ff-d); font-size: 22px; font-weight: 400; letter-spacing: -.02em; margin-bottom: 4px; }
-.auth-header p { font-size: 13px; color: var(--text2); }
-.trial-badge {
-  display: inline-flex; align-items: center; gap: 6px;
-  background: rgba(0,229,160,.08); border: 1px solid rgba(0,229,160,.2);
-  color: var(--green); border-radius: 100px; padding: 4px 12px;
-  font-family: var(--ff-m); font-size: 10px; font-weight: 700; letter-spacing: .06em;
-  margin-bottom: 10px;
-}
-.trial-badge::before { content: ''; width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
-@keyframes pulse { 0%,100% { transform:scale(1);opacity:1; } 50% { transform:scale(1.5);opacity:.4; } }
-.auth-body { padding: 32px 40px 36px; }
-.eye-btn {
-  position: absolute; right: 11px; top: 50%; transform: translateY(-50%);
-  background: none; border: none; cursor: pointer; font-size: 15px; color: var(--text3); padding: 4px;
-}
-.eye-btn:hover { color: var(--text2); }
-.input-wrap { position: relative; }
-.divider { display: flex; align-items: center; gap: 12px; margin: 18px 0; color: var(--text3); font-size: 12px; }
-.divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-.google-btn {
-  width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px;
-  padding: 10px; background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--r); font-family: var(--ff-b); font-size: 13.5px; font-weight: 600;
-  color: var(--text); cursor: pointer; transition: var(--ease);
-}
-.google-btn:hover { background: var(--surface2); border-color: var(--border2); }
-.strength-wrap { margin-top: 5px; }
-.strength-bar { height: 4px; background: var(--surface2); border-radius: 2px; overflow: hidden; }
-.strength-fill { height: 100%; border-radius: 2px; transition: width .3s, background .3s; }
-.form-footer { text-align: center; font-size: 12.5px; color: var(--text3); margin-top: 18px; }
-.form-footer a { color: var(--blue); }
-.form-footer a:hover { text-decoration: underline; }
-.terms-note { font-size: 11.5px; color: var(--text3); text-align: center; margin-top: 12px; line-height: 1.6; }
-.terms-note a { color: var(--text2); }
-@media (max-width: 520px) { .auth-body, .auth-header { padding-left: 24px; padding-right: 24px; } }
+.auth-card{max-width:500px}
+.auth-card h2{font-family:var(--ff-d);font-size:32px;font-weight:400;letter-spacing:-.02em;line-height:1.1;color:var(--text);margin:12px 0 6px;text-align:center}
+.auth-card .auth-header p{font-size:13px;color:var(--text3);text-align:center;margin:0 0 22px;line-height:1.55}
+.auth-card .auth-logo{justify-content:center;margin-bottom:10px}
+.trial-badge{display:inline-block;font-family:var(--ff-m);font-size:10.5px;letter-spacing:.14em;color:var(--green);background:rgba(0,229,160,.08);border:1px solid rgba(0,229,160,.25);padding:5px 12px;border-radius:100px;margin-bottom:8px}
+.auth-card .auth-header{text-align:center}
+.msg{display:none;padding:12px 14px;border-radius:10px;font-size:13px;line-height:1.55;margin-bottom:16px;border:1px solid}
+.msg.error{background:rgba(255,107,157,.06);border-color:rgba(255,107,157,.3);color:#FFB8CE}
+.msg.success{background:rgba(0,229,160,.06);border-color:rgba(0,229,160,.25);color:var(--green)}
+.input-wrap{position:relative}
+.eye-btn{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:16px;opacity:.6;padding:4px;transition:opacity .2s}
+.eye-btn:hover{opacity:1}
+.strength-wrap{margin-top:8px}
+.strength-bar{height:3px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden}
+.strength-fill{height:100%;background:#ef4444;transition:all .3s;border-radius:2px}
+.google-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:12px;background:#fff;color:#1a1a1a;font-family:var(--ff-b);font-size:14px;font-weight:600;border:none;border-radius:10px;cursor:pointer;transition:all .2s}
+.google-btn:hover{background:#f3f4f6;transform:translateY(-1px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.form-footer{text-align:center;margin-top:18px;font-size:13px;color:var(--text3)}
+.form-footer a{color:var(--cyan);border-bottom:1px solid rgba(0,212,255,.25);transition:all .2s}
+.form-footer a:hover{color:var(--blue);border-bottom-color:var(--blue)}
+.terms-note{text-align:center;font-size:11.5px;color:var(--text3);margin-top:14px;line-height:1.55}
+.terms-note a{color:var(--cyan);transition:color .2s}
+.terms-note a:hover{color:var(--blue)}
 </style>
 </head>
 <body>
-<div class="bg-glow"></div><div class="bg-grid"></div>
-<nav class="baia-nav" id="baia-nav">
-  <div class="nav-inner">
-    <a class="nav-logo" href="index.html">
-      <div class="logo-mark"><svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="36" height="36" rx="10" fill="#0A1428"/>
-          <rect x="0.5" y="0.5" width="35" height="35" rx="9.5" stroke="rgba(74,142,255,0.35)"/>
-          <path d="M10 9h8.5c2.8 0 4.5 1.5 4.5 3.8 0 1.4-.7 2.5-1.8 3.2 1.6.6 2.8 1.9 2.8 3.8 0 2.7-2 4.2-5.2 4.2H10V9z" fill="#4A8EFF" opacity="0.9"/>
-          <path d="M13 12h5c1 0 1.8.7 1.8 1.8s-.8 1.8-1.8 1.8h-5v-3.6z" fill="#04080F"/>
-          <path d="M13 17h5.5c1.2 0 2 .8 2 2s-.8 2-2 2H13v-4z" fill="#04080F"/>
-          <circle cx="27" cy="13" r="1.5" fill="#00D4FF" opacity="0.9"/>
-          <circle cx="27" cy="19" r="1.5" fill="#7B5CF0" opacity="0.7"/>
-          <circle cx="27" cy="25" r="1.5" fill="#4A8EFF" opacity="0.5"/>
-          <line x1="26" y1="13" x2="22" y2="14" stroke="rgba(0,212,255,0.35)" stroke-width="0.8"/>
-          <line x1="26" y1="19" x2="22" y2="18" stroke="rgba(123,92,240,0.35)" stroke-width="0.8"/>
-          <line x1="26" y1="25" x2="22" y2="23" stroke="rgba(74,142,255,0.35)" stroke-width="0.8"/>
-          <line x1="27" y1="14.5" x2="27" y2="17.5" stroke="rgba(74,142,255,0.2)" stroke-width="0.8"/>
-          <line x1="27" y1="20.5" x2="27" y2="23.5" stroke="rgba(74,142,255,0.2)" stroke-width="0.8"/>
-        </svg></div>
-      <span class="logo-wordmark">BA<span>.</span>IA</span>
-      <span class="logo-ss-tag">SS</span>
-    </a>
-    <div class="nav-pill">
-      <a href="login.html" class="btn btn-ghost">Accedi</a>
-      
-    </div>
-  </div>
-</nav>
+<div class="bg-glow"></div>
+<div class="bg-grid"></div>
+<nav class="baia-nav" id="baia-nav"><div class="nav-inner"><a class="nav-logo" href="index.html"><div class="logo-mark"><svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="36" height="36" rx="10" fill="#0A1428"/><rect x="0.5" y="0.5" width="35" height="35" rx="9.5" stroke="rgba(74,142,255,0.35)"/><path d="M10 9h8.5c2.8 0 4.5 1.5 4.5 3.8 0 1.4-.7 2.5-1.8 3.2 1.6.6 2.8 1.9 2.8 3.8 0 2.7-2 4.2-5.2 4.2H10V9z" fill="#4A8EFF" opacity="0.9"/><path d="M13 12h5c1 0 1.8.7 1.8 1.8s-.8 1.8-1.8 1.8h-5v-3.6z" fill="#04080F"/><path d="M13 17h5.5c1.2 0 2 .8 2 2s-.8 2-2 2H13v-4z" fill="#04080F"/><circle cx="27" cy="13" r="1.5" fill="#00D4FF" opacity="0.9"/><circle cx="27" cy="19" r="1.5" fill="#7B5CF0" opacity="0.7"/><circle cx="27" cy="25" r="1.5" fill="#4A8EFF" opacity="0.5"/></svg></div><span class="logo-wordmark">BA<span>.</span>IA</span><span class="logo-ss-tag">SS</span></a><div class="nav-pill"><a href="login.html" class="btn btn-ghost">Accedi</a></div></div></nav>
 <script>
-window.addEventListener('scroll',()=>{document.getElementById('baia-nav').classList.toggle('scrolled',scrollY>20)},{passive:true});
+window.addEventListener('scroll',()=>{var n=document.getElementById('baia-nav');if(n)n.classList.toggle('scrolled',scrollY>20)},{passive:true});
 </script>
 
 <div class="auth-wrap">
   <div class="auth-card">
     <div class="auth-header">
       <div class="auth-logo">
-        <div class="logo-mark"><svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="36" height="36" rx="10" fill="#0A1428"/>
-          <rect x="0.5" y="0.5" width="35" height="35" rx="9.5" stroke="rgba(74,142,255,0.35)"/>
-          <path d="M10 9h8.5c2.8 0 4.5 1.5 4.5 3.8 0 1.4-.7 2.5-1.8 3.2 1.6.6 2.8 1.9 2.8 3.8 0 2.7-2 4.2-5.2 4.2H10V9z" fill="#4A8EFF" opacity="0.9"/>
-          <path d="M13 12h5c1 0 1.8.7 1.8 1.8s-.8 1.8-1.8 1.8h-5v-3.6z" fill="#04080F"/>
-          <path d="M13 17h5.5c1.2 0 2 .8 2 2s-.8 2-2 2H13v-4z" fill="#04080F"/>
-          <circle cx="27" cy="13" r="1.5" fill="#00D4FF" opacity="0.9"/>
-          <circle cx="27" cy="19" r="1.5" fill="#7B5CF0" opacity="0.7"/>
-          <circle cx="27" cy="25" r="1.5" fill="#4A8EFF" opacity="0.5"/>
-          <line x1="26" y1="13" x2="22" y2="14" stroke="rgba(0,212,255,0.35)" stroke-width="0.8"/>
-          <line x1="26" y1="19" x2="22" y2="18" stroke="rgba(123,92,240,0.35)" stroke-width="0.8"/>
-          <line x1="26" y1="25" x2="22" y2="23" stroke="rgba(74,142,255,0.35)" stroke-width="0.8"/>
-          <line x1="27" y1="14.5" x2="27" y2="17.5" stroke="rgba(74,142,255,0.2)" stroke-width="0.8"/>
-          <line x1="27" y1="20.5" x2="27" y2="23.5" stroke="rgba(74,142,255,0.2)" stroke-width="0.8"/>
-        </svg></div>
+        <div class="logo-mark"><svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="36" height="36" rx="10" fill="#0A1428"/><rect x="0.5" y="0.5" width="35" height="35" rx="9.5" stroke="rgba(74,142,255,0.35)"/><path d="M10 9h8.5c2.8 0 4.5 1.5 4.5 3.8 0 1.4-.7 2.5-1.8 3.2 1.6.6 2.8 1.9 2.8 3.8 0 2.7-2 4.2-5.2 4.2H10V9z" fill="#4A8EFF" opacity="0.9"/><path d="M13 12h5c1 0 1.8.7 1.8 1.8s-.8 1.8-1.8 1.8h-5v-3.6z" fill="#04080F"/><path d="M13 17h5.5c1.2 0 2 .8 2 2s-.8 2-2 2H13v-4z" fill="#04080F"/><circle cx="27" cy="13" r="1.5" fill="#00D4FF" opacity="0.9"/><circle cx="27" cy="19" r="1.5" fill="#7B5CF0" opacity="0.7"/><circle cx="27" cy="25" r="1.5" fill="#4A8EFF" opacity="0.5"/></svg></div>
         <span class="logo-wordmark">BA<span>.</span>IA</span>
         <span class="logo-ss-tag">SS</span>
       </div>
       <div class="trial-badge">✨ 14 GIORNI GRATIS</div>
-      <h2>Crea il tuo account</h2>
+      <h2>Crea il tuo <em>account</em></h2>
       <p>Nessuna carta richiesta · cancelli quando vuoi</p>
     </div>
     <div class="auth-body">
@@ -370,16 +63,16 @@ window.addEventListener('scroll',()=>{document.getElementById('baia-nav').classL
 
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label">Nome <span style="color:var(--red)">*</span></label>
+          <label class="form-label">Nome <span style="color:#FF6B9D">*</span></label>
           <input class="form-input" type="text" id="regNome" placeholder="Mario" autocomplete="given-name">
         </div>
         <div class="form-group">
-          <label class="form-label">Cognome <span style="color:var(--red)">*</span></label>
+          <label class="form-label">Cognome <span style="color:#FF6B9D">*</span></label>
           <input class="form-input" type="text" id="regCognome" placeholder="Rossi" autocomplete="family-name">
         </div>
       </div>
       <div class="form-group">
-        <label class="form-label">Email <span style="color:var(--red)">*</span></label>
+        <label class="form-label">Email <span style="color:#FF6B9D">*</span></label>
         <input class="form-input" type="email" id="regEmail" placeholder="mario@studio.it" autocomplete="email">
       </div>
       <div class="form-group">
@@ -387,7 +80,7 @@ window.addEventListener('scroll',()=>{document.getElementById('baia-nav').classL
         <input class="form-input" type="text" id="regAzienda" placeholder="Studio Ferrari Srl" autocomplete="organization">
       </div>
       <div class="form-group">
-        <label class="form-label">Password <span style="color:var(--red)">*</span></label>
+        <label class="form-label">Password <span style="color:#FF6B9D">*</span></label>
         <div class="input-wrap">
           <input class="form-input" type="password" id="regPwd" placeholder="Min. 8 caratteri" autocomplete="new-password" oninput="checkStrength()" style="padding-right:40px">
           <button class="eye-btn" onclick="toggleEye('regPwd',this)" type="button">👁</button>
@@ -395,14 +88,14 @@ window.addEventListener('scroll',()=>{document.getElementById('baia-nav').classL
         <div class="strength-wrap"><div class="strength-bar"><div class="strength-fill" id="strengthFill" style="width:0%"></div></div></div>
       </div>
       <div class="form-group">
-        <label class="form-label">Ripeti password <span style="color:var(--red)">*</span></label>
+        <label class="form-label">Ripeti password <span style="color:#FF6B9D">*</span></label>
         <div class="input-wrap">
           <input class="form-input" type="password" id="regPwd2" placeholder="Ripeti la password" autocomplete="new-password" onkeydown="if(event.key==='Enter')doSignup()" style="padding-right:40px">
           <button class="eye-btn" onclick="toggleEye('regPwd2',this)" type="button">👁</button>
         </div>
       </div>
 
-      <button class="btn btn-primary btn-lg" id="signupBtn" onclick="doSignup()" style="width:100%;justify-content:center;margin-top:4px;">
+      <button class="btn btn-primary btn-lg btn-block" id="signupBtn" onclick="doSignup()" style="margin-top:4px;">
         <span>✓ Crea Account Gratuito</span>
       </button>
 
@@ -412,7 +105,7 @@ window.addEventListener('scroll',()=>{document.getElementById('baia-nav').classL
         Continua con Google
       </button>
       <div class="form-footer">Hai già un account? <a href="login.html">Accedi →</a></div>
-      <p class="terms-note">Registrandoti accetti i <a href="#">Termini di Servizio</a> e la <a href="#">Privacy Policy</a>.</p>
+      <p class="terms-note">Registrandoti accetti i <a href="terms.html">Termini di Servizio</a> e la <a href="privacy.html">Privacy Policy</a>.</p>
     </div>
   </div>
 </div>
@@ -425,18 +118,16 @@ const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz
 const APP = 'BAIA-SS.html';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
-function notify(msg, type='info') {
-  const wrap = document.getElementById('notify');
-  if (!wrap) return;
-  const el = document.createElement('div');
-  el.className = `notify-item notify-${type}`;
+function notify(msg, type){
+  type = type || 'info';
+  var wrap = document.getElementById('notify'); if (!wrap) return;
+  var el = document.createElement('div');
+  el.className = 'notify-item notify-' + type;
   el.textContent = msg;
   wrap.appendChild(el);
-  setTimeout(() => el.style.opacity = '0', 4000);
-  setTimeout(() => el.remove(), 4300);
+  setTimeout(function(){ el.style.opacity='0'; }, 4000);
+  setTimeout(function(){ el.remove(); }, 4300);
 }
-
-
 function showMsg(txt, type) {
   const el = document.getElementById('msgBox');
   el.textContent = txt; el.className = 'msg ' + type; el.style.display = 'block';
@@ -481,7 +172,11 @@ async function doSignup() {
       options: { data: { nome, cognome, full_name: nome+' '+cognome, nome_azienda: azienda }, emailRedirectTo: window.location.origin+'/confirm-email.html' }
     });
     if (error) throw error;
-    if (data?.user?.identities?.length === 0) { showMsg('⚠️ Email già registrata. Vai al login.', 'error'); btn.disabled=false; btn.innerHTML='<span>✓ Crea Account Gratuito</span>'; return; }
+    if (data && data.user && data.user.identities && data.user.identities.length === 0) {
+      showMsg('⚠️ Email già registrata. Vai al login.', 'error');
+      btn.disabled=false; btn.innerHTML='<span>✓ Crea Account Gratuito</span>';
+      return;
+    }
     sessionStorage.setItem('baia_signup_email', email);
     window.location.href = 'confirm-email.html';
   } catch(e) {
@@ -493,7 +188,7 @@ async function googleSignup() {
   const { error } = await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin+'/'+APP } });
   if (error) showMsg('❌ ' + error.message, 'error');
 }
-(async () => { const { data } = await sb.auth.getSession(); if (data?.session) window.location.href = APP; })();
+(async () => { const { data } = await sb.auth.getSession(); if (data && data.session) window.location.href = APP; })();
 </script>
 </body>
 </html>
