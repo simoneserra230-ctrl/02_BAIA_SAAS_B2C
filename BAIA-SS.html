@@ -5,6 +5,32 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BA.IA — SS · Analisi Bandi AI</title>
 <link rel="stylesheet" href="/assets/theme.css">
+<script>
+(function authGuard(){
+  try {
+    // Cerca una chiave di sessione Supabase v2 (sb-*-auth-token) valida
+    let hasSession = false;
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (k && /^sb-.+-auth-token$/.test(k)) {
+        try {
+          const raw = localStorage.getItem(k);
+          const parsed = JSON.parse(raw);
+          // Verifica che ci sia almeno un access_token non scaduto
+          if (parsed && parsed.access_token) {
+            const exp = parsed.expires_at;
+            if (!exp || exp * 1000 > Date.now()) { hasSession = true; break; }
+          }
+        } catch(e){}
+      }
+    }
+    if (!hasSession) {
+      // Redirect immediato prima che l'UI venga renderizzata
+      window.location.replace('/login.html');
+    }
+  } catch(e){ /* in caso di errore, lascia caricare la pagina normale */ }
+})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <!-- Supabase JS v2 — auth + realtime -->
@@ -3490,6 +3516,8 @@ body.has-plan-banner header { margin-top: 38px; }
 #cookieBanner .cb-decline{background:transparent;border:1px solid rgba(255,255,255,.1);color:#8B9EC7;}
 #cookieBanner .cb-decline:hover{border-color:rgba(255,255,255,.2);color:#EEF2FF;}
 
+
+#authOverlay{display:none !important;}
 </style>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="icon" type="image/png" href="favicon.png">
