@@ -620,93 +620,10 @@ footer{border-top:1px solid var(--border);padding:72px 0 32px;background:var(--b
 .btn-danger:hover{background:rgba(255,107,157,.2)}
 .btn:disabled{opacity:.5;cursor:not-allowed;pointer-events:none}
 
-
 /* ============================================================
-   APP OVERRIDES — demo.html, BAIA-SS.html (ristile aggressivo)
-   Applica font/colori/atmosfera di index.html senza rompere JS
+   APP OVERRIDES — demo.html & BAIA-SS.html (SAFE MODE)
+   Solo fix minimali che non rompono layout custom
    ============================================================ */
 
-/* 1) Nascondi badge demo fluttuante */
+/* Nascondi badge DEMO fluttuante come richiesto */
 #demoBadge{display:none !important;}
-
-/* 2) Font uniformi con index.html */
-body, .sidebar, .topbar, .topbar-nav button, .card, .panel, 
-.tab-btn, .tab-label, .stat-label, .stat-value, .bando-item,
-.match-card, .audit-item, .timeline, .tl-item, .legend, 
-.filter-input, .filter-btn, input, textarea, select, button{
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
-}
-
-/* 3) Titoli con Instrument Serif (come index) */
-h1, h2, h3, .section-title, .panel-title, .card-title, .hero-title,
-.stat-value{
-  font-family: 'Instrument Serif', Georgia, serif !important;
-  letter-spacing: -0.02em !important;
-}
-h1 em, h2 em, h3 em, .section-title em, .panel-title em, .hero-title em{
-  font-style: italic !important;
-}
-
-/* 4) Monospace su label/kpi come index */
-.stat-label, .tl-label, .badge, .pill, .chip, .tag, 
-[class*="kpi"] [class*="label"], .metric-label{
-  font-family: 'Space Mono', 'Courier New', monospace !important;
-  letter-spacing: 0.05em !important;
-  text-transform: uppercase !important;
-}
-
-/* 5) Palette allineata a index.html */
-:root{
-  --bg: #04080F !important;
-  --bg2: #070D1A !important;
-  --blue: #4A8EFF !important;
-  --cyan: #00D4FF !important;
-  --purple: #7B5CF0 !important;
-  --green: #00E5A0 !important;
-  --text: #E8EEF7 !important;
-  --muted: #8A93A3 !important;
-}
-
-/* 6) Body background allineato (solo se non light-mode) */
-body:not(.light):not([data-theme="light"]){
-  background: #04080F !important;
-  background-image: 
-    radial-gradient(ellipse at 20% 0%, rgba(74,142,255,.08), transparent 50%),
-    radial-gradient(ellipse at 80% 100%, rgba(123,92,240,.06), transparent 50%) !important;
-  color: #E8EEF7 !important;
-}
-
-/* 7) Link principali in cyan come index */
-a:not(.btn):not(.nav-btn):not(.tab-btn):not([class*="bando"]):not([class*="match"]){
-  color: #00D4FF !important;
-  text-decoration: none !important;
-  transition: color .2s ease !important;
-}
-a:not(.btn):not(.nav-btn):hover{ color: #4A8EFF !important; }
-
-/* 8) Bottoni primari con gradient index */
-button.btn-primary, .btn.btn-primary, 
-button[class*="cta"], a[class*="cta"]{
-  background: linear-gradient(135deg, #00D4FF 0%, #4A8EFF 100%) !important;
-  color: #04080F !important;
-  font-weight: 600 !important;
-  border: none !important;
-  transition: transform .15s ease, box-shadow .2s ease !important;
-}
-button.btn-primary:hover, .btn.btn-primary:hover{
-  transform: translateY(-1px) !important;
-  box-shadow: 0 8px 28px rgba(0,212,255,.35) !important;
-}
-
-/* 9) Card surface coerente */
-.card, .panel, .block, .surface{
-  background: rgba(10,17,32,.65) !important;
-  border: 1px solid rgba(74,142,255,.12) !important;
-  backdrop-filter: blur(8px) !important;
-}
-
-/* 10) Focus ring uniforme */
-input:focus, textarea:focus, select:focus, button:focus-visible{
-  outline: 2px solid rgba(0,212,255,.5) !important;
-  outline-offset: 2px !important;
-}
